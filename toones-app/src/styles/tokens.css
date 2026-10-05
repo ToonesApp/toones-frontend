@@ -1,0 +1,114 @@
+/* TOONES design tokens. Source of truth: design/DESIGN-SYSTEM.md.
+   Theme colors are registered so they interpolate when [data-night] toggles. */
+
+@property --ink { syntax: '<color>'; inherits: true; initial-value: #1B2430; }
+@property --muted { syntax: '<color>'; inherits: true; initial-value: #5A6774; }
+@property --paper { syntax: '<color>'; inherits: true; initial-value: rgb(255 255 255 / 88%); }
+@property --field { syntax: '<color>'; inherits: true; initial-value: #FFFFFF; }
+@property --well { syntax: '<color>'; inherits: true; initial-value: #E4EBF2; }
+@property --hair { syntax: '<color>'; inherits: true; initial-value: rgb(27 36 48 / 10%); }
+@property --hair2 { syntax: '<color>'; inherits: true; initial-value: rgb(27 36 48 / 12%); }
+@property --hair3 { syntax: '<color>'; inherits: true; initial-value: rgb(27 36 48 / 14%); }
+@property --ghost { syntax: '<color>'; inherits: true; initial-value: rgb(255 255 255 / 75%); }
+@property --placeholder { syntax: '<color>'; inherits: true; initial-value: rgb(90 103 116 / 70%); }
+@property --sky-top { syntax: '<color>'; inherits: true; initial-value: #BFD1E5; }
+@property --sky-bottom { syntax: '<color>'; inherits: true; initial-value: #CDDEEE; }
+@property --home-sky-top { syntax: '<color>'; inherits: true; initial-value: #A8C8E2; }
+@property --home-sky-bottom { syntax: '<color>'; inherits: true; initial-value: #D6E4F0; }
+
+:root {
+  color-scheme: light;
+
+  /* Theme (day) */
+  --ink: #1B2430;
+  --muted: #5A6774;
+  --paper: rgb(255 255 255 / 88%);
+  --field: #FFFFFF;
+  --well: #E4EBF2;
+  --hair: rgb(27 36 48 / 10%);
+  --hair2: rgb(27 36 48 / 12%);
+  --hair3: rgb(27 36 48 / 14%);
+  --ghost: rgb(255 255 255 / 75%);
+  --placeholder: rgb(90 103 116 / 70%);
+  --sky-top: #BFD1E5;
+  --sky-bottom: #CDDEEE;
+  /* Home sits under a bluer sky than Auth; the transition blends between them */
+  --home-sky-top: #A8C8E2;
+  --home-sky-bottom: #D6E4F0;
+
+  /* Fixed brand colors */
+  --sky: #C5D6E8;
+  --mist: var(--well);
+  --border: var(--hair2);
+  --terracotta: #C45C3E;
+  --terracotta-hover: #B5533A;
+  --terracotta-dark: #9A3F28;
+  --cream: #FFF8F4;
+  --ink-press: #0F141B;
+  --error: oklch(0.577 0.245 27.325);
+  --focus-ring: rgb(196 92 62 / 50%);
+
+  /* Category fills (characters only, never chrome) */
+  --cat-nature: #2F6A4A;
+  --cat-language: #2A5F7A;
+  --cat-culture: #7A5424;
+  --cat-music: #C45C3E;
+  --cat-city: #3D4A58;
+
+  /* Radii */
+  --r-pill: 999px;
+  --r-card: 33px;
+  --r-dialog: 28px;
+  --r-well: 27px;
+  --r-fab: 27px;
+  --r-rail: 26px;
+  --r-input: 21px;
+  --r-icon: 18px;
+
+  /* Shadows */
+  --shadow-chip: 0 7px 0 rgb(27 36 48 / 5%), 0 16px 28px rgb(27 36 48 / 10%);
+  --shadow-tab: 0 3px 0 rgb(27 36 48 / 6%);
+  --lip-primary: 0 5px 0 var(--terracotta-dark);
+  --lip-primary-pressed: 0 2px 0 var(--terracotta-dark);
+  --lip-ink: 0 5px 0 var(--ink-press);
+  --lip-ink-pressed: 0 2px 0 var(--ink-press);
+  --lip-ghost: 0 5px 0 rgb(27 36 48 / 8%);
+  --lip-ghost-pressed: 0 2px 0 rgb(27 36 48 / 8%);
+  --shadow-fab: 0 7px 0 var(--terracotta-dark), 0 14px 28px rgb(196 92 62 / 32%);
+  --shadow-fab-pressed: 0 2px 0 var(--terracotta-dark), 0 8px 18px rgb(196 92 62 / 28%);
+
+  /* Type */
+  --font: 'DM Sans', system-ui, sans-serif;
+
+  /* Motion */
+  --t-press: 150ms;
+  --t-theme: 1.4s;
+  --ease-open: cubic-bezier(.2, .7, .3, 1);
+
+  transition:
+    --ink var(--t-theme), --muted var(--t-theme), --paper var(--t-theme), --field var(--t-theme),
+    --well var(--t-theme), --hair var(--t-theme), --hair2 var(--t-theme), --hair3 var(--t-theme),
+    --ghost var(--t-theme), --placeholder var(--t-theme), --sky-top var(--t-theme), --sky-bottom var(--t-theme),
+    --home-sky-top var(--t-theme), --home-sky-bottom var(--t-theme);
+}
+
+:root[data-night] {
+  --ink: #EAF0FA;
+  --muted: #A5B2C6;
+  --paper: rgb(24 33 58 / 82%);
+  --field: #10172B;
+  --well: #1A243E;
+  --hair: rgb(255 255 255 / 12%);
+  --hair2: rgb(255 255 255 / 14%);
+  --hair3: rgb(255 255 255 / 16%);
+  --ghost: rgb(255 255 255 / 7%);
+  --placeholder: rgb(165 178 198 / 55%);
+  --sky-top: #0C1226;
+  --sky-bottom: #1E2A4C;
+  --home-sky-top: #0C1226;
+  --home-sky-bottom: #1E2A4C;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { transition: none; }
+}

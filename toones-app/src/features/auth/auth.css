@@ -1,0 +1,65 @@
+.auth { position: relative; display: flex; min-height: 100dvh; color: var(--ink); overflow-x: hidden; }
+
+/* Header */
+.auth-header { position: absolute; z-index: 3; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; }
+.auth-wordmark { display: inline-flex; align-items: center; height: 36px; padding: 0 14px; color: var(--ink); font-size: 14px; font-weight: 600; letter-spacing: .16em; text-decoration: none; }
+.auth-tabs { position: absolute; left: 50%; top: 12px; transform: translateX(-50%); }
+.auth-back { height: 36px; padding: 0 14px; }
+
+/* Scene: full viewport behind the card */
+.auth-scene { position: fixed; z-index: 0; inset: 0; }
+.auth-scene canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* Form column; only the card takes pointer events so characters stay clickable */
+.auth-main { position: relative; z-index: 2; flex: 1; min-width: 0; min-height: 100dvh; display: flex; align-items: center; justify-content: center; padding: 72px 24px 40px; pointer-events: none; }
+.auth-stack { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 16px; pointer-events: auto; }
+
+.auth-card { display: flex; flex-direction: column; gap: 16px; padding: 20px; }
+.auth-intro { display: flex; flex-direction: column; gap: 6px; }
+.auth-intro h1 { margin: 0; font-size: 24px; line-height: 1.15; font-weight: 600; letter-spacing: -.02em; }
+.auth-intro p { margin: 0; font-size: 14px; line-height: 1.5; color: var(--muted); }
+
+/* Name opens on sign-up; negative margin cancels the card gap when closed */
+.auth-name { max-height: 0; opacity: 0; margin: -3px -3px -16px; padding: 3px; overflow: hidden; visibility: hidden; transition: max-height 400ms var(--ease-open), opacity 250ms, margin-bottom 400ms var(--ease-open), visibility 0s 400ms; }
+.auth-name[data-open="true"] { max-height: 96px; opacity: 1; margin-bottom: 0; visibility: visible; transition: max-height 400ms var(--ease-open), opacity 250ms, margin-bottom 400ms var(--ease-open), visibility 0s; }
+
+.auth-pw { position: relative; }
+.auth-pw .ui-input { padding-right: 46px; }
+.auth-eye { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); width: 32px; height: 32px; border: 0; border-radius: var(--r-pill); background: transparent; color: var(--muted); display: grid; place-items: center; cursor: pointer; transition: background var(--t-press), color var(--t-press); }
+.auth-eye:hover { background: var(--paper); color: var(--ink); }
+.auth-forgot { align-self: flex-end; font-size: 12px; color: var(--muted); text-decoration: none; }
+.auth-forgot:hover { color: var(--terracotta); }
+
+.auth-error { font-size: 13px; line-height: 1.4; color: var(--error); }
+
+.auth-or { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 12px; }
+.auth-or::before, .auth-or::after { content: ''; flex: 1; height: 1px; background: var(--hair2); }
+
+.auth-social { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+
+.auth-terms { margin: 0; font-size: 12px; line-height: 1.5; color: var(--muted); text-align: center; }
+.auth-terms a { color: var(--muted); }
+
+.auth-swap { margin: 0; text-align: center; font-size: 14px; color: var(--muted); }
+.auth-swap button { padding: 0; border: 0; background: transparent; color: var(--ink); font-weight: 500; text-decoration: underline; cursor: pointer; }
+.auth-swap button:hover { color: var(--terracotta); }
+
+.auth-night { position: fixed; z-index: 5; right: 16px; bottom: 16px; }
+
+/* Leaving for Home: the card drops off-screen, chrome fades, the wordmark stays */
+.auth.is-leaving .auth-stack { transform: translateY(110vh) rotate(-7deg); transition: transform 800ms cubic-bezier(.55,0,.85,.35) 280ms; }
+.auth.is-leaving :is(.auth-tabs, .auth-back, .auth-night) { opacity: 0; transition: opacity 300ms; }
+
+/* Under 1100px the scene becomes a 300px band above the form */
+@media (max-width: 1099px) {
+  .auth { flex-direction: column; }
+  .auth-scene { position: relative; inset: auto; height: 300px; flex: none; }
+  .auth-main { min-height: 0; padding-top: 8px; padding-bottom: 88px; }
+  /* The band takes the whole viewport for the pull-back; padding holds the card in place */
+  .auth.is-leaving { padding-top: 300px; }
+  .auth.is-leaving .auth-scene { position: fixed; inset: 0; height: auto; }
+}
+
+@media (max-width: 560px) {
+  .auth-back { display: none; }
+}

@@ -1,5 +1,11 @@
-:root { color-scheme: light; font-family: 'DM Sans', 'Avenir Next', sans-serif; color: #1B2430; background: #C5D6E8; font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+* { box-sizing: border-box; }
+:root { font-family: var(--font); color: var(--ink); background: var(--sky); font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
 #root { min-height: 100svh; }
-body { margin: 0; }
-button, input { font: inherit; }
+body { margin: 0; background: linear-gradient(var(--sky-top), var(--sky-bottom)); text-wrap: pretty; }
+button, input { font: inherit; color: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
+input::placeholder { color: var(--placeholder); }
+:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+.kicker { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.num { font-variant-numeric: tabular-nums; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
