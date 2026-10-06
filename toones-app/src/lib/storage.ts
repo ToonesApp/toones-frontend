@@ -2,6 +2,7 @@ import { useCallback, useSyncExternalStore } from 'react'
 
 export const KEYS = {
   user: 'toones-user',
+  token: 'toones-token',
   night: 'toones-night',
   arrive: 'toones-arrive',
   drops: 'toones-home-drops',
