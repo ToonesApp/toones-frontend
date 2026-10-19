@@ -76,7 +76,10 @@ function DropRows({ list, now }: { list: Drop[]; now: number }) {
         <button type="button" className="panel-go" aria-label={`Show ${d.title} on the globe`} onClick={() => show(d)}>
           <Face drop={d} size={36} />
           <div className="panel-go__text">
-            <div className="ell panel-go__title">{d.title}</div>
+            <div className="ell panel-go__title">
+              {d.title}
+              {d.author && !d.mine && <span className="panel-go__by"> by {d.author}</span>}
+            </div>
             <div className="ell num panel-go__sub">
               {d.place} · {fmtDur(d.dur)} · {ago(d.when, now)}
             </div>

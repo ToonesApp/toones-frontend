@@ -1,4 +1,4 @@
-import { loadClip } from '../../lib/audioStore'
+import { loadClip, saveClip } from '../../lib/audioStore'
 import { live, useHome, type Drop } from './homeStore'
 
 const STAND_IN_BASE: Record<Drop['cat'], number> = { Nature: 330, Language: 294, Culture: 262, Music: 349, City: 220 }
@@ -11,6 +11,22 @@ let ctx: AudioContext | null = null
 let analyser: AnalyserNode | null = null
 let tick = 0
 let token = 0
+
+/** The local copy if we have one, otherwise the server's, which is cached for instant replays. */
+async function fetchClip(drop: Drop): Promise<Blob | undefined> {
+  const cached = await loadClip(drop.id)
+  if (cached || !drop.audioUrl) return cached
+  try {
+    const res = await fetch(drop.audioUrl)
+    if (!res.ok) return undefined
+    const blob = await res.blob()
+    void saveClip(drop.id, blob)
+    return blob
+  } catch {
+    // Unreachable or placeholder audio: the caller falls back to the synthesized stand-in.
+    return undefined
+  }
+}
 
 export function stopPlayback() {
   token++
@@ -46,7 +62,7 @@ async function play(drop: Drop) {
   analyser.connect(ctx.destination)
   void ctx.resume()
 
-  const blob = drop.standIn ? undefined : await loadClip(drop.id)
+  const blob = drop.standIn ? undefined : await fetchClip(drop)
   if (mine !== token || !ctx || !analyser) return
   const started = performance.now()
   let length = drop.dur

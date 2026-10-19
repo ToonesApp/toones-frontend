@@ -49,7 +49,8 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   try {
     res = await fetch(`${BASE}${path}`, {
       ...init,
-      headers: { 'Content-Type': 'application/json', ...init?.headers },
+      // FormData sets its own multipart boundary, so only JSON bodies get a Content-Type.
+      headers: { ...(typeof init?.body === 'string' ? { 'Content-Type': 'application/json' } : {}), ...init?.headers },
     })
   } catch {
     throw new ApiError('Cannot reach the server.', 0)
@@ -95,6 +96,66 @@ export async function me(): Promise<ApiUser> {
   })
 
   return body.user
+}
+
+/** A sound as returned by the feed. `category` is lowercase on the wire. */
+export type ApiSound = {
+  id: string
+  title: string
+  description: string
+  category: string
+  tags: string[]
+  durationSec: number
+  lon: number
+  lat: number
+  placeName: string
+  playCount: number
+  /** Absolute URL of the audio file. */
+  audioUrl: string
+  createdAt: string
+  author: { id: string; username: string; displayName: string } | null
+  mine: boolean
+  listened: boolean
+}
+
+export type CreateSoundInput = {
+  audio: Blob
+  title: string
+  category: string
+  lon: number
+  lat: number
+  durationSec: number
+  placeName?: string
+}
+
+function authHeader(): Record<string, string> {
+  const token = getToken()
+  return token ? { Authorization: `Bearer ${token}` } : {}
+}
+
+/** Uploads a recorded clip and creates the sound. Also returns the user's new XP total. */
+export function createSound(input: CreateSoundInput): Promise<{ sound: ApiSound; xp: number; level: number }> {
+  const form = new FormData()
+  form.append('title', input.title)
+  form.append('category', input.category.toLowerCase())
+  form.append('lon', String(input.lon))
+  form.append('lat', String(input.lat))
+  form.append('durationSec', String(input.durationSec))
+  if (input.placeName) form.append('placeName', input.placeName)
+  form.append('audio', input.audio, 'clip')
+
+  // Generous timeout: a sleeping free-tier server can take about a minute to wake.
+  return request('/sounds', { method: 'POST', body: form, headers: authHeader(), signal: AbortSignal.timeout(60_000) })
+}
+
+/** The feed, newest first. Sends the token when present so `listened` and `mine` are filled in. */
+export function listSounds(): Promise<{ sounds: ApiSound[]; nextBefore: string | null }> {
+  return request('/sounds?limit=200', { headers: authHeader() })
+}
+
+/** Records a listen. The first listen per user earns XP; the response carries the new total. */
+export function listenSound(id: string): Promise<{ firstListen: boolean; playCount: number; xp: number; level: number }> {
+  return request(`/sounds/${encodeURIComponent(id)}/listen`, { method: 'POST', headers: authHeader() })
 }
 
 export function health(): Promise<{ ok: boolean; service: string }> {

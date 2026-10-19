@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { CATEGORIES, CATEGORY_SPECIES, faceDataUrl, type Category } from '../../components/characters/clay'
 import { ClayButton, PaperChip } from '../../components/ui'
+import { createSound, getToken } from '../../lib/api'
 import { saveClip } from '../../lib/audioStore'
 import { fmtDur } from './format'
 import { live, spotLabel, useHome } from './homeStore'
@@ -100,6 +101,7 @@ function RecordDialogBody() {
   const [seconds, setSeconds] = useState(0)
   const [note, setNote] = useState('')
   const [title, setTitle] = useState('')
+  const [saving, setSaving] = useState(false)
   const [cat, setCat] = useState<Category>('Music')
   const take = useRef<Take | null>(null)
   const result = useRef<{ blob: Blob | null; dur: number } | null>(null)
@@ -194,15 +196,44 @@ function RecordDialogBody() {
   const drop = async () => {
     const r = result.current
     const s = useHome.getState().spot
-    if (!r || !s) return
-    const id = crypto.randomUUID()
+    if (!r || !s || saving) return
+    setSaving(true)
+    const name = title.trim() || 'Untitled Toone'
+    let id: string = crypto.randomUUID()
+    let shared: { audioUrl: string; author?: string; xp: number } | null = null
+    let uploadFailed = false
+
+    // Signed in with a real recording: put it on the server so everyone can hear it.
+    if (r.blob && getToken()) {
+      try {
+        const res = await createSound({ audio: r.blob, title: name, category: cat, lon: s.lon, lat: s.lat, durationSec: r.dur, placeName: spotLabel(s) })
+        id = res.sound.id
+        shared = { audioUrl: res.sound.audioUrl, author: res.sound.author?.displayName, xp: res.xp }
+      } catch {
+        uploadFailed = true
+      }
+    }
+
+    // Always keep a local copy: it makes replays instant, and it is the only copy if the upload failed.
     if (r.blob) await saveClip(id, r.blob).catch(() => undefined)
     const home = useHome.getState()
-    const d = home.addDrop({ id, title: title.trim() || 'Untitled Toone', cat, dur: r.dur, lon: s.lon, lat: s.lat, standIn: !r.blob })
+    const d = home.addDrop({
+      id,
+      title: name,
+      cat,
+      dur: r.dur,
+      lon: s.lon,
+      lat: s.lat,
+      standIn: !r.blob,
+      ...(shared && { audioUrl: shared.audioUrl, author: shared.author, mine: true }),
+    })
+    if (shared) useHome.getState().setXp(shared.xp)
+    if (uploadFailed) useHome.getState().flash('Saved on this device only. Could not reach the server.')
     live.popped.set(d.id, performance.now())
     live.happyUntil = performance.now() + 2200
     const g = home.globe
     if (g) g.flyTo([d.lon, d.lat], Math.max(g.zoom(), g.fitZoom() + 0.6))
+    setSaving(false)
   }
 
   const bars = Array.from({ length: BARS }, (_, i) => meter[i - (BARS - meter.length)])
@@ -260,10 +291,12 @@ function RecordDialogBody() {
               </div>
             </div>
             <div className="rec__actions">
-              <ClayButton variant="ghost" onClick={redo}>
+              <ClayButton variant="ghost" onClick={redo} disabled={saving}>
                 Redo
               </ClayButton>
-              <ClayButton onClick={drop}>Drop on globe</ClayButton>
+              <ClayButton onClick={drop} disabled={saving} aria-busy={saving}>
+                {saving ? 'Dropping…' : 'Drop on globe'}
+              </ClayButton>
             </div>
           </div>
         )}

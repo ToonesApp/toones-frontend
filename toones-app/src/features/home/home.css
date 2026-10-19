@@ -85,6 +85,7 @@
 .panel-go__text { min-width: 0; display: flex; flex-direction: column; line-height: 1.3; }
 .panel-go__title { font-size: 14px; font-weight: 500; }
 .panel-go__sub { color: var(--muted); font-size: 12px; }
+.panel-go__by { color: var(--muted); font-weight: 400; }
 .panel-face { display: block; flex: none; }
 .panel-stack { display: flex; }
 .panel-stack .panel-face { border-radius: var(--r-pill); box-shadow: 0 0 0 2px var(--field); }

@@ -40,6 +40,16 @@ export default function HomePage() {
 
   useEffect(() => () => stopPlayback(), [])
 
+  // Load the shared feed, then refresh it quietly so other people's drops appear.
+  useEffect(() => {
+    const sync = () => void useHome.getState().syncDrops()
+    sync()
+    const timer = window.setInterval(() => {
+      if (!document.hidden) sync()
+    }, 45_000)
+    return () => window.clearInterval(timer)
+  }, [])
+
   useLayoutEffect(() => {
     write(KEYS.arrive, null)
     useHome.setState({

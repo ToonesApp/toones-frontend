@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { CATEGORIES, type Category } from '../../components/characters/clay'
-import { setToken } from '../../lib/api'
+import { getToken, listSounds, listenSound, setToken, type ApiSound } from '../../lib/api'
 import { countryAt, nearCity, type LngLat, type SearchResult } from '../../lib/geo'
 import { KEYS, read, readJSON, write, writeJSON } from '../../lib/storage'
 import { XP_PER_DROP, XP_PER_LISTEN, levelFromXp } from '../../lib/xp'
@@ -20,6 +20,12 @@ export type Drop = {
   listened?: boolean
   /** True when the mic was blocked and playback synthesizes a stand-in. */
   standIn?: boolean
+  /** Set for drops stored on the server; the clip is fetched from here instead of IndexedDB. */
+  audioUrl?: string
+  /** Display name of whoever dropped it. */
+  author?: string
+  /** True when the signed-in user dropped it. */
+  mine?: boolean
 }
 
 export type Spot = { lon: number; lat: number; place: string; city: string | null }
@@ -67,6 +73,10 @@ type HomeState = {
   closeRecord: () => void
   addDrop: (d: Omit<Drop, 'id' | 'when' | 'place'> & { id?: string }) => Drop
   markListened: (id: string) => void
+  /** Replaces the local XP with the server's authoritative total. */
+  setXp: (xp: number) => void
+  /** Loads the shared feed and merges it with drops that only exist on this device. */
+  syncDrops: () => Promise<void>
   setPlaying: (p: HomeState['playing']) => void
   flash: (text: string) => void
   goTo: (r: SearchResult) => void
@@ -78,6 +88,29 @@ const DEFAULT_LAYERS: Layers = { labels: true, borders: true, sun: true, spin: t
 function spotAt(lon: number, lat: number): Spot {
   return { lon, lat, place: countryAt(lon, lat) ?? 'Open water', city: nearCity(lon, lat) }
 }
+
+/** The wire format uses lowercase categories; the UI uses capitalised ones. */
+const toCategory = (c: string) => (c.charAt(0).toUpperCase() + c.slice(1)) as Category
+
+export function dropFromApi(s: ApiSound): Drop {
+  return {
+    id: s.id,
+    title: s.title,
+    cat: toCategory(s.category),
+    dur: s.durationSec,
+    when: Date.parse(s.createdAt),
+    lon: s.lon,
+    lat: s.lat,
+    place: countryAt(s.lon, s.lat) ?? (s.placeName || 'Open water'),
+    listened: s.listened,
+    audioUrl: s.audioUrl,
+    author: s.author?.displayName,
+    mine: s.mine,
+  }
+}
+
+/** Only device-local drops are cached in localStorage; server drops are reloaded from the feed. */
+const persistLocal = (drops: Drop[]) => writeJSON(KEYS.drops, drops.filter((d) => !d.audioUrl))
 
 export const spotLabel = (s: Pick<Spot, 'place' | 'city'>) => (s.city && s.city !== s.place ? `${s.city}, ${s.place}` : s.place)
 
@@ -132,7 +165,7 @@ export const useHome = create<HomeState>()((set, get) => ({
     const nextXp = xp + XP_PER_DROP
     const levelled = levelFromXp(nextXp) > levelFromXp(xp)
     const next = [drop, ...drops]
-    writeJSON(KEYS.drops, next)
+    persistLocal(next)
     write(KEYS.xp, String(nextXp))
     set({
       drops: next,
@@ -150,10 +183,35 @@ export const useHome = create<HomeState>()((set, get) => ({
     const first = drops.find((d) => d.id === id && !d.listened)
     const nextDrops = first ? drops.map((d) => (d.id === id ? { ...d, listened: true } : d)) : drops
     const nextXp = first ? xp + XP_PER_LISTEN : xp
-    writeJSON(KEYS.drops, nextDrops)
+    persistLocal(nextDrops)
     write(KEYS.xp, String(nextXp))
     write(KEYS.listens, String(listens + 1))
     set({ drops: nextDrops, xp: nextXp, listens: listens + 1 })
+
+    // Server drops also report the listen so play counts and XP are shared; the reply is authoritative.
+    if (drops.find((d) => d.id === id)?.audioUrl && getToken()) {
+      listenSound(id)
+        .then((r) => get().setXp(r.xp))
+        .catch(() => undefined)
+    }
+  },
+
+  setXp: (xp) => {
+    write(KEYS.xp, String(xp))
+    set({ xp })
+  },
+
+  syncDrops: async () => {
+    if (!getToken()) return
+    try {
+      const { sounds } = await listSounds()
+      const remote = sounds.map(dropFromApi)
+      const ids = new Set(remote.map((d) => d.id))
+      const local = get().drops.filter((d) => !d.audioUrl && !ids.has(d.id))
+      set({ drops: [...remote, ...local].sort((a, b) => b.when - a.when) })
+    } catch {
+      // Offline or the server is waking up: keep showing what we already have.
+    }
   },
 
   setPlaying: (playing) => set({ playing }),
@@ -179,7 +237,8 @@ export const useHome = create<HomeState>()((set, get) => ({
   signOut: () => {
     write(KEYS.user, null)
     setToken(null)
-    set({ user: { name: '', email: '' } })
+    // Drop the shared feed so the next person to sign in on this browser does not inherit its flags.
+    set({ user: { name: '', email: '' }, drops: get().drops.filter((d) => !d.audioUrl) })
   },
 }))
 
