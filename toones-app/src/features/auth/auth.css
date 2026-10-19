@@ -35,7 +35,11 @@
 .auth-or { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 12px; }
 .auth-or::before, .auth-or::after { content: ''; flex: 1; height: 1px; background: var(--hair2); }
 
-.auth-social { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+/* 200px matches the narrowest button Google will render, so cells never overflow. */
+.auth-social { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; }
+.auth-google { display: flex; justify-content: center; min-width: 0; min-height: 40px; }
+.auth-google[data-disabled] { pointer-events: none; opacity: 0.6; }
+.auth-google-fail { margin: 0; font-size: 13px; color: var(--muted); text-align: center; }
 
 .auth-terms { margin: 0; font-size: 12px; line-height: 1.5; color: var(--muted); text-align: center; }
 .auth-terms a { color: var(--muted); }

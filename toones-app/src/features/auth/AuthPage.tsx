@@ -2,9 +2,11 @@ import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'r
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { prefersReducedMotion } from '../../components/characters/clay'
 import { ClayButton, EyeIcon, EyeOffIcon, NightToggle, PaperChip, SegmentedTabs } from '../../components/ui'
-import { ApiError, login, register, setToken, type AuthResult } from '../../lib/api'
+import { ApiError, googleLogin, login, register, setToken, type AuthResult } from '../../lib/api'
+import { GOOGLE_CLIENT_ID } from '../../lib/google'
 import { KEYS, write, writeJSON } from '../../lib/storage'
 import { AuthScene } from './AuthScene'
+import { GoogleSignIn } from './GoogleSignIn'
 import type { AuthMode, AuthSceneEngine } from './sceneEngine'
 import { validate, type AuthError, type AuthField, type AuthValues } from './validate'
 import './auth.css'
@@ -129,6 +131,23 @@ export default function AuthPage() {
     }
   }
 
+  const onGoogle = async (credential: string) => {
+    if (pending) return
+    setServerError(null)
+    setPending(true)
+    try {
+      const session = await googleLogin(credential)
+      finish({ name: session.user.displayName, email: session.user.email }, session)
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Google sign-in failed. Try again.'
+      const problem: AuthError = { field: 'email', message }
+      setServerError(problem)
+      fail(problem)
+    } finally {
+      setPending(false)
+    }
+  }
+
   const invalid = (field: AuthField) => error?.field === field
   const onFieldFocus = () => engine.current?.setFocus('field')
   const onPasswordFocus = () => engine.current?.setFocus('pw')
@@ -231,8 +250,8 @@ export default function AuthPage() {
             <div className="auth-or">or</div>
 
             <div className="auth-social">
-              <ClayButton variant="ghost" onClick={() => finish({ name: '', email: '' })}>Continue with Apple</ClayButton>
-              <ClayButton variant="ghost" onClick={() => finish({ name: '', email: '' })}>Continue with Google</ClayButton>
+              <ClayButton variant="ghost" disabled title="Coming soon">Continue with Apple</ClayButton>
+              {GOOGLE_CLIENT_ID && <GoogleSignIn onCredential={onGoogle} disabled={pending} />}
             </div>
 
             {up && (
