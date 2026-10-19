@@ -19,6 +19,20 @@ export const OSM_RASTER_STYLE: StyleSpecification = {
   layers: [{ id: 'osm', type: 'raster', source: 'osm' }],
 }
 
+/** Ocean names only, for the whole-Earth view where every sea and bay label would crowd the globe. */
+const OCEAN_LABEL = 'toones-ocean-label'
+
+/** Zoom past the fitted whole-Earth view at which each label layer appears. */
+const LABEL_TIERS: [id: string, overFit: number][] = [
+  ['label_country_2', 0.6],
+  ['water_name_point_label', 1],
+  ['water_name_line_label', 1],
+  ['label_country_3', 1.2],
+  ['label_city_capital', 1.4],
+  ['label_city', 2],
+]
+const styleMinZoom = new WeakMap<MapLibreMap, Map<string, number>>()
+
 type RGBA = [number, number, number, number]
 
 const hex = (h: string, a = 1): RGBA => {
@@ -51,6 +65,8 @@ const PALETTE: [string, Parameters<MapLibreMap['setPaintProperty']>[1], RGBA, RG
   ['label_country_*', 'text-color', hex('#1B2430', 0.72), hex('#EAF0FA', 0.8)],
   ['water_name_*', 'text-color', hex('#5D8FAA'), hex('#7F98C4')],
   ['water_name_*', 'text-halo-color', hex('#FFFFFF', 0.6), hex('#10172B', 0.6)],
+  [OCEAN_LABEL, 'text-color', hex('#5D8FAA'), hex('#7F98C4')],
+  [OCEAN_LABEL, 'text-halo-color', hex('#FFFFFF', 0.6), hex('#10172B', 0.6)],
   ['toones-graticule', 'line-color', hex('#FFFFFF', 0.4), hex('#FFFFFF', 0.06)],
   ['toones-night', 'fill-color', hex('#141E3C', 0.13), hex('#141E3C', 0.25)],
 ]
@@ -61,7 +77,7 @@ const match = (pattern: string, id: string) => {
   return id === pattern
 }
 
-export const LABEL_LAYER = (id: string) => /^(label_|water_name|waterway_line_label|highway-name|highway-shield|road_shield|airport)/.test(id)
+export const LABEL_LAYER = (id: string) => /^(label_|water_name|waterway_line_label|highway-name|highway-shield|road_shield|airport|toones-ocean-label)/.test(id)
 export const BORDER_LAYER = (id: string) => id.startsWith('boundary_')
 
 /** Adds TOONES overlays and type tweaks once the base style has loaded. */
@@ -79,6 +95,15 @@ export function decorate(map: MapLibreMap) {
     map.addLayer({ id: 'toones-night', type: 'fill', source: 'toones-night', paint: { 'fill-antialias': false } }, firstSymbol)
   }
 
+  const water = layers.find((l) => l.id === 'water_name_point_label')
+  if (water?.type === 'symbol' && !map.getLayer(OCEAN_LABEL)) {
+    // Oceans share class "sea" with seas and gulfs in this tileset; only the name tells them apart
+    const isOcean = ['in', 'Ocean', ['coalesce', ['get', 'name_en'], ['get', 'name'], '']]
+    const filter = water.filter ? ['all', water.filter, isOcean] : isOcean
+    map.addLayer({ ...water, id: OCEAN_LABEL, filter: filter as typeof water.filter }, water.id)
+  }
+  styleMinZoom.set(map, new Map(layers.map((l) => [l.id, l.minzoom ?? 0])))
+
   for (const l of layers) {
     if (l.id === 'boundary_2' || l.id === 'boundary_disputed') map.setPaintProperty(l.id, 'line-dasharray', [3, 2])
     if (l.id.startsWith('label_country')) {
@@ -86,6 +111,17 @@ export function decorate(map: MapLibreMap) {
       map.setLayoutProperty(l.id, 'text-letter-spacing', 0.16)
     }
   }
+}
+
+/** Holds back smaller countries, seas and cities until the camera is zoomed in past the whole-Earth fit. */
+export function declutterLabels(map: MapLibreMap, fitZoom: number) {
+  const base = styleMinZoom.get(map)
+  if (!base) return
+  for (const [id, overFit] of LABEL_TIERS) {
+    const layer = map.getLayer(id)
+    if (layer) map.setLayerZoomRange(id, Math.max(base.get(id) ?? 0, fitZoom + overFit), layer.maxzoom ?? 24)
+  }
+  if (map.getLayer(OCEAN_LABEL)) map.setLayerZoomRange(OCEAN_LABEL, 0, fitZoom + 1)
 }
 
 export function refreshNight(map: MapLibreMap) {

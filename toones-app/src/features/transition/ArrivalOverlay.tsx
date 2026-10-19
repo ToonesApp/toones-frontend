@@ -28,8 +28,9 @@ export function ArrivalOverlay() {
     if (!c) return
     let geo: HandoffGeo | null = null
     void loadHandoffGeo().then((g) => (geo = g))
-    const start = performance.now()
-    let last = start
+    let last = performance.now()
+    /** Capped frame time, not wall clock, so a main-thread stall pauses the flight instead of skipping it. */
+    let el = 0
     let raf = 0
     let mapAt: number | null = null
     let notes: Note[] = []
@@ -38,9 +39,9 @@ export function ArrivalOverlay() {
 
     const frame = (now: number) => {
       raf = requestAnimationFrame(frame)
-      const dt = Math.min(0.05, (now - last) / 1000)
+      const dt = clamp((now - last) / 1000, 0, 0.05)
       last = now
-      const el = (now - start) / 1000
+      el += dt
       const { g, w: W, h: H } = fitCanvas(c)
       if (!g || !W || !H) return
       g.clearRect(0, 0, W, H)
@@ -56,9 +57,11 @@ export function ArrivalOverlay() {
         g.globalAlpha = 1
       }
 
+      // The cast waits for the map: MapLibre's startup stalls the main thread until it loads
+      const ct = mapAt == null ? -1 : el - mapAt
       CATEGORIES.forEach((cat, i) => {
         if (landed.has(i)) return
-        const p = clamp((el - 0.1 - i * STAGGER) / FLIGHT)
+        const p = clamp((ct - 0.1 - i * STAGGER) / FLIGHT)
         if (p <= 0) return
         const cell = document.querySelector(`.home-rail__cell[data-cat="${cat}"] canvas`)
         if (!cell) return
@@ -67,7 +70,7 @@ export function ArrivalOverlay() {
         const fit = fitPlacement(sp, r.width, r.height, 0.86)
         const tx = r.left + fit.x
         const ty = r.top + fit.base
-        const lt = el - 0.1 - i * STAGGER - FLIGHT
+        const lt = ct - 0.1 - i * STAGGER - FLIGHT
         if (lt >= SQUASH) {
           landed.add(i)
           useArrival.getState().land(cat)

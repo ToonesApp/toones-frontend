@@ -1,20 +1,12 @@
 import type { Map as MapLibreMap } from 'maplibre-gl'
-import {
-  CATEGORY_SPECIES,
-  CharacterMotion,
-  SPECIES,
-  clamp,
-  drawCharacter,
-  fitCanvas,
-  prefersReducedMotion,
-  spawnNote,
-  stepNotes,
-  type Note,
-} from '../../../components/characters/clay'
+import { CharacterMotion, clamp, fitCanvas, prefersReducedMotion, spawnNote, stepNotes, type Note } from '../../../components/characters/clay'
 import { angularDistance, type LngLat } from '../../../lib/geo'
 import { live, type Drop, type Spot } from '../homeStore'
 
 type Hit = { id: string; x: number; y: number; hw: number; hh: number }
+
+const TAU = Math.PI * 2
+const TERRACOTTA: [number, number, number] = [196, 92, 62]
 
 const backOut = (p: number) => {
   const s = 1.70158
@@ -22,7 +14,7 @@ const backOut = (p: number) => {
   return p * p * ((s + 1) * p + s) + 1
 }
 
-/** Draws drop characters, the chosen-spot pin and notes on a canvas above the map. */
+/** Draws drop pins, the chosen-spot marker and notes on a canvas above the map. */
 export class DropOverlay {
   private canvas: HTMLCanvasElement
   private motions = new Map<string, CharacterMotion>()
@@ -30,7 +22,6 @@ export class DropOverlay {
   private hits: Hit[] = []
   private reduce = prefersReducedMotion()
   private burstDone = new Set<string>()
-  pointer = { x: -1e4, y: -1e4, at: -1e4 }
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas
@@ -47,8 +38,8 @@ export class DropOverlay {
   hop(id: string) {
     const m = this.motions.get(id)
     const h = this.hits.find((x) => x.id === id)
-    if (m && !this.reduce) m.jump(320)
-    if (h) for (let i = 0; i < 3; i++) setTimeout(() => this.notes.push(spawnNote(h.x, h.y - h.hh - 4, { spread: h.hw })), i * 110)
+    if (m && !this.reduce) m.jump(260)
+    if (h) for (let i = 0; i < 3; i++) setTimeout(() => this.notes.push(spawnNote(h.x, h.y - h.hh, { spread: h.hw })), i * 110)
   }
 
   emitAt(x: number, y: number, night: boolean) {
@@ -62,15 +53,7 @@ export class DropOverlay {
     const now = performance.now()
     const c = map.getCenter()
     const center: LngLat = [c.lng, c.lat]
-    const zoom = map.getZoom()
-    const r = clamp(11 * 2 ** (0.45 * (zoom - opts.fitZoom)), 11, 30)
-    const happy = now < live.happyUntil
-    const recentPointer = now - this.pointer.at < 1500
-
-    const spotXY = opts.spot ? map.project([opts.spot.lon, opts.spot.lat]) : null
-    const playing = opts.playingId ? opts.drops.find((d) => d.id === opts.playingId) : null
-    const playXY = playing ? map.project([playing.lon, playing.lat]) : null
-    const look = recentPointer ? this.pointer : spotXY ?? playXY ?? null
+    const r = clamp(6 * 2 ** (0.3 * (map.getZoom() - opts.fitZoom)), 6, 11)
 
     // Far-side drops first so nearer ones overlap them
     const placed = opts.drops
@@ -82,9 +65,7 @@ export class DropOverlay {
     for (const { d, dist } of placed) {
       const alpha = clamp((1.5 - dist) / 0.22)
       const p = map.project([d.lon, d.lat])
-      if (p.x < -60 || p.y < -60 || p.x > w + 60 || p.y > h + 80) continue
-      const sp = SPECIES[CATEGORY_SPECIES[d.cat]]
-      const k = (r * 2.5) / Math.sqrt(sp.w * sp.h)
+      if (p.x < -40 || p.y < -40 || p.x > w + 40 || p.y > h + 40) continue
 
       let m = this.motions.get(d.id)
       if (!m) {
@@ -98,48 +79,76 @@ export class DropOverlay {
       const pop = popAt == null ? 1 : now < popAt ? 0 : this.reduce ? 1 : backOut(clamp((now - popAt) / 450))
       if (popAt != null && now >= popAt && !this.burstDone.has(d.id)) {
         this.burstDone.add(d.id)
-        for (let i = 0; i < 4; i++) setTimeout(() => this.notes.push(spawnNote(p.x, p.y - sp.h * k, { night: opts.night > 0.5 })), i * 120)
+        for (let i = 0; i < 4; i++) setTimeout(() => this.notes.push(spawnNote(p.x, p.y - r * 3, { night: opts.night > 0.5 })), i * 120)
       }
+      if (pop <= 0) continue
 
       const isPlaying = d.id === opts.playingId
-      const level = live.recording ? live.level : isPlaying ? live.level : live.level * 0.4
-      const bounce = this.reduce ? 0 : level * 10 * k
+      const level = isPlaying ? live.level : 0
+      const k = r * pop * (1 + level * 0.25)
+      const lift = m.hop * (r / 11)
       g.globalAlpha = alpha
-      const size = drawCharacter(g, p.x, p.y - m.hop * k - bounce, k, sp, {
-        look,
-        blink: m.blink,
-        happy: happy || m.happy > 0,
-        talk: isPlaying ? Math.abs(Math.sin(opts.t * 11)) * (0.4 + level) : undefined,
-        dance: level,
-        squash: m.s,
-        scale: pop,
-        night: opts.night,
-        t: opts.t,
-      })
+      this.drawDropPin(g, p.x, p.y, k, lift, isPlaying, opts.t)
       g.globalAlpha = 1
-      if (alpha > 0.4) this.hits.push({ id: d.id, x: p.x, y: p.y - size.chh / 2, hw: size.cw / 2 + 6, hh: size.chh / 2 + 6 })
+      if (alpha > 0.4) this.hits.push({ id: d.id, x: p.x, y: p.y - lift - k * 2, hw: k + 6, hh: k * 1.6 + 6 })
     }
 
-    if (spotXY) this.drawPin(g, spotXY.x, spotXY.y, opts.t)
+    if (opts.spot) {
+      const s = map.project([opts.spot.lon, opts.spot.lat])
+      this.drawSpot(g, s.x, s.y, opts.t)
+    }
     this.notes = stepNotes(g, this.notes, opts.dt, 0.8)
   }
 
-  private drawPin(g: CanvasRenderingContext2D, x: number, y: number, t: number) {
+  /** Teardrop pin with its tip on the drop; `lift` raises it off its shadow while hopping. */
+  private drawDropPin(g: CanvasRenderingContext2D, x: number, y: number, r: number, lift: number, playing: boolean, t: number) {
+    const [cr, cg, cb] = TERRACOTTA
+    g.fillStyle = `rgba(27,36,48,${0.18 / (1 + lift / r)})`
+    g.beginPath()
+    g.ellipse(x, y + 1, r * 0.7, r * 0.28, 0, 0, TAU)
+    g.fill()
+
+    const tip = y - lift
+    const cy = tip - r * 2
+    if (playing && !this.reduce) {
+      const pulse = (t * 1.2) % 1
+      g.strokeStyle = `rgba(${cr},${cg},${cb},${0.55 * (1 - pulse)})`
+      g.lineWidth = 2
+      g.beginPath()
+      g.arc(x, cy, r * (1.2 + pulse * 1.6), 0, TAU)
+      g.stroke()
+    }
+    g.fillStyle = `rgb(${cr},${cg},${cb})`
+    g.strokeStyle = '#FFFFFF'
+    g.lineWidth = Math.max(1.5, r * 0.28)
+    g.beginPath()
+    g.moveTo(x, tip)
+    g.arc(x, cy, r, (5 * Math.PI) / 6, Math.PI / 6)
+    g.closePath()
+    g.fill()
+    g.stroke()
+    g.fillStyle = '#FFFFFF'
+    g.beginPath()
+    g.arc(x, cy, r * 0.38, 0, TAU)
+    g.fill()
+  }
+
+  private drawSpot(g: CanvasRenderingContext2D, x: number, y: number, t: number) {
     const pulse = this.reduce ? 0.5 : (t * 0.8) % 1
     g.strokeStyle = `rgba(196,92,62,${0.5 * (1 - pulse)})`
     g.lineWidth = 2
     g.beginPath()
-    g.arc(x, y, 8 + pulse * 22, 0, Math.PI * 2)
+    g.arc(x, y, 8 + pulse * 22, 0, TAU)
     g.stroke()
     g.fillStyle = 'rgba(196,92,62,.45)'
     g.beginPath()
-    g.ellipse(x, y + 2, 9, 4, 0, 0, Math.PI * 2)
+    g.ellipse(x, y + 2, 9, 4, 0, 0, TAU)
     g.fill()
     g.fillStyle = '#C45C3E'
     g.strokeStyle = '#FFFFFF'
     g.lineWidth = 2.5
     g.beginPath()
-    g.arc(x, y, 7, 0, Math.PI * 2)
+    g.arc(x, y, 7, 0, TAU)
     g.fill()
     g.stroke()
   }

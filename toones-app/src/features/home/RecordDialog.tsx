@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { CATEGORIES, CATEGORY_SPECIES, faceDataUrl, type Category } from '../../components/characters/clay'
+import { CATEGORIES, type Category } from '../../components/characters/clay'
 import { ClayButton, PaperChip } from '../../components/ui'
 import { saveClip } from '../../lib/audioStore'
 import { fmtDur } from './format'
@@ -200,7 +200,6 @@ function RecordDialogBody() {
     const home = useHome.getState()
     const d = home.addDrop({ id, title: title.trim() || 'Untitled Toone', cat, dur: r.dur, lon: s.lon, lat: s.lat, standIn: !r.blob })
     live.popped.set(d.id, performance.now())
-    live.happyUntil = performance.now() + 2200
     const g = home.globe
     if (g) g.flyTo([d.lon, d.lat], Math.max(g.zoom(), g.fitZoom() + 0.6))
   }
@@ -253,7 +252,6 @@ function RecordDialogBody() {
               <div className="rec__cats">
                 {CATEGORIES.map((c) => (
                   <button key={c} type="button" className="rec-tag ui-press" aria-pressed={cat === c} onClick={() => setCat(c)}>
-                    <img src={faceDataUrl(CATEGORY_SPECIES[c])} alt="" width={24} height={24} />
                     {c}
                   </button>
                 ))}
