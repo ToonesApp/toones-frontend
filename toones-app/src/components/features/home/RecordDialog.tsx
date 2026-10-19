@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { CATEGORIES, CATEGORY_SPECIES, faceDataUrl, type Category } from '../../characters/clay'
+import { CATEGORIES, type Category } from '../../characters/clay'
 import { ClayButton, PaperChip } from '../../ui'
 import { saveClip } from '../../lib/audioStore'
 import { fmtDur } from './format'

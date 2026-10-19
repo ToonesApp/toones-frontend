@@ -1,6 +1,6 @@
 import { ClayCharacter } from '../../characters/ClayCharacter'
 import { CATEGORIES, CATEGORY_SPECIES } from '../../characters/clay'
-import { PaperChip } from '../../ui'
+import { PanelIcon, PaperChip } from '../../ui'
 import { useArrival } from '../transition/arrivalStore'
 import { useHome } from './homeStore'
 

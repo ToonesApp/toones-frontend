@@ -1,10 +1,7 @@
 import type { Map as MapLibreMap } from 'maplibre-gl'
 import {
-  CATEGORY_SPECIES,
   CharacterMotion,
-  SPECIES,
   clamp,
-  drawCharacter,
   fitCanvas,
   prefersReducedMotion,
   spawnNote,

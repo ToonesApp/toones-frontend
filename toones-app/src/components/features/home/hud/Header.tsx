@@ -1,4 +1,4 @@
-import { PanelIcon, PaperChip } from '../../../ui'
+import { PaperChip } from '../../../ui'
 import { useHome } from '../homeStore'
 import { AccountMenu } from './AccountMenu'
 import { Search } from './Search'
