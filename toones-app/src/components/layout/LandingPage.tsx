@@ -17,7 +17,7 @@ const LandingPage = () => {
       </header>
 
       <section className="landing__hero">
-        <p className="kicker">An audio-first social map</p>
+        <p className="kicker">An audio-first social map.</p>
         <h1>Hear what you’re missing.</h1>
         <p className="landing__intro">
           Toones is a map of voices. Record a short clip, pin it to the spot
