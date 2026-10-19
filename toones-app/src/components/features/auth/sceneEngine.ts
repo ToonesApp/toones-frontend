@@ -316,8 +316,10 @@ export class AuthSceneEngine {
       g.ellipse(W / 2, H * 0.985, W * 0.62, H * 0.2, 0, 0, Math.PI * 2)
       g.fill()
     } else {
-      const T = globeTarget(W, H, initialPanelOpen(W))
-      morph = { ex: lerp(LW / 2, T.cx, pull), ey: lerp(LH * 0.985, T.cy, pull), rx: lerp(LW * 0.62, T.R, pull), ry: lerp(LH * 0.2, T.R, pull), rx0: LW * 0.62 }
+      // Home has no scrollbar: target its viewport box, mapped into this canvas
+      const VW = window.innerWidth
+      const T = globeTarget(VW, window.innerHeight, initialPanelOpen(VW))
+      morph = { ex: lerp(LW / 2, T.cx - r.left, pull), ey: lerp(LH * 0.985, T.cy - r.top, pull), rx: lerp(LW * 0.62, T.R, pull), ry: lerp(LH * 0.2, T.R, pull), rx0: LW * 0.62 }
       drawHandoffGlobe(g, { cx: morph.ex, cy: morph.ey, rx: morph.rx, ry: morph.ry, night: e, reveal: pull, hill: { color: hc, alpha: lerp(0.72, 0.86, e) }, geo: this.geo })
     }
 

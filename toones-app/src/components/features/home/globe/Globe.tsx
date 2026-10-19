@@ -9,7 +9,7 @@ import { useHome, type GlobeApi } from '../homeStore'
 import { HOME_START, globeInsets, globeTarget } from '../layout'
 import { togglePlayback } from '../player'
 import { DropOverlay } from './dropOverlay'
-import { BORDER_LAYER, LABEL_LAYER, OSM_RASTER_STYLE, POSITRON_STYLE, decorate, paint, refreshNight, setVisible, skyFor } from './mapStyle'
+import { BORDER_LAYER, LABEL_LAYER, OSM_RASTER_STYLE, POSITRON_STYLE, declutterLabels, decorate, paint, refreshNight, setVisible, skyFor } from './mapStyle'
 import './globe.css'
 
 // MapLibre resolves its worker next to its own module, which Vite's dep pre-bundling moves.
@@ -107,6 +107,7 @@ export function Globe() {
       const next = z + Math.log2(sphereRadius(R) / sphereRadius(now))
       if (z < 8 && map.getProjection()?.type === 'globe' && now > 1 && Number.isFinite(next)) fitZoom = clamp(next, -2, MAX_ZOOM)
       map.setMinZoom(fitZoom + Math.log2(0.75))
+      if (styledRef.current) declutterLabels(map, fitZoom)
       return fitZoom
     }
     fitRef.current = { recompute: recomputeFit }
@@ -187,7 +188,6 @@ export function Globe() {
       useHome.getState().selectSpot(p.lng, p.lat)
     })
     map.on('mousemove', (ev) => {
-      overlay.pointer = { x: ev.point.x, y: ev.point.y, at: performance.now() }
       map.getCanvas().style.cursor = overlay.hitTest(ev.point) ? 'pointer' : ''
     })
 

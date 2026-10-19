@@ -192,8 +192,6 @@ export const live = {
   /** 0..1 audio level while recording or playing. */
   level: 0,
   recording: false,
-  /** performance.now() until which every character wears a happy face. */
-  happyUntil: 0,
   /** Drop id → performance.now() when it was added, for the pop-in. */
   popped: new Map<string, number>(),
   /** Drop id → requested hop (consumed by the overlay). */

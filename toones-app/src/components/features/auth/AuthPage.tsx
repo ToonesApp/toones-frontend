@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
+import { startTransition, useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { prefersReducedMotion } from '../../characters/clay'
 import { ClayButton, EyeIcon, EyeOffIcon, NightToggle, PaperChip, SegmentedTabs } from '../../ui'
@@ -86,9 +86,9 @@ export default function AuthPage() {
     setToken(session?.token ?? null)
     if (session) write(KEYS.xp, String(session.user.xp))
     write(KEYS.arrive, '1')
-    const go = () => navigate('/home')
-    if (!engine.current || prefersReducedMotion()) return go()
-    void import('../home/HomePage')
+    if (!engine.current || prefersReducedMotion()) return navigate('/home')
+    const home = import('../home/HomePage')
+    const go = () => void home.then(() => startTransition(() => navigate('/home')), () => navigate('/home'))
     ;(document.activeElement as HTMLElement | null)?.blur()
     window.scrollTo(0, 0)
     engine.current.leave(go)

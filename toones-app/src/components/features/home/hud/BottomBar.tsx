@@ -13,7 +13,9 @@ function Player() {
   const elapsed = Math.min(playing.elapsed, drop.dur)
   return (
     <PaperChip className="hud-player">
-      <img src={faceDataUrl(CATEGORY_SPECIES[drop.cat])} alt="" width={36} height={36} />
+      <span className="drop-mark" style={{ width: 36, height: 36 }}>
+        <MicIcon size={18} />
+      </span>
       <div className="hud-player__body">
         <div className="hud-player__line">
           <span className="ell hud-player__title">{drop.title}</span>
@@ -49,7 +51,7 @@ function Hint() {
   return (
     <PaperChip className="hud-hint num" role="status">
       <span className="ell hud-hint__main">{looking ? `${looking.label} · ${localTime(looking.lon, now)} local` : 'Loading Earth'}</span>
-      {looking && <span className="ell hud-muted">{hasDrops ? 'Click a spot or a face' : 'Click anywhere to choose a spot'}</span>}
+      {looking && <span className="ell hud-muted">{hasDrops ? 'Click a spot or a pin' : 'Click anywhere to choose a spot'}</span>}
     </PaperChip>
   )
 }

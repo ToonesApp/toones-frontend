@@ -26,8 +26,12 @@ function useNow(ms: number) {
   return now
 }
 
-function Face({ drop, size }: { drop: Pick<Drop, 'cat'>; size: number }) {
-  return <img className="panel-face" src={faceDataUrl(CATEGORY_SPECIES[drop.cat])} alt="" width={size} height={size} />
+function Mark({ size }: { size: number }) {
+  return (
+    <span className="drop-mark" style={{ width: size, height: size }}>
+      <MicIcon size={Math.round(size * 0.5)} />
+    </span>
+  )
 }
 
 function Greeting() {
@@ -37,7 +41,7 @@ function Greeting() {
   const n = drops.length
   const places = placeCount(drops)
   const title = n === 0 ? 'Earth is quiet. Drop a Toone.' : n === 1 ? 'Your first Toone is on Earth.' : `${n} Toones carry your voice.`
-  const lede = n ? 'Click a face on the globe to hear it, or pick a new spot.' : 'Spin the globe and click a spot, or record where the globe is facing.'
+  const lede = n ? 'Click a pin on the globe to hear it, or pick a new spot.' : 'Spin the globe and click a spot, or record where the globe is facing.'
 
   return (
     <PaperChip as="section" radius="card" className="panel-greet">
@@ -74,7 +78,7 @@ function DropRows({ list, now }: { list: Drop[]; now: number }) {
     return (
       <div key={d.id} className={on ? 'panel-row is-on' : 'panel-row'}>
         <button type="button" className="panel-go" aria-label={`Show ${d.title} on the globe`} onClick={() => show(d)}>
-          <Face drop={d} size={36} />
+          <Mark size={36} />
           <div className="panel-go__text">
             <div className="ell panel-go__title">{d.title}</div>
             <div className="ell num panel-go__sub">
@@ -106,11 +110,7 @@ function PlaceRows({ list, now }: { list: Drop[]; now: number }) {
     return (
       <div key={place} className="panel-row">
         <button type="button" className="panel-go" onClick={() => show(ds)}>
-          <div className="panel-stack">
-            {ds.slice(0, 3).map((d) => (
-              <Face key={d.id} drop={d} size={30} />
-            ))}
-          </div>
+          <Mark size={36} />
           <div className="panel-go__text">
             <div className="ell panel-go__title">{place}</div>
             <div className="num panel-go__sub">
