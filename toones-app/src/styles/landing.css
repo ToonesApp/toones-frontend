@@ -1,7 +1,9 @@
 .landing {
   position: relative;
-  height: 95svh;
-  min-height: 95svh;
+  height: 100svh;
+  min-height: 100svh;
+  height: 100dvh;
+  min-height: 100dvh;
   overflow: hidden;
   color: var(--ink);
   background: linear-gradient(var(--sky-top), var(--sky-bottom));

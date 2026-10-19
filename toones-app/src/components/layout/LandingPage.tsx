@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Globe } from '../features/home/globe/Globe'
-import { NightToggle, PaperChip } from '../ui'
+import { PaperChip } from '../ui'
 import '../../styles/landing.css'
 
 const LandingPage = () => {
@@ -30,13 +30,12 @@ const LandingPage = () => {
       </section>
 
       <section className="landing__globe" aria-label="A world of voices">
-        <Globe />
+        <Globe landing />
       </section>
 
       <section id="how-it-works" className="sr-only">
         Record a voice note, pin it to your location, and discover what people have left behind.
       </section>
-      <NightToggle className="auth-night" />
     </main>
   )
 }

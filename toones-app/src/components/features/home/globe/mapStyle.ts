@@ -81,18 +81,23 @@ export const LABEL_LAYER = (id: string) => /^(label_|water_name|waterway_line_la
 export const BORDER_LAYER = (id: string) => id.startsWith('boundary_')
 
 /** Adds TOONES overlays and type tweaks once the base style has loaded. */
-export function decorate(map: MapLibreMap) {
+export function decorate(map: MapLibreMap, options: { graticule?: boolean; night?: boolean } = {}) {
+  const { graticule: showGraticule = true, night: showNight = true } = options
   const layers = map.getStyle().layers ?? []
   const firstSymbol = layers.find((l) => l.type === 'symbol')?.id
   const firstBoundary = layers.find((l) => BORDER_LAYER(l.id))?.id ?? firstSymbol
 
-  if (!map.getSource('toones-graticule')) map.addSource('toones-graticule', { type: 'geojson', data: graticule() })
-  if (!map.getLayer('toones-graticule')) {
-    map.addLayer({ id: 'toones-graticule', type: 'line', source: 'toones-graticule', paint: { 'line-width': 0.8 } }, firstBoundary)
+  if (showGraticule) {
+    if (!map.getSource('toones-graticule')) map.addSource('toones-graticule', { type: 'geojson', data: graticule() })
+    if (!map.getLayer('toones-graticule')) {
+      map.addLayer({ id: 'toones-graticule', type: 'line', source: 'toones-graticule', paint: { 'line-width': 0.8 } }, firstBoundary)
+    }
   }
-  if (!map.getSource('toones-night')) map.addSource('toones-night', { type: 'geojson', data: nightPolygon() })
-  if (!map.getLayer('toones-night')) {
-    map.addLayer({ id: 'toones-night', type: 'fill', source: 'toones-night', paint: { 'fill-antialias': false } }, firstSymbol)
+  if (showNight) {
+    if (!map.getSource('toones-night')) map.addSource('toones-night', { type: 'geojson', data: nightPolygon() })
+    if (!map.getLayer('toones-night')) {
+      map.addLayer({ id: 'toones-night', type: 'fill', source: 'toones-night', paint: { 'fill-antialias': false } }, firstSymbol)
+    }
   }
 
   const water = layers.find((l) => l.id === 'water_name_point_label')

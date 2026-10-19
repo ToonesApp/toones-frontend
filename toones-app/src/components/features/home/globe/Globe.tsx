@@ -21,7 +21,7 @@ const MAX_ZOOM = 18
 /** Below this zoom, wheel zoom stays centered so the globe doesn't skid sideways. */
 const CENTERED_WHEEL_BELOW = 5.2
 
-export function Globe() {
+export function Globe({ landing = false }: { landing?: boolean }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const overlayRef = useRef<HTMLCanvasElement>(null)
   const mapRef = useRef<MapLibreMap | null>(null)
@@ -63,7 +63,7 @@ export function Globe() {
 
     const overlay = new DropOverlay(overlayCanvas)
     let fitZoom = 1.6
-    let nightLevel = nightRef.current ? 1 : 0
+    let nightLevel = landing ? 0 : nightRef.current ? 1 : 0
     let painted = -1
     let lastInteract = performance.now()
     let lastLabel = ''
@@ -133,19 +133,20 @@ export function Globe() {
     const applyLayers = () => {
       if (!styledRef.current) return
       const l = useHome.getState().layers
-      setVisible(map, LABEL_LAYER, l.labels)
+      setVisible(map, LABEL_LAYER, landing ? false : l.labels)
       setVisible(map, BORDER_LAYER, l.borders)
-      if (map.getLayer('toones-night')) map.setLayoutProperty('toones-night', 'visibility', l.sun ? 'visible' : 'none')
+      if (map.getLayer('toones-night')) map.setLayoutProperty('toones-night', 'visibility', landing ? 'none' : l.sun ? 'visible' : 'none')
     }
 
     const onStyle = () => {
       map.setProjection({ type: 'globe' })
       map.scrollZoom.setWheelZoomRate(1 / 420)
       map.scrollZoom.setZoomRate(1 / 90)
-      if (map.getLayer('water')) decorate(map)
+      if (map.getLayer('water')) decorate(map, { graticule: !landing, night: !landing })
       styledRef.current = true
       painted = -1
       applyLayers()
+      if (landing) setVisible(map, LABEL_LAYER, false)
       applyZoomFeel()
     }
 
@@ -250,7 +251,7 @@ export function Globe() {
       last = now
       t += dt
 
-      const target = nightRef.current ? 1 : 0
+      const target = landing ? 0 : nightRef.current ? 1 : 0
       nightLevel = reduce ? target : clamp(nightLevel + Math.sign(target - nightLevel) * (dt / 1.4))
       if (styledRef.current && painted !== nightLevel) {
         paint(map, e())
@@ -303,9 +304,9 @@ export function Globe() {
   useEffect(() => {
     const map = mapRef.current
     if (!map || !styledRef.current) return
-    setVisible(map, LABEL_LAYER, layers.labels)
+    setVisible(map, LABEL_LAYER, landing ? false : layers.labels)
     setVisible(map, BORDER_LAYER, layers.borders)
-    if (map.getLayer('toones-night')) map.setLayoutProperty('toones-night', 'visibility', layers.sun ? 'visible' : 'none')
+    if (map.getLayer('toones-night')) map.setLayoutProperty('toones-night', 'visibility', landing ? 'none' : layers.sun ? 'visible' : 'none')
   }, [layers])
 
   return (
