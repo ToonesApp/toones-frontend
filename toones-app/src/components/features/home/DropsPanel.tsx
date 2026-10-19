@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { CATEGORY_SPECIES, faceDataUrl } from '../../components/characters/clay'
-import { IconButton, PauseIcon, PaperChip, PlayIcon, SegmentedTabs, type TabOption } from '../../components/ui'
+import { CATEGORY_SPECIES, faceDataUrl } from '../../characters/clay'
+import { IconButton, PauseIcon, PaperChip, PlayIcon, SegmentedTabs, type TabOption } from '../../ui'
 import { localTime } from '../../lib/geo'
 import { ago, fmtDur, placeCount, plural } from './format'
 import { useHome, type Drop } from './homeStore'

@@ -1,4 +1,4 @@
-import { useNight } from '../../lib/storage'
+import { useNight } from '../lib/storage'
 import { PaperChip } from './PaperChip'
 import './ui.css'
 

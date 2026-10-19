@@ -12,7 +12,7 @@ import {
   type Note,
   type Species,
   type SpeciesId,
-} from '../../components/characters/clay'
+} from '../../characters/clay'
 import { globeTarget, initialPanelOpen } from '../home/layout'
 import { drawHandoffGlobe, loadHandoffGeo, type HandoffGeo } from '../transition/handoffGlobe'
 

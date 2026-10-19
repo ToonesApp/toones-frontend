@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { PaperChip } from '../../../components/ui'
+import { PaperChip } from '../../../ui'
 import { XP_PER_DROP, XP_PER_LEVEL, XP_PER_LISTEN, levelFromXp, progressFromXp } from '../../../lib/xp'
 import { badges } from '../format'
 import { displayName, useHome } from '../homeStore'

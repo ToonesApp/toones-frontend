@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { Category } from '../../components/characters/clay'
+import type { Category } from '../../characters/clay'
 
 type ArrivalState = {
   /** True from Home's first paint until every character has landed in the rail. */

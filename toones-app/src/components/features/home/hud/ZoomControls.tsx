@@ -1,4 +1,4 @@
-import { GlobeIcon, IconButton, LayersIcon, LocateIcon, MinusIcon, PaperChip, PlusIcon } from '../../../components/ui'
+import { GlobeIcon, IconButton, LayersIcon, LocateIcon, MinusIcon, PaperChip, PlusIcon } from '../../../ui'
 import { NEW_YORK } from '../../../lib/geo'
 import { useHome, type Layers } from '../homeStore'
 import { usePopover } from '../usePopover'

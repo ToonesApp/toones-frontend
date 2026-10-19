@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { CATEGORY_SPECIES, faceDataUrl } from '../../../components/characters/clay'
-import { ClayButton, IconButton, PauseIcon, PaperChip } from '../../../components/ui'
+import { CATEGORY_SPECIES, faceDataUrl } from '../../../characters/clay'
+import { ClayButton, IconButton, PauseIcon, PaperChip } from '../../../ui'
 import { coordText, localTime } from '../../../lib/geo'
 import { fmtDur } from '../format'
 import { spotLabel, useHome } from '../homeStore'

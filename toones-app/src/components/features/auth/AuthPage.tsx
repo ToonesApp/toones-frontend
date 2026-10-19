@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { prefersReducedMotion } from '../../components/characters/clay'
-import { ClayButton, EyeIcon, EyeOffIcon, NightToggle, PaperChip, SegmentedTabs } from '../../components/ui'
+import { prefersReducedMotion } from '../../characters/clay'
+import { ClayButton, EyeIcon, EyeOffIcon, NightToggle, PaperChip, SegmentedTabs } from '../../ui'
+import { ApiError, login, register, setToken, type AuthResult } from '../../lib/api'
 import { KEYS, write, writeJSON } from '../../lib/storage'
 import { AuthScene } from './AuthScene'
 import type { AuthMode, AuthSceneEngine } from './sceneEngine'
-import { validate, type AuthField, type AuthValues } from './validate'
+import { validate, type AuthError, type AuthField, type AuthValues } from './validate'
 import './auth.css'
 
 const COPY = {
@@ -40,6 +41,8 @@ export default function AuthPage() {
   const [show, setShow] = useState(false)
   const [touched, setTouched] = useState(false)
   const [leaving, setLeaving] = useState(false)
+  const [pending, setPending] = useState(false)
+  const [serverError, setServerError] = useState<AuthError | null>(null)
 
   const engine = useRef<AuthSceneEngine | null>(null)
   const formRef = useRef<HTMLFormElement>(null)
@@ -48,7 +51,7 @@ export default function AuthPage() {
 
   const copy = COPY[mode]
   const up = mode === 'up'
-  const error = touched ? validate(mode, values) : null
+  const error = serverError ?? (touched ? validate(mode, values) : null)
   const typed = values.name.length + values.email.length
 
   useEffect(() => {
@@ -68,16 +71,20 @@ export default function AuthPage() {
     if (next === mode) return
     setMode(next)
     setTouched(false)
+    setServerError(null)
   }
 
   const onChange = (field: AuthField) => (e: ChangeEvent<HTMLInputElement>) => {
     setValues((v) => ({ ...v, [field]: e.target.value }))
+    setServerError(null)
     engine.current?.keystroke()
   }
 
-  const finish = (user: { name: string; email: string }) => {
+  const finish = (user: { name: string; email: string }, session?: AuthResult) => {
     if (leaving) return
     writeJSON(KEYS.user, user)
+    setToken(session?.token ?? null)
+    if (session) write(KEYS.xp, String(session.user.xp))
     write(KEYS.arrive, '1')
     const go = () => navigate('/home')
     if (!engine.current || prefersReducedMotion()) return go()
@@ -88,16 +95,38 @@ export default function AuthPage() {
     setLeaving(true)
   }
 
-  const onSubmit = (e: FormEvent) => {
+  const fail = (problem: AuthError) => {
+    engine.current?.error()
+    fieldRefs.current[problem.field]?.focus()
+  }
+
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
+    if (pending) return
     setTouched(true)
+    setServerError(null)
     const problem = validate(mode, values)
-    if (problem) {
-      engine.current?.error()
-      fieldRefs.current[problem.field]?.focus()
-      return
+    if (problem) return fail(problem)
+
+    setPending(true)
+    try {
+      const email = values.email.trim()
+      const session = up
+        ? await register({ email, displayName: values.name.trim(), password: values.password })
+        : await login({ emailOrUsername: email, password: values.password })
+      finish({ name: session.user.displayName, email: session.user.email }, session)
+    } catch (err) {
+      const status = err instanceof ApiError ? err.status : 0
+      const message = err instanceof Error ? err.message : 'Something went wrong. Try again.'
+      const problem: AuthError =
+        status === 401
+          ? { field: 'password', message: 'Wrong email or password.' }
+          : { field: status === 409 || /email/i.test(message) ? 'email' : 'password', message }
+      setServerError(problem)
+      fail(problem)
+    } finally {
+      setPending(false)
     }
-    finish({ name: values.name.trim(), email: values.email.trim() })
   }
 
   const invalid = (field: AuthField) => error?.field === field
@@ -195,7 +224,9 @@ export default function AuthPage() {
               </div>
             )}
 
-            <ClayButton type="submit">{copy.cta}</ClayButton>
+            <ClayButton type="submit" disabled={pending} aria-busy={pending}>
+              {pending ? (up ? 'Creating account…' : 'Signing in…') : copy.cta}
+            </ClayButton>
 
             <div className="auth-or">or</div>
 

@@ -1,5 +1,5 @@
 import { useEffect, useRef, type CSSProperties } from 'react'
-import { useNight } from '../../lib/storage'
+import { useNight } from '../lib/storage'
 import {
   CharacterMotion,
   SPECIES,

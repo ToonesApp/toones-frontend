@@ -10,7 +10,7 @@ import {
   spawnNote,
   stepNotes,
   type Note,
-} from '../../../components/characters/clay'
+} from '../../../characters/clay'
 import { angularDistance, type LngLat } from '../../../lib/geo'
 import { live, type Drop, type Spot } from '../homeStore'
 

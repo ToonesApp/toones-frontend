@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { CATEGORIES, CATEGORY_SPECIES, SPECIES, clamp, drawCharacter, fitCanvas, fitPlacement, lerp, spawnNote, stepNotes, type Note } from '../../components/characters/clay'
+import { CATEGORIES, CATEGORY_SPECIES, SPECIES, clamp, drawCharacter, fitCanvas, fitPlacement, lerp, spawnNote, stepNotes, type Note } from '../../characters/clay'
 import { useNight } from '../../lib/storage'
 import { useHome } from '../home/homeStore'
 import { globeTarget } from '../home/layout'

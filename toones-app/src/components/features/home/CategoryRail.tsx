@@ -1,6 +1,6 @@
-import { ClayCharacter } from '../../components/characters/ClayCharacter'
-import { CATEGORIES, CATEGORY_SPECIES } from '../../components/characters/clay'
-import { PaperChip } from '../../components/ui'
+import { ClayCharacter } from '../../characters/ClayCharacter'
+import { CATEGORIES, CATEGORY_SPECIES } from '../../characters/clay'
+import { PaperChip } from '../../ui'
 import { useArrival } from '../transition/arrivalStore'
 import { useHome } from './homeStore'
 

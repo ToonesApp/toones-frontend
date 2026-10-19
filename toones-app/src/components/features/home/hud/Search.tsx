@@ -1,5 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from 'react'
-import { PaperChip, SearchIcon } from '../../../components/ui'
+import { PaperChip, SearchIcon } from '../../../ui'
 import { searchPlaces, type SearchResult } from '../../../lib/geo'
 import { useHome } from '../homeStore'
 import { usePopover } from '../usePopover'

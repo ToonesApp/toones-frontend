@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useState } from 'react'
-import { prefersReducedMotion } from '../../components/characters/clay'
-import { Fab, MicIcon, NightToggle, PaperChip } from '../../components/ui'
+import { prefersReducedMotion } from '../../characters/clay'
+import { Fab, MicIcon, NightToggle, PaperChip } from '../../ui'
 import { KEYS, read, readJSON, write } from '../../lib/storage'
 import { ArrivalOverlay } from '../transition/ArrivalOverlay'
 import { useArrival } from '../transition/arrivalStore'
@@ -42,7 +42,10 @@ export default function HomePage() {
 
   useLayoutEffect(() => {
     write(KEYS.arrive, null)
-    useHome.setState({ user: readJSON<User>(KEYS.user, { name: '', email: '' }) })
+    useHome.setState({
+      user: readJSON<User>(KEYS.user, { name: '', email: '' }),
+      xp: Number(read(KEYS.xp) ?? 0) || 0,
+    })
     if (!arriving) return
     useArrival.getState().begin()
     const huds = document.querySelectorAll('.home [data-arrive], .home [data-arrive-panel]')

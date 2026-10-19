@@ -1,0 +1,156 @@
+.landing {
+  position: relative;
+  height: 95svh;
+  min-height: 95svh;
+  overflow: hidden;
+  color: var(--ink);
+  background: linear-gradient(var(--sky-top), var(--sky-bottom));
+}
+
+.landing__header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+}
+
+.landing__wordmark {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: .16em;
+}
+
+.landing__nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.landing__signin {
+  color: var(--muted);
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.landing__signin:hover {
+  color: var(--ink);
+}
+
+.landing__signup {
+  height: 42px;
+  padding: 0 18px;
+}
+
+.landing__hero {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 62px 24px 0;
+  text-align: center;
+}
+
+.landing__hero .kicker {
+  margin: 0 0 28px;
+}
+
+.landing__hero h1 {
+  max-width: 920px;
+  margin: 0;
+  font-size: clamp(48px, 7vw, 82px);
+  font-weight: 600;
+  letter-spacing: -.075em;
+  line-height: .98;
+}
+
+.landing__intro {
+  margin: 30px 0 26px;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.landing__actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.landing__actions .ui-btn {
+  min-width: 112px;
+}
+
+.landing__globe {
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: 50vh;
+  overflow: hidden;
+  pointer-events: none;
+  transform: scale(2);
+}
+
+.landing__globe .globe {
+  position: absolute;
+  top: auto;
+  right: auto;
+  bottom: 0;
+  left: 50%;
+  width: min(82vw, 760px);
+  height: min(82vw, 760px);
+  transform: translate(-50%, 50%);
+  pointer-events: none;
+}
+
+.landing__globe .globe-map {
+  opacity: .96;
+}
+
+.landing__globe .globe-overlay {
+  display: none;
+}
+
+.landing__globe .maplibregl-ctrl {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .landing__header {
+    padding: 12px 14px;
+  }
+
+  .landing__hero {
+    padding-top: 54px;
+  }
+
+  .landing__hero h1 {
+    font-size: clamp(44px, 13vw, 68px);
+  }
+
+  .landing__intro {
+    font-size: 16px;
+  }
+
+  .landing__desktop-break {
+    display: none;
+  }
+
+  .landing__globe {
+    height: 50vh;
+  }
+
+  .landing__globe .globe {
+    width: min(112vw, 620px);
+    height: min(112vw, 620px);
+  }
+}

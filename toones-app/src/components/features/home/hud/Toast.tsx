@@ -1,4 +1,4 @@
-import { PaperChip } from '../../../components/ui'
+import { PaperChip } from '../../../ui'
 import { useHome } from '../homeStore'
 
 export function Toast() {

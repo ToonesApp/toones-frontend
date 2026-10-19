@@ -5,7 +5,7 @@ import { geoCircle, geoGraticule10, geoOrthographic, geoPath } from 'd3-geo'
 import { feature, mesh } from 'topojson-client'
 import type { Feature, MultiLineString, MultiPolygon, Polygon } from 'geojson'
 import type { GeometryCollection, Topology } from 'topojson-specification'
-import { clamp } from '../../components/characters/clay'
+import { clamp } from '../../characters/clay'
 import { sunPosition } from '../../lib/geo'
 import { HOME_START } from '../home/layout'
 
