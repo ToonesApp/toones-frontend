@@ -8,15 +8,20 @@ export type ApiUser = {
   email: string
   username: string
   displayName: string
+  xp: number
+  level: number
   createdAt: string
 }
 
 export type AuthResult = { token: string; user: ApiUser }
 
-/** Mirrors POST /auth/register. Username is `[a-z0-9_]{3,24}`, password is 8+ chars. */
+/**
+ * Mirrors POST /auth/register. Password is 8+ chars. Username is `[a-z0-9_]{3,24}`;
+ * when omitted the server generates one from the email.
+ */
 export type RegisterInput = {
   email: string
-  username: string
+  username?: string
   displayName: string
   password: string
 }

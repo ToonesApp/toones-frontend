@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { CATEGORIES, type Category } from '../../components/characters/clay'
+import { setToken } from '../../lib/api'
 import { countryAt, nearCity, type LngLat, type SearchResult } from '../../lib/geo'
 import { KEYS, read, readJSON, write, writeJSON } from '../../lib/storage'
 import { XP_PER_DROP, XP_PER_LISTEN, levelFromXp } from '../../lib/xp'
@@ -177,6 +178,7 @@ export const useHome = create<HomeState>()((set, get) => ({
 
   signOut: () => {
     write(KEYS.user, null)
+    setToken(null)
     set({ user: { name: '', email: '' } })
   },
 }))

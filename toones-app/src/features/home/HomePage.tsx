@@ -42,7 +42,10 @@ export default function HomePage() {
 
   useLayoutEffect(() => {
     write(KEYS.arrive, null)
-    useHome.setState({ user: readJSON<User>(KEYS.user, { name: '', email: '' }) })
+    useHome.setState({
+      user: readJSON<User>(KEYS.user, { name: '', email: '' }),
+      xp: Number(read(KEYS.xp) ?? 0) || 0,
+    })
     if (!arriving) return
     useArrival.getState().begin()
     const huds = document.querySelectorAll('.home [data-arrive], .home [data-arrive-panel]')
