@@ -12,7 +12,7 @@ export function globeInsets(W: number, panelOpen: boolean) {
   return {
     left: narrow ? 12 : panelOpen ? 400 : 84,
     right: narrow ? 12 : 84,
-    top: narrow ? 120 : 64,
+    top: narrow ? 144 : 64,
     bottom: (narrow ? 76 : 16) + 52,
   }
 }

@@ -28,7 +28,7 @@ export function ZoomControls() {
   }
 
   return (
-    <PaperChip radius="rail" className="hud-zoom" data-arrive>
+    <PaperChip radius="rail" className="hud-zoom" data-arrive="right">
       <IconButton variant="quiet" aria-label="Zoom in" onClick={() => globe?.zoomBy(1)}>
         <PlusIcon />
       </IconButton>

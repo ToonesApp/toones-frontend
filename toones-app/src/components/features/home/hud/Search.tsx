@@ -51,7 +51,7 @@ export function Search() {
   }
 
   return (
-    <div ref={ref} className="hud-search">
+    <div ref={ref} className="hud-search" data-arrive="top">
       <PaperChip as="label" className="hud-search__box">
         <SearchIcon className="hud-search__icon" />
         <span className="sr-only">Search a place</span>

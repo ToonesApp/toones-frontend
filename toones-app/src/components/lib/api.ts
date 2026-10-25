@@ -49,7 +49,8 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   try {
     res = await fetch(`${BASE}${path}`, {
       ...init,
-      headers: { 'Content-Type': 'application/json', ...init?.headers },
+      // FormData sets its own multipart boundary
+      headers: init?.body instanceof FormData ? init.headers : { 'Content-Type': 'application/json', ...init?.headers },
     })
   } catch {
     throw new ApiError('Cannot reach the server.', 0)
@@ -90,6 +91,72 @@ export async function me(): Promise<ApiUser> {
   })
 
   return body.user
+}
+
+function authHeader(): Record<string, string> {
+  const token = getToken()
+  return token ? { Authorization: `Bearer ${token}` } : {}
+}
+
+export type SoundCategory = 'nature' | 'language' | 'culture' | 'music' | 'city'
+
+/** Mirrors the sound objects returned by /sounds. */
+export type ApiSound = {
+  id: string
+  title: string
+  description: string
+  category: SoundCategory
+  tags: string[]
+  durationSec: number
+  lon: number
+  lat: number
+  placeName: string
+  playCount: number
+  audioUrl: string
+  createdAt: string
+  author: { id: string; username: string; displayName: string } | null
+  mine: boolean
+  listened: boolean
+}
+
+/** GET /sounds: newest first. With a stored token the server also fills `mine` and `listened`. */
+export function getSounds(query: { limit?: number; category?: SoundCategory[] } = {}) {
+  const params = new URLSearchParams()
+  if (query.limit) params.set('limit', String(query.limit))
+  if (query.category?.length) params.set('category', query.category.join(','))
+  const qs = params.toString() ? `?${params}` : ''
+  return request<{ sounds: ApiSound[]; nextBefore: string | null }>(`/sounds${qs}`, { headers: authHeader() })
+}
+
+export type UploadInput = {
+  audio: Blob
+  title: string
+  category: SoundCategory
+  lon: number
+  lat: number
+  durationSec: number
+  placeName?: string
+  description?: string
+}
+
+/** POST /sounds (signed in): the recording plus where it was made. Awards drop XP. */
+export function uploadSound(input: UploadInput) {
+  const form = new FormData()
+  const ext = input.audio.type.includes('ogg') ? 'ogg' : input.audio.type.includes('mp4') ? 'm4a' : 'webm'
+  form.set('audio', input.audio, `toone.${ext}`)
+  form.set('title', input.title)
+  form.set('category', input.category)
+  form.set('lon', String(input.lon))
+  form.set('lat', String(input.lat))
+  form.set('durationSec', String(input.durationSec))
+  if (input.placeName) form.set('placeName', input.placeName)
+  if (input.description) form.set('description', input.description)
+  return request<{ sound: ApiSound; xp: number; level: number }>('/sounds', { method: 'POST', body: form, headers: authHeader() })
+}
+
+/** POST /sounds/:id/listen (signed in): the first listen per user earns XP. */
+export function recordListen(id: string) {
+  return request<{ firstListen: boolean; playCount: number; xp: number; level: number }>(`/sounds/${id}/listen`, { method: 'POST', headers: authHeader() })
 }
 
 export function health(): Promise<{ ok: boolean; service: string }> {

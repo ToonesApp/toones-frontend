@@ -81,7 +81,7 @@ function SpotCard() {
 export function BottomBar() {
   const hasSpot = useHome((s) => s.spot !== null)
   return (
-    <div className="hud-bottom" data-arrive>
+    <div className="hud-bottom" data-arrive="bottom">
       <Player />
       {hasSpot ? <SpotCard /> : <Hint />}
     </div>

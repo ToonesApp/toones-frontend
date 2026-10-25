@@ -27,7 +27,7 @@ export function AccountMenu() {
   }
 
   return (
-    <div ref={ref} className="hud-account">
+    <div ref={ref} className="hud-account" data-arrive="right">
       <PaperChip as="button" type="button" className="hud-xp num ui-press" onClick={() => setOpen(!open)} aria-label={`Level ${level}, ${xp} xp`}>
         <span className="hud-xp__lv">Lv {level}</span>
         <span className="hud-xp__xp">{xp} xp</span>

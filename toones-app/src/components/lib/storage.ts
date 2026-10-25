@@ -9,6 +9,11 @@ export const KEYS = {
   xp: 'toones-home-xp',
   listens: 'toones-home-listens',
   layers: 'toones-layers',
+  /* Feed state the backend has no endpoints for yet */
+  liked: 'toones-feed-liked',
+  comments: 'toones-feed-comments',
+  feedSettings: 'toones-feed-settings',
+  inboxRead: 'toones-feed-read',
 } as const
 
 export type StorageKey = (typeof KEYS)[keyof typeof KEYS]

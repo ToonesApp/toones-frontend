@@ -1,0 +1,6 @@
+.menu-rail { display: flex; flex-direction: column; gap: 4px; padding: 6px; }
+.menu-rail__cell { position: relative; display: flex; flex-direction: column; align-items: center; width: 56px; height: 68px; padding: 4px 0 0; border: 0; border-radius: var(--r-icon); background: transparent; color: var(--ink); opacity: .6; }
+.menu-rail__cell:hover { opacity: .85; }
+.menu-rail__cell[aria-current="page"] { opacity: 1; background: var(--field); box-shadow: 0 3px 0 rgb(27 36 48 / 8%); }
+.menu-rail__label { margin-top: -2px; font-size: 11px; font-weight: 500; line-height: 1; letter-spacing: .02em; }
+.menu-rail__dot { position: absolute; top: 6px; right: 8px; width: 10px; height: 10px; border: 2px solid var(--paper); border-radius: 50%; background: var(--terracotta); }

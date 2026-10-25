@@ -13,6 +13,7 @@ import {
   type Species,
   type SpeciesId,
 } from '../../characters/clay'
+import { CLOUD_SHAPES, ShootingStars, drawCloud } from '../../sky/sky'
 import { globeTarget, initialPanelOpen } from '../home/layout'
 import { drawHandoffGlobe, loadHandoffGeo, type HandoffGeo } from '../transition/handoffGlobe'
 
@@ -82,6 +83,7 @@ export class AuthSceneEngine {
     { x: 0.85, y: 0.07, w: 140, sp: 5, par: 10 },
     { x: 0.32, y: 0.31, w: 70, sp: 11, par: 30 },
   ]
+  private shooting = new ShootingStars()
 
   private t = 0
   private last = performance.now()
@@ -507,6 +509,7 @@ export class AuthSceneEngine {
         }
       }
     }
+    this.shooting.step(g, dt, W, H, clamp((e - 0.55) / 0.2) > 0.8 && !this.reduce, sk)
 
     // Sun and moon ride an arc; direction depends on which way the toggle went
     const arcA = H * 0.9
@@ -576,21 +579,18 @@ export class AuthSceneEngine {
     g.fill()
 
     // Clouds drift and parallax with the cursor
-    const cc = across([255, 255, 255], [255, 208, 192], [84, 100, 146], e)
-    g.fillStyle = rgb(cc, lerp(0.7, 0.5, e))
-    for (const cl of this.clouds) {
+    const alpha = lerp(0.7, 0.5, e)
+    const cc = rgb(across([255, 255, 255], [255, 208, 192], [84, 100, 146], e), alpha)
+    const cs = rgb(across([211, 226, 240], [240, 190, 176], [58, 71, 114], e), alpha)
+    this.clouds.forEach((cl, i) => {
       if (!this.reduce) cl.x += (cl.sp * dt) / W
       if (cl.x > 1.25) cl.x = -0.25
       const cx = cl.x * W - (this.mx > -9000 ? (this.mx / window.innerWidth - 0.5) * cl.par * s : 0) - m * 30 * s
-      const cy = H * cl.y
-      const w2 = cl.w * s
-      g.beginPath()
-      g.roundRect(cx - w2 / 2, cy, w2, 26 * s, 13 * s)
-      g.fill()
-      g.beginPath()
-      g.roundRect(cx - w2 * 0.2, cy - 12 * s, w2 * 0.45, 22 * s, 11 * s)
-      g.fill()
-    }
+      const w2 = cl.w * s * 1.15
+      const shape = CLOUD_SHAPES[i % CLOUD_SHAPES.length]
+      // Bottom-aligned to where the old flat clouds sat
+      drawCloud(g, i, cx - w2 / 2, H * cl.y + 26 * s - (shape.h * w2) / shape.w, w2, cc, cs)
+    })
     g.restore()
   }
 }

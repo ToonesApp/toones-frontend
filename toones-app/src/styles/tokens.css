@@ -15,6 +15,7 @@
 @property --sky-bottom { syntax: '<color>'; inherits: true; initial-value: #CDDEEE; }
 @property --home-sky-top { syntax: '<color>'; inherits: true; initial-value: #A8C8E2; }
 @property --home-sky-bottom { syntax: '<color>'; inherits: true; initial-value: #D6E4F0; }
+@property --accent { syntax: '<color>'; inherits: true; initial-value: #C45C3E; }
 
 :root {
   color-scheme: light;
@@ -35,8 +36,12 @@
   /* Home sits under a bluer sky than Auth; the transition blends between them */
   --home-sky-top: #A8C8E2;
   --home-sky-bottom: #D6E4F0;
+  /* Highlights on paper (played bars, likes, rings); lightens at night */
+  --accent: #C45C3E;
 
   /* Fixed brand colors */
+  --avatar: #3D5A73;
+  --success: #2F6A4A;
   --sky: #C5D6E8;
   --mist: var(--well);
   --border: var(--hair2);
@@ -89,7 +94,7 @@
     --ink var(--t-theme), --muted var(--t-theme), --paper var(--t-theme), --field var(--t-theme),
     --well var(--t-theme), --hair var(--t-theme), --hair2 var(--t-theme), --hair3 var(--t-theme),
     --ghost var(--t-theme), --placeholder var(--t-theme), --sky-top var(--t-theme), --sky-bottom var(--t-theme),
-    --home-sky-top var(--t-theme), --home-sky-bottom var(--t-theme);
+    --home-sky-top var(--t-theme), --home-sky-bottom var(--t-theme), --accent var(--t-theme);
 }
 
 :root[data-night] {
@@ -107,6 +112,7 @@
   --sky-bottom: #1E2A4C;
   --home-sky-top: #0C1226;
   --home-sky-bottom: #1E2A4C;
+  --accent: #F0A58A;
 }
 
 @media (prefers-reduced-motion: reduce) {

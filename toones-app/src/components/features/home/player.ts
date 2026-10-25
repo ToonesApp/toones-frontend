@@ -79,8 +79,8 @@ async function play(drop: Drop) {
   }, 100)
 }
 
-/** A short seeded melody in the category's key, used when the mic was blocked. */
-function synthesize(ac: AudioContext, out: AudioNode, drop: Drop, seconds: number) {
+/** A short seeded melody in the category's key, used when the mic was blocked or the audio can't load. */
+export function synthesize(ac: AudioContext, out: AudioNode, drop: Pick<Drop, 'id' | 'cat'>, seconds: number) {
   const gain = ac.createGain()
   gain.gain.value = 0.08
   gain.connect(out)

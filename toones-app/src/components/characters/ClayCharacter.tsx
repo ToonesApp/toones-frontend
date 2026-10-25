@@ -25,6 +25,10 @@ type ClayCharacterProps = {
   cover?: boolean
   /** Pupils follow the pointer anywhere on the page. */
   followCursor?: boolean
+  /** Page point the pupils look at instead of the pointer. */
+  lookAt?: { x: number; y: number } | null
+  /** Continuous little hop, in CSS px. */
+  bounce?: number
   /** Hover wiggles and waves; click hops and plays notes. */
   interactive?: boolean
   idleWaves?: boolean
@@ -35,13 +39,13 @@ type ClayCharacterProps = {
 }
 
 /** One clay character on its own canvas. Scenes with many characters draw with `drawCharacter` directly. */
-export function ClayCharacter({ species, size = 48, mood = 'idle', cover = false, followCursor = true, interactive = false, idleWaves = false, fill = 0.8, className, style }: ClayCharacterProps) {
+export function ClayCharacter({ species, size = 48, mood = 'idle', cover = false, followCursor = true, lookAt = null, bounce = 0, interactive = false, idleWaves = false, fill = 0.8, className, style }: ClayCharacterProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [night] = useNight()
-  const props = useRef({ mood, cover, followCursor, interactive, idleWaves, fill, night })
+  const props = useRef({ mood, cover, followCursor, lookAt, bounce, interactive, idleWaves, fill, night })
 
   useEffect(() => {
-    props.current = { mood, cover, followCursor, interactive, idleWaves, fill, night }
+    props.current = { mood, cover, followCursor, lookAt, bounce, interactive, idleWaves, fill, night }
   })
 
   useEffect(() => {
@@ -98,6 +102,8 @@ export function ClayCharacter({ species, size = 48, mood = 'idle', cover = false
 
       const r = c.getBoundingClientRect()
       const local = { x: pointer.x - r.left, y: pointer.y - r.top }
+      const gaze = p.lookAt ? { x: p.lookAt.x - r.left, y: p.lookAt.y - r.top } : p.followCursor && pointer.x > -1e3 ? local : null
+      const lift = reduce ? 0 : Math.abs(Math.sin(t * 5)) * p.bounce
       if (p.interactive) {
         const over = Math.abs(local.x - x) < geom.cw / 2 && local.y > base - geom.chh && local.y < base
         if (over && !hovered && !reduce) {
@@ -114,8 +120,8 @@ export function ClayCharacter({ species, size = 48, mood = 'idle', cover = false
       }
 
       const breathe = reduce ? 0 : Math.sin(t * 1.6) * 0.012 + sleepAmt * (Math.sin(t * 1.1) * 0.025 - 0.03)
-      const size = drawCharacter(g, x, base - motion.hop * k, k, sp, {
-        look: p.followCursor && pointer.x > -1e3 ? local : null,
+      const size = drawCharacter(g, x, base - motion.hop * k - lift, k, sp, {
+        look: gaze,
         blink: motion.blink,
         sleep: sleepAmt,
         cover: coverAmt,

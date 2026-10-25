@@ -10,6 +10,7 @@ import LandingPage from './components/layout/LandingPage'
 import './App.css'
 
 const HomePage = lazy(() => import('./components/features/home/HomePage'))
+const FeedPage = lazy(() => import('./components/features/feed/FeedPage'))
 
 function App() {
   return (
@@ -24,6 +25,14 @@ function App() {
             element={
               <Suspense fallback={null}>
                 <HomePage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/feed/*"
+            element={
+              <Suspense fallback={null}>
+                <FeedPage />
               </Suspense>
             }
           />

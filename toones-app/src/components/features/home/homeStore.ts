@@ -72,6 +72,7 @@ type HomeState = {
   addDrop: (d: Omit<Drop, 'id' | 'when' | 'place'> & { id?: string }) => Drop
   markListened: (id: string) => void
   setPlaying: (p: HomeState['playing']) => void
+  gainXp: (n: number) => void
   flash: (text: string) => void
   goTo: (r: SearchResult) => void
   signOut: () => void
@@ -161,6 +162,12 @@ export const useHome = create<HomeState>()((set, get) => ({
   },
 
   setPlaying: (playing) => set({ playing }),
+
+  gainXp: (n) => {
+    const xp = get().xp + n
+    write(KEYS.xp, String(xp))
+    set({ xp })
+  },
 
   flash: (text) => {
     const id = Date.now()

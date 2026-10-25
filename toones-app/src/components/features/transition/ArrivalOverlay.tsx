@@ -48,7 +48,10 @@ export function ArrivalOverlay() {
       const e = nightRef.current ? 1 : 0
 
       const home = useHome.getState()
-      if (mapAt == null && (home.globe || el > MAP_WAIT)) mapAt = el
+      if (mapAt == null && (home.globe || el > MAP_WAIT)) {
+        mapAt = el
+        useArrival.getState().ready()
+      }
       const globeAlpha = mapAt == null ? 1 : 1 - clamp((el - mapAt - 0.15) / 0.4)
       if (globeAlpha > 0) {
         const T = globeTarget(W, H, home.panelOpen)
@@ -63,7 +66,7 @@ export function ArrivalOverlay() {
         if (landed.has(i)) return
         const p = clamp((ct - 0.1 - i * STAGGER) / FLIGHT)
         if (p <= 0) return
-        const cell = document.querySelector(`.home-rail__cell[data-cat="${cat}"] canvas`)
+        const cell = document.querySelector(`.home-rail .menu-rail__cell[data-cat="${cat}"] canvas`)
         if (!cell) return
         const r = cell.getBoundingClientRect()
         const sp = SPECIES[CATEGORY_SPECIES[cat]]

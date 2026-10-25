@@ -143,7 +143,7 @@ export function DropsPanel() {
         : 'Places you drop in show up here.'
 
   return (
-    <aside id="drops-panel" className={open ? 'panel' : 'panel is-closed'} aria-label="Your Toones" aria-hidden={!open} inert={!open} data-arrive-panel>
+    <aside id="drops-panel" className={open ? 'panel' : 'panel is-closed'} aria-label="Your Toones" aria-hidden={!open} inert={!open} data-arrive="left" data-arrive-narrow="bottom">
       <Greeting />
       <PaperChip as="section" radius="card" className="panel-list">
         <div className="panel-list__head">
