@@ -1,4 +1,7 @@
 import { ClayCharacter } from '../../characters/ClayCharacter'
+import { LookAvatar } from '../../characters/LookAvatar'
+import { useLooks } from '../../characters/lookStore'
+import { useHome } from '../home/homeStore'
 import { CommentIcon, HeartIcon, PauseIcon, PlayIcon, ShareIcon } from '../../ui'
 import { toggleFeed } from './feedPlayer'
 import { shareToone, useFeed, type Toone } from './feedStore'
@@ -30,17 +33,24 @@ export function LikeButton({ toone, className }: { toone: Toone; className?: str
 export function ToonCard({ toone }: { toone: Toone }) {
   const playing = useFeed((s) => s.playing?.id === toone.id)
   const elapsed = useFeed((s) => (s.playing?.id === toone.id ? s.playing.elapsed : 0))
+  const email = useHome((s) => s.user.email)
   const comments = useFeed((s) => s.comments[toone.id]?.length ?? 0)
   const openDetail = useFeed((s) => s.openDetail)
   const setHover = useFeed((s) => s.setHover)
   const open = () => openDetail(toone.id)
+  const mine = useLooks((s) => s.looks[email.toLowerCase()])
+  const look = toone.look ?? (toone.mine ? mine : null)
 
   return (
     <article className={playing ? 'card is-playing' : 'card'} onPointerEnter={() => setHover(true)} onPointerLeave={() => setHover(false)}>
       <header className="card__head">
-        <span className="avatar avatar--52" aria-hidden="true">
-          {initialOf(toone.name)}
-        </span>
+        {look ? (
+          <LookAvatar look={look} size={52} />
+        ) : (
+          <span className="avatar avatar--52" aria-hidden="true">
+            {initialOf(toone.name)}
+          </span>
+        )}
         <div className="card__who">
           <div className="card__name ell">{toone.name}</div>
           <div className="card__sub ell">

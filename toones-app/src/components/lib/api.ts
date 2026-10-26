@@ -1,3 +1,4 @@
+import type { Look } from '../characters/avatar'
 import { KEYS, read, write } from './storage'
 
 /** Override per-environment; the default matches the backend's own PORT default. */
@@ -10,6 +11,8 @@ export type ApiUser = {
   displayName: string
   xp: number
   level: number
+  /** The saved character, or null until they make one. */
+  look: Look | null
   createdAt: string
 }
 
@@ -98,6 +101,12 @@ function authHeader(): Record<string, string> {
   return token ? { Authorization: `Bearer ${token}` } : {}
 }
 
+/** PUT /auth/me/look (signed in): saves the character. 403 when it uses items the user hasn't unlocked. */
+export async function saveLook(look: Look): Promise<ApiUser> {
+  const body = await request<{ user: ApiUser }>('/auth/me/look', { method: 'PUT', body: JSON.stringify({ look }), headers: authHeader() })
+  return body.user
+}
+
 export type SoundCategory = 'nature' | 'language' | 'culture' | 'music' | 'city'
 
 /** Mirrors the sound objects returned by /sounds. */
@@ -114,7 +123,7 @@ export type ApiSound = {
   playCount: number
   audioUrl: string
   createdAt: string
-  author: { id: string; username: string; displayName: string } | null
+  author: { id: string; username: string; displayName: string; look: Look | null } | null
   mine: boolean
   listened: boolean
 }

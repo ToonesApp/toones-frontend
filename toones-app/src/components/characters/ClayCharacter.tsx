@@ -33,6 +33,8 @@ type ClayCharacterProps = {
   /** Hover wiggles and waves; click hops and plays notes. */
   interactive?: boolean
   idleWaves?: boolean
+  /** Bump this number to make the character hop, wiggle and sparkle once. */
+  react?: number
   /** Hat, glasses, outfit and facial hair. */
   dress?: Dress
   /** Fraction of the box the character fills. */
@@ -42,13 +44,13 @@ type ClayCharacterProps = {
 }
 
 /** One clay character on its own canvas. Scenes with many characters draw with `drawCharacter` directly. */
-export function ClayCharacter({ species, size = 48, mood = 'idle', cover = false, followCursor = true, lookAt = null, bounce = 0, interactive = false, idleWaves = false, dress, fill = 0.8, className, style }: ClayCharacterProps) {
+export function ClayCharacter({ species, size = 48, mood = 'idle', cover = false, followCursor = true, lookAt = null, bounce = 0, interactive = false, idleWaves = false, react = 0, dress, fill = 0.8, className, style }: ClayCharacterProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [night] = useNight()
-  const props = useRef({ mood, cover, followCursor, lookAt, bounce, interactive, idleWaves, fill, night, dress })
+  const props = useRef({ mood, cover, followCursor, lookAt, bounce, interactive, idleWaves, react, fill, night, dress })
 
   useEffect(() => {
-    props.current = { mood, cover, followCursor, lookAt, bounce, interactive, idleWaves, fill, night, dress }
+    props.current = { mood, cover, followCursor, lookAt, bounce, interactive, idleWaves, react, fill, night, dress }
   })
 
   useEffect(() => {
@@ -64,6 +66,7 @@ export function ClayCharacter({ species, size = 48, mood = 'idle', cover = false
     let sleepAmt = props.current.mood === 'sleep' ? 1 : 0
     let nightAmt = props.current.night ? 1 : 0
     let nextZ = 0
+    let seenReact = props.current.react
     let t = 0
     let last = performance.now()
     let raf = 0
@@ -96,6 +99,18 @@ export function ClayCharacter({ species, size = 48, mood = 'idle', cover = false
       g.clearRect(0, 0, w, h)
 
       const { k, x, base } = fitPlacement(sp, w, h, p.fill)
+      if (p.react !== seenReact) {
+        seenReact = p.react
+        if (!reduce) {
+          motion.jump(420)
+          motion.bump(2.5)
+        }
+        motion.happy = 0.9
+        motion.wave = 0.9
+        for (let i = 0; i < 2; i++) {
+          setTimeout(() => notes.push(spawnNote(geom.x, geom.by - geom.chh - 4, { night: props.current.night, spread: geom.cw * 0.6 })), i * 90)
+        }
+      }
       motion.step(dt, { idleWaves: p.idleWaves, reduce })
 
       const rate = Math.min(1, dt * 10)

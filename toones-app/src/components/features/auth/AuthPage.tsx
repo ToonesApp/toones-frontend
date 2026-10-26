@@ -1,6 +1,8 @@
 import { startTransition, useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { sanitizeLook } from '../../characters/avatar'
 import { prefersReducedMotion } from '../../characters/clay'
+import { useLooks } from '../../characters/lookStore'
 import { ClayButton, EyeIcon, EyeOffIcon, NightToggle, PaperChip, SegmentedTabs } from '../../ui'
 import { ApiError, login, register, setToken, type AuthResult } from '../../lib/api'
 import { KEYS, write, writeJSON } from '../../lib/storage'
@@ -85,6 +87,8 @@ export default function AuthPage() {
     writeJSON(KEYS.user, user)
     setToken(session?.token ?? null)
     if (session) write(KEYS.xp, String(session.user.xp))
+    // The server's copy wins, so the same character follows the account to any device
+    if (session?.user.look) useLooks.getState().save(session.user.email, sanitizeLook(session.user.look))
     write(KEYS.arrive, '1')
     if (!engine.current || prefersReducedMotion()) return navigate('/home')
     const home = import('../home/HomePage')

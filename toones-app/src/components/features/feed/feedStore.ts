@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { sanitizeLook, type Look } from '../../characters/avatar'
 import { CATEGORIES, type Category } from '../../characters/clay'
 import { getSounds, type ApiSound } from '../../lib/api'
 import { angularDistance, type LngLat } from '../../lib/geo'
@@ -20,6 +21,8 @@ export type Toone = {
   lat: number
   audioUrl: string | null
   mine: boolean
+  /** The author's character, when they've saved one. */
+  look?: Look | null
 }
 
 export type Comment = { id: string; name: string; text: string; when: number }
@@ -94,6 +97,7 @@ function fromApi(s: ApiSound): Toone {
     lat: s.lat,
     audioUrl: s.audioUrl || null,
     mine: s.mine,
+    look: s.author?.look ? sanitizeLook(s.author.look) : null,
   }
 }
 

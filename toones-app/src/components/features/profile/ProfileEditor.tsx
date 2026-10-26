@@ -4,6 +4,7 @@ import { BACKGROUNDS, COLORS, backgroundCss, EYES, FACIAL, GLASSES, HAIR, HAIR_C
 import { lookDataUrl } from '../../characters/avatarImage'
 import { ClayCharacter } from '../../characters/ClayCharacter'
 import { useLooks } from '../../characters/lookStore'
+import { ApiError, getToken, saveLook } from '../../lib/api'
 import { ChevronIcon, ClayButton, CloseIcon } from '../../ui'
 import { useFeed } from '../feed/feedStore'
 import { usePresence } from '../feed/usePresence'
@@ -52,6 +53,7 @@ function EditorBody({ open, email, initial, onClose }: Props) {
   const [look, setLook] = useState<Look>(initial)
   const [tab, setTab] = useState<Tab>('species')
   const [cheer, setCheer] = useState(false)
+  const [reaction, setReaction] = useState(0)
   const progress = useProgress()
   const closeRef = useRef<HTMLButtonElement>(null)
   const cheerTimer = useRef(0)
@@ -71,6 +73,7 @@ function EditorBody({ open, email, initial, onClose }: Props) {
   const change = useCallback((patch: Partial<Look>) => {
     setLook((l) => ({ ...l, ...patch }))
     setCheer(true)
+    setReaction((n) => n + 1)
     window.clearTimeout(cheerTimer.current)
     cheerTimer.current = window.setTimeout(() => setCheer(false), 1100)
   }, [])
@@ -84,8 +87,16 @@ function EditorBody({ open, email, initial, onClose }: Props) {
 
   const save = () => {
     useLooks.getState().save(email, look)
-    useFeed.getState().flash('Character saved')
     onClose()
+    if (!getToken()) {
+      useFeed.getState().flash('Character saved')
+      return
+    }
+    // Saved on this device right away; the server copy is what friends see
+    saveLook(look).then(
+      () => useFeed.getState().flash('Character saved'),
+      (e: unknown) => useFeed.getState().flash(e instanceof ApiError && e.status === 403 ? e.message : "Saved here, but couldn't reach the server"),
+    )
   }
 
   const { species, ...dress } = look
@@ -103,7 +114,7 @@ function EditorBody({ open, email, initial, onClose }: Props) {
 
         <div className="pe__stage">
           <span className="pe__well" style={{ background: backgroundCss(look.bg) || undefined }}>
-            <ClayCharacter species={species} dress={dress} size={[240, 250]} fill={0.62} mood={cheer ? 'happy' : 'idle'} idleWaves />
+            <ClayCharacter species={species} dress={dress} size={[240, 250]} fill={0.62} mood={cheer ? 'happy' : 'idle'} react={reaction} idleWaves />
           </span>
           <button type="button" className="pill-btn ui-press" onClick={() => change(randomLook(progress))}>
             Surprise me
