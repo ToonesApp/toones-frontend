@@ -1,7 +1,7 @@
 /* Clay character species, renderer and motion. Framework-free so any canvas
    (Auth scene, globe, rail, arrival overlay) can draw the same characters. */
 
-import { drawBodyDress, drawFaceDress, type Dress, type Face } from './avatar'
+import { drawBack, drawBodyDress, drawFaceDress, drawMouth, type Dress, type Face } from './avatar'
 
 export type SpeciesId = 'moss' | 'ima' | 'sol' | 'tomo' | 'ned' | 'pip'
 export type Category = 'Nature' | 'Language' | 'Culture' | 'Music' | 'City'
@@ -111,7 +111,9 @@ export function drawCharacter(g: CanvasRenderingContext2D, x: number, by: number
   const ey = -chh + chh * (sp.h < 120 ? 0.45 : 0.31)
   const gap = Math.max(20 * k, cw * 0.24) / 2
   const er = Math.max(8 * k, cw * 0.085)
-  const face: Face = { cw, chh, k, rt: Math.min(sp.rt * k, cw / 2), ey, gap, er, my: ey + er * 2.5, night }
+  const face: Face = { cw, chh, k, rt: Math.min(sp.rt * k, cw / 2), ey, gap, er, my: ey + er * 2.5, night, fill: sp.fill, open: !(happy && sleep < 0.5) && 1 - Math.max(blink, cover, sleep) > 0.25 }
+
+  if (dress) drawBack(g, face, dress)
 
   // Body: lip, fill, light-to-navy overlay, highlight bar
   const rt = Math.min(sp.rt * k, cw / 2)
@@ -147,7 +149,7 @@ export function drawCharacter(g: CanvasRenderingContext2D, x: number, by: number
 
   for (const s of [-1, 1]) {
     const ex = s * gap
-    if (isHappy) {
+    if (isHappy || (dress?.eyes === 'wink' && s === 1 && open > 0.25)) {
       g.beginPath()
       g.arc(ex, ey + er * 0.5, er * 0.9, Math.PI * 1.12, Math.PI * 1.88)
       g.stroke()
@@ -206,7 +208,7 @@ export function drawCharacter(g: CanvasRenderingContext2D, x: number, by: number
   } else if (oh) {
     g.ellipse(0, my, er * 0.5, er * 0.65, 0, 0, TAU)
     g.fill()
-  } else {
+  } else if (!(dress && drawMouth(g, face, dress.mouth, mc))) {
     g.arc(0, my - er * 0.5, er * 0.8, Math.PI * 0.2, Math.PI * 0.8)
     g.stroke()
   }

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { COLORS, FACIAL, GLASSES, HATS, OUTFITS, SPECIES_OPTIONS, randomLook, type Look } from '../../characters/avatar'
+import { BACKGROUNDS, COLORS, EYES, FACIAL, GLASSES, HAIR, HAIR_COLORS, HATS, MOUTHS, OUTFITS, SPECIES_OPTIONS, isUnlocked, lockHint, lookUnlocked, randomLook, type Look, type Option } from '../../characters/avatar'
 import { lookDataUrl } from '../../characters/avatarImage'
 import { ClayCharacter } from '../../characters/ClayCharacter'
 import { useLooks } from '../../characters/lookStore'
@@ -8,21 +8,37 @@ import { ClayButton, CloseIcon } from '../../ui'
 import { useFeed } from '../feed/feedStore'
 import { usePresence } from '../feed/usePresence'
 import './profile.css'
+import { useProgress } from './useProgress'
 
 const OPEN_MS = 500
 
-type Tab = 'species' | 'hat' | 'glasses' | 'outfit' | 'facial' | 'color'
+type Part = 'species' | 'hair' | 'hat' | 'glasses' | 'eyes' | 'mouth' | 'outfit' | 'facial' | 'bg'
+type Tab = Part | 'colors'
 
 const TABS: readonly { id: Tab; label: string }[] = [
   { id: 'species', label: 'Character' },
+  { id: 'hair', label: 'Hair' },
   { id: 'hat', label: 'Hat' },
   { id: 'glasses', label: 'Glasses' },
+  { id: 'eyes', label: 'Eyes' },
+  { id: 'mouth', label: 'Mouth' },
   { id: 'outfit', label: 'Outfit' },
   { id: 'facial', label: 'Facial hair' },
-  { id: 'color', label: 'Color' },
+  { id: 'colors', label: 'Colors' },
+  { id: 'bg', label: 'Backdrop' },
 ]
 
-const OPTIONS = { species: SPECIES_OPTIONS, hat: HATS, glasses: GLASSES, outfit: OUTFITS, facial: FACIAL } as const
+const OPTIONS: Record<Part, readonly Option<string>[]> = {
+  species: SPECIES_OPTIONS,
+  hair: HAIR,
+  hat: HATS,
+  glasses: GLASSES,
+  eyes: EYES,
+  mouth: MOUTHS,
+  outfit: OUTFITS,
+  facial: FACIAL,
+  bg: BACKGROUNDS,
+}
 
 type Props = { open: boolean; email: string; initial: Look; onClose: () => void }
 
@@ -36,6 +52,7 @@ function EditorBody({ open, email, initial, onClose }: Props) {
   const [look, setLook] = useState<Look>(initial)
   const [tab, setTab] = useState<Tab>('species')
   const [cheer, setCheer] = useState(false)
+  const progress = useProgress()
   const closeRef = useRef<HTMLButtonElement>(null)
   const cheerTimer = useRef(0)
   const dirty = JSON.stringify(look) !== JSON.stringify(initial)
@@ -63,7 +80,8 @@ function EditorBody({ open, email, initial, onClose }: Props) {
     onClose()
   }
 
-  const { species, ...dress } = look
+  const { species, bg, ...dress } = look
+  void bg
 
   return (
     <>
@@ -77,10 +95,10 @@ function EditorBody({ open, email, initial, onClose }: Props) {
         </div>
 
         <div className="pe__stage">
-          <span className="pe__well">
+          <span className="pe__well" style={{ background: backgroundCss(look.bg) || undefined }}>
             <ClayCharacter species={species} dress={dress} size={[240, 250]} fill={0.62} mood={cheer ? 'happy' : 'idle'} idleWaves />
           </span>
-          <button type="button" className="pill-btn ui-press" onClick={() => change(randomLook())}>
+          <button type="button" className="pill-btn ui-press" onClick={() => change(randomLook(progress))}>
             Surprise me
           </button>
         </div>
@@ -93,35 +111,60 @@ function EditorBody({ open, email, initial, onClose }: Props) {
           ))}
         </div>
 
-        <div className="pe__grid" role="radiogroup" aria-label={TABS.find((t) => t.id === tab)?.label}>
-          {tab === 'color'
-            ? COLORS.map((c, i) => (
-                <button key={c.hex} type="button" role="radio" aria-checked={look.color === i} aria-label={c.name} className="pe__tile ui-press" onClick={() => change({ color: i })}>
-                  <span className="pe__swatch" style={{ background: c.hex }} />
-                  <span className="pe__label">{c.name}</span>
+        {tab === 'colors' ? (
+          <>
+            <Swatches title="Hair and facial hair" list={HAIR_COLORS} value={look.hairColor} onPick={(hairColor) => change({ hairColor })} />
+            <Swatches title="Hats and outfits" list={COLORS} value={look.color} onPick={(color) => change({ color })} />
+          </>
+        ) : (
+          <div className="pe__grid" role="radiogroup" aria-label={TABS.find((t) => t.id === tab)?.label}>
+            {OPTIONS[tab].map((o) => {
+              const locked = !isUnlocked(o, progress)
+              const next = { ...look, [tab]: o.id } as Look
+              return (
+                <button
+                  key={o.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={look[tab] === o.id}
+                  aria-disabled={locked}
+                  title={locked && o.lock ? `Unlock with ${lockHint(o.lock)}` : undefined}
+                  className={locked ? 'pe__tile is-locked ui-press' : 'pe__tile ui-press'}
+                  onClick={() => {
+                    if (locked) useFeed.getState().flash(`Unlock with ${lockHint(o.lock!)}`)
+                    else change({ [tab]: o.id })
+                  }}
+                >
+                  <img src={lookDataUrl(next)} width={64} height={64} alt="" draggable={false} />
+                  <span className="pe__label">{locked && o.lock ? lockHint(o.lock) : o.label}</span>
                 </button>
-              ))
-            : OPTIONS[tab].map((o) => {
-                const next = { ...look, [tab]: o.id } as Look
-                return (
-                  <button key={o.id} type="button" role="radio" aria-checked={look[tab] === o.id} className="pe__tile ui-press" onClick={() => change({ [tab]: o.id })}>
-                    <img src={lookDataUrl(next)} width={64} height={64} alt="" draggable={false} />
-                    <span className="pe__label">{o.label}</span>
-                  </button>
-                )
-              })}
-        </div>
-        {tab === 'color' && <p className="pe__hint">Color tints your hat and outfit.</p>}
+              )
+            })}
+          </div>
+        )}
 
         <div className="pe__foot">
           <ClayButton variant="ghost" onClick={onClose}>
             Cancel
           </ClayButton>
-          <ClayButton variant="primary" onClick={save} disabled={!dirty}>
+          <ClayButton variant="primary" onClick={save} disabled={!dirty || !lookUnlocked(look, progress)}>
             Save
           </ClayButton>
         </div>
       </section>
     </>
+  )
+}
+
+function Swatches({ title, list, value, onPick }: { title: string; list: readonly { name: string; hex: string }[]; value: number; onPick: (i: number) => void }) {
+  return (
+    <div className="pe__swatches">
+      <div className="kicker">{title}</div>
+      <div className="pe__row" role="radiogroup" aria-label={title}>
+        {list.map((c, i) => (
+          <button key={c.hex} type="button" role="radio" aria-checked={value === i} aria-label={c.name} title={c.name} className="pe__dot ui-press" style={{ background: c.hex }} onClick={() => onPick(i)} />
+        ))}
+      </div>
+    </div>
   )
 }
