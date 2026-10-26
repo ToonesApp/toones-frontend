@@ -107,6 +107,41 @@ export async function saveLook(look: Look): Promise<ApiUser> {
   return body.user
 }
 
+/** A person as /friends returns them, with how they relate to the signed-in user. */
+export type ApiPerson = {
+  id: string
+  username: string
+  displayName: string
+  level: number
+  look: Look | null
+  /** You follow them. */
+  following: boolean
+  /** They follow you. */
+  followsYou: boolean
+}
+
+/** GET /friends (signed in): who you follow and who follows you. */
+export function getFriends() {
+  return request<{ following: ApiPerson[]; followers: ApiPerson[] }>('/friends', { headers: authHeader() })
+}
+
+/** GET /friends/search?q= (signed in): people whose username or name starts with the query. */
+export async function searchPeople(q: string): Promise<ApiPerson[]> {
+  const body = await request<{ people: ApiPerson[] }>(`/friends/search?q=${encodeURIComponent(q)}`, { headers: authHeader() })
+  return body.people
+}
+
+/** POST /friends/:username (signed in): follow someone. Safe to repeat. */
+export async function addFriend(username: string): Promise<ApiPerson> {
+  const body = await request<{ person: ApiPerson }>(`/friends/${encodeURIComponent(username)}`, { method: 'POST', headers: authHeader() })
+  return body.person
+}
+
+/** DELETE /friends/:username (signed in): stop following someone. */
+export function removeFriend(username: string) {
+  return request<{ ok: boolean }>(`/friends/${encodeURIComponent(username)}`, { method: 'DELETE', headers: authHeader() })
+}
+
 export type SoundCategory = 'nature' | 'language' | 'culture' | 'music' | 'city'
 
 /** Mirrors the sound objects returned by /sounds. */

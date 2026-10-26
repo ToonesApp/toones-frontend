@@ -1,0 +1,13 @@
+/* Friends page. Reuses the feed column, .pill-input, .pill-btn and .chip. */
+.friends__search { width: 100%; }
+.friends__kicker { margin-top: 4px; }
+.friends__tab { flex: none; }
+.friends__tab[aria-selected="true"] { border-color: var(--ink); background: var(--field); color: var(--ink); box-shadow: 0 3px 0 rgb(27 36 48 / 8%); }
+.friend { display: flex; align-items: center; gap: 14px; width: 100%; padding: 10px 14px 10px 10px; }
+.feed-col > .friend + .friend { margin-top: -8px; }
+.friend__who { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.friend__name { font-size: 15px; font-weight: 600; }
+.friend__sub { color: var(--muted); font-size: 13px; }
+.friend__btn { flex: none; padding: 0 14px; }
+.friend__btn.is-add { border-color: var(--ink); background: var(--ink); color: var(--field); }
+.friend__btn:disabled { opacity: .5; cursor: default; }
