@@ -67,6 +67,7 @@ const PALETTE: [string, Parameters<MapLibreMap['setPaintProperty']>[1], RGBA, RG
   ['water_name_*', 'text-halo-color', hex('#FFFFFF', 0.6), hex('#10172B', 0.6)],
   [OCEAN_LABEL, 'text-color', hex('#5D8FAA'), hex('#7F98C4')],
   [OCEAN_LABEL, 'text-halo-color', hex('#FFFFFF', 0.6), hex('#10172B', 0.6)],
+  ['toones-coast', 'line-color', hex('#FFFFFF', 0.9), hex('#FFFFFF', 0.45)],
   ['toones-graticule', 'line-color', hex('#FFFFFF', 0.4), hex('#FFFFFF', 0.06)],
   ['toones-night', 'fill-color', hex('#141E3C', 0.13), hex('#141E3C', 0.25)],
 ]
@@ -92,6 +93,14 @@ export function decorate(map: MapLibreMap, options: { graticule?: boolean; night
     if (!map.getLayer('toones-graticule')) {
       map.addLayer({ id: 'toones-graticule', type: 'line', source: 'toones-graticule', paint: { 'line-width': 0.8 } }, firstBoundary)
     }
+  }
+  const waterFill = layers.find((l) => l.id === 'water')
+  if (waterFill?.type === 'fill' && !map.getLayer('toones-coast')) {
+    // Traces every shoreline from the water polygons, so land and sea meet on a thin light edge
+    map.addLayer(
+      { id: 'toones-coast', type: 'line', source: waterFill.source, 'source-layer': waterFill['source-layer'], paint: { 'line-width': 0.8 } },
+      firstBoundary,
+    )
   }
   if (showNight) {
     if (!map.getSource('toones-night')) map.addSource('toones-night', { type: 'geojson', data: nightPolygon() })
