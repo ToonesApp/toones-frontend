@@ -41,7 +41,7 @@ export function Photos({ toone, height, onExpand }: { toone: Toone; height: numb
       <input
         ref={input}
         type="file"
-        accept="image/*"
+        accept="image/jpeg,image/png,image/webp"
         hidden
         onChange={(e) => {
           const f = e.target.files?.[0]

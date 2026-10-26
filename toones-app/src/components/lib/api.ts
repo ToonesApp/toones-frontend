@@ -122,6 +122,8 @@ export type ApiSound = {
   placeName: string
   playCount: number
   audioUrl: string
+  /** Photo URLs of the place, in upload order (at most 3). */
+  photos: string[]
   createdAt: string
   author: { id: string; username: string; displayName: string; look: Look | null } | null
   mine: boolean
@@ -161,6 +163,13 @@ export function uploadSound(input: UploadInput) {
   if (input.placeName) form.set('placeName', input.placeName)
   if (input.description) form.set('description', input.description)
   return request<{ sound: ApiSound; xp: number; level: number }>('/sounds', { method: 'POST', body: form, headers: authHeader() })
+}
+
+/** POST /sounds/:id/photos (signed in, uploader only): JPEG, PNG or WebP up to 4 MB. Returns all of the sound's photo URLs. */
+export function uploadPhoto(id: string, photo: File) {
+  const form = new FormData()
+  form.set('photo', photo, photo.name || 'photo')
+  return request<{ photos: string[] }>(`/sounds/${id}/photos`, { method: 'POST', body: form, headers: authHeader() })
 }
 
 /** POST /sounds/:id/listen (signed in): the first listen per user earns XP. */

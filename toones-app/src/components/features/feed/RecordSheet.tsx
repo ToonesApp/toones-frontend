@@ -186,7 +186,7 @@ function SheetBody({ open }: { open: boolean }) {
             </>
           )}
         </button>
-        <input ref={photoInput} type="file" accept="image/*" hidden onChange={(e) => setPhoto(e.target.files?.[0] ?? null)} />
+        <input ref={photoInput} type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={(e) => setPhoto(e.target.files?.[0] ?? null)} />
 
         <div className="chips" role="group" aria-label="Category">
           {CATEGORIES.map((c) => (

@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { sanitizeLook, type Look } from '../../characters/avatar'
 import { CATEGORIES, type Category } from '../../characters/clay'
-import { getSounds, type ApiSound } from '../../lib/api'
+import { getSounds, getToken, uploadPhoto, type ApiSound } from '../../lib/api'
 import { angularDistance, type LngLat } from '../../lib/geo'
 import { KEYS, readJSON, writeJSON } from '../../lib/storage'
 
@@ -44,7 +44,7 @@ type FeedState = {
   cats: Category[]
   liked: string[]
   comments: Record<string, Comment[]>
-  /** Session-only object URLs; the backend has no photo storage yet. */
+  /** Server photo URLs, plus object URLs for uploads in flight and for Toones that only live on this device. */
   photos: Record<string, string[]>
   slide: Record<string, number>
   detail: string | null
@@ -137,7 +137,9 @@ export const useFeed = create<FeedState>()((set, get) => {
       try {
         const [{ sounds }] = await Promise.all([getSounds({ limit: 50 }), minimum])
         const local = get().toones.filter((t) => t.id.startsWith('local-'))
-        set({ toones: [...local, ...sounds.map(fromApi)], status: 'ready' })
+        const photos = { ...get().photos }
+        for (const s of sounds) if (s.photos?.length) photos[s.id] = s.photos
+        set({ toones: [...local, ...sounds.map(fromApi)], photos, status: 'ready' })
       } catch {
         await minimum
         set({ status: 'error' })
@@ -187,8 +189,22 @@ export const useFeed = create<FeedState>()((set, get) => {
     addPhoto: (id, file) => {
       const list = get().photos[id] ?? []
       if (list.length >= 3) return
-      const photos = { ...get().photos, [id]: [...list, URL.createObjectURL(file)] }
-      set({ photos, slide: { ...get().slide, [id]: list.length } })
+      const preview = URL.createObjectURL(file)
+      set({ photos: { ...get().photos, [id]: [...list, preview] }, slide: { ...get().slide, [id]: list.length } })
+      if (id.startsWith('local-') || !getToken()) return
+
+      const without = () => (get().photos[id] ?? []).filter((src) => src !== preview)
+      uploadPhoto(id, file)
+        .then(({ photos }) => {
+          // Keep any other previews still uploading after the server's list.
+          const pending = without().filter((src) => src.startsWith('blob:'))
+          set({ photos: { ...get().photos, [id]: [...photos, ...pending] } })
+        })
+        .catch((e: unknown) => {
+          set({ photos: { ...get().photos, [id]: without() } })
+          get().flash(e instanceof Error ? e.message : 'Couldn’t upload the photo')
+        })
+        .finally(() => URL.revokeObjectURL(preview))
     },
 
     setSlide: (id, i) => set({ slide: { ...get().slide, [id]: i } }),
