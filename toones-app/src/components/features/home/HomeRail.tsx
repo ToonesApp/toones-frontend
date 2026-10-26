@@ -51,8 +51,9 @@ export function HomeRail() {
         character={(id) => {
           const cat = CATEGORY_OF[id]
           return {
-            mood: happy.includes(cat) ? 'happy' : 'idle',
-            style: arriving && !landed.includes(cat) ? { visibility: 'hidden' } : undefined,
+            mood: cat && happy.includes(cat) ? 'happy' : 'idle',
+            // Friends' mascot has no category, so it isn't part of the landing and stays put
+            style: cat && arriving && !landed.includes(cat) ? { visibility: 'hidden' } : undefined,
           }
         }}
       />
