@@ -4,7 +4,7 @@ import { countryAt, nearCity, type LngLat, type SearchResult } from '../../lib/g
 import { KEYS, read, readJSON, write, writeJSON } from '../../lib/storage'
 import { XP_PER_DROP, XP_PER_LISTEN, levelFromXp } from '../../lib/xp'
 import { initialPanelOpen } from './layout'
-import { setToken } from '../../lib/api'
+import { getSounds, getToken, recordListen, setToken, type ApiSound } from '../../lib/api'
 
 
 
@@ -24,6 +24,8 @@ export type Drop = {
   listened?: boolean
   /** True when the mic was blocked and playback synthesizes a stand-in. */
   standIn?: boolean
+  /** Streamed from the server when there's no clip saved on this device. */
+  audioUrl?: string
 }
 
 export type Spot = { lon: number; lat: number; place: string; city: string | null }
@@ -45,6 +47,8 @@ export type GlobeApi = {
 type HomeState = {
   user: User
   drops: Drop[]
+  /** Everyone's Toones from the server, shown on the globe but not counted as yours. */
+  world: Drop[]
   xp: number
   listens: number
   visible: Category[]
@@ -60,6 +64,7 @@ type HomeState = {
   globe: GlobeApi | null
 
   setGlobe: (g: GlobeApi | null) => void
+  loadWorld: () => Promise<void>
   toggleCategory: (c: Category) => void
   setPanel: (open: boolean) => void
   setPanelTab: (t: 'drops' | 'places') => void
@@ -84,11 +89,38 @@ function spotAt(lon: number, lat: number): Spot {
   return { lon, lat, place: countryAt(lon, lat) ?? 'Open water', city: nearCity(lon, lat) }
 }
 
+const capital = (c: string) => (c.charAt(0).toUpperCase() + c.slice(1)) as Category
+
+function fromApi(s: ApiSound): Drop {
+  return {
+    id: s.id,
+    title: s.title,
+    cat: CATEGORIES.includes(capital(s.category)) ? capital(s.category) : 'Music',
+    dur: s.durationSec,
+    when: Date.parse(s.createdAt) || Date.now(),
+    lon: s.lon,
+    lat: s.lat,
+    place: s.placeName || countryAt(s.lon, s.lat) || 'Open water',
+    listened: s.listened,
+    audioUrl: s.audioUrl || undefined,
+  }
+}
+
+/** Your drops plus server Toones that aren't already among them. */
+export function globeDrops(s: Pick<HomeState, 'drops' | 'world'>): Drop[] {
+  if (!s.world.length) return s.drops
+  const ids = new Set(s.drops.map((d) => d.id))
+  return [...s.drops, ...s.world.filter((d) => !ids.has(d.id))]
+}
+
+export const findDrop = (s: Pick<HomeState, 'drops' | 'world'>, id: string) => s.drops.find((d) => d.id === id) ?? s.world.find((d) => d.id === id)
+
 export const spotLabel = (s: Pick<Spot, 'place' | 'city'>) => (s.city && s.city !== s.place ? `${s.city}, ${s.place}` : s.place)
 
 export const useHome = create<HomeState>()((set, get) => ({
   user: readJSON<User>(KEYS.user, { name: '', email: '' }),
   drops: readJSON<Drop[]>(KEYS.drops, []),
+  world: [],
   xp: Number(read(KEYS.xp) ?? 0) || 0,
   listens: Number(read(KEYS.listens) ?? 0) || 0,
   visible: [...CATEGORIES],
@@ -103,6 +135,15 @@ export const useHome = create<HomeState>()((set, get) => ({
   globe: null,
 
   setGlobe: (globe) => set({ globe }),
+
+  loadWorld: async () => {
+    try {
+      const { sounds } = await getSounds({ limit: 50 })
+      set({ world: sounds.map(fromApi) })
+    } catch {
+      // The globe still shows this device's drops
+    }
+  },
 
   toggleCategory: (c) =>
     set(({ visible }) => {
@@ -151,14 +192,17 @@ export const useHome = create<HomeState>()((set, get) => ({
   },
 
   markListened: (id) => {
-    const { drops, xp, listens } = get()
+    const { drops, world, xp, listens } = get()
     const first = drops.find((d) => d.id === id && !d.listened)
+    const other = first || drops.some((d) => d.id === id) ? undefined : world.find((d) => d.id === id && !d.listened)
     const nextDrops = first ? drops.map((d) => (d.id === id ? { ...d, listened: true } : d)) : drops
-    const nextXp = first ? xp + XP_PER_LISTEN : xp
+    const nextWorld = other ? world.map((d) => (d.id === id ? { ...d, listened: true } : d)) : world
+    const nextXp = first || other ? xp + XP_PER_LISTEN : xp
     writeJSON(KEYS.drops, nextDrops)
     write(KEYS.xp, String(nextXp))
     write(KEYS.listens, String(listens + 1))
-    set({ drops: nextDrops, xp: nextXp, listens: listens + 1 })
+    set({ drops: nextDrops, world: nextWorld, xp: nextXp, listens: listens + 1 })
+    if (other && getToken()) recordListen(id).catch(() => undefined)
   },
 
   setPlaying: (playing) => set({ playing }),

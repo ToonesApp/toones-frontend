@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react'
 import { ClayButton, IconButton, MicIcon, PauseIcon, PaperChip } from '../../../ui'
 import { coordText, localTime } from '../../../lib/geo'
 import { fmtDur } from '../format'
-import { spotLabel, useHome } from '../homeStore'
+import { findDrop, spotLabel, useHome } from '../homeStore'
 import { stopPlayback } from '../player'
 
 function Player() {
   const playing = useHome((s) => s.playing)
-  const drop = useHome((s) => (s.playing ? s.drops.find((d) => d.id === s.playing?.id) : undefined))
+  const drop = useHome((s) => (s.playing ? findDrop(s, s.playing.id) : undefined))
   if (!playing || !drop) return null
   const elapsed = Math.min(playing.elapsed, drop.dur)
   return (

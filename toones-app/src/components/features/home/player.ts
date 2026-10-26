@@ -51,9 +51,12 @@ async function play(drop: Drop) {
   const started = performance.now()
   let length = drop.dur
 
-  if (blob) {
-    objectUrl = URL.createObjectURL(blob)
-    audio = new Audio(objectUrl)
+  if (blob || drop.audioUrl) {
+    if (blob) objectUrl = URL.createObjectURL(blob)
+    audio = new Audio()
+    // Without CORS mode the analyser hears silence from another origin
+    audio.crossOrigin = 'anonymous'
+    audio.src = objectUrl ?? drop.audioUrl!
     ctx.createMediaElementSource(audio).connect(analyser)
     audio.onended = stopPlayback
     audio.play().catch(stopPlayback)
@@ -75,7 +78,9 @@ async function play(drop: Drop) {
     useHome.getState().setPlaying({ id: drop.id, elapsed })
     // Recorded webm often reports no duration and may never fire `ended`.
     const finished = audio ? audio.ended || (audio.paused && audio.currentTime > 0) : elapsed >= length + 0.4
-    if (finished || wall >= length + 1.5) stopPlayback()
+    // Streams get extra time to buffer before the wall-clock cutoff
+    const slack = objectUrl || !audio ? 1.5 : 10
+    if (finished || wall >= length + slack) stopPlayback()
   }, 100)
 }
 

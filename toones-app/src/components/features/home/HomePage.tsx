@@ -56,7 +56,10 @@ export default function HomePage() {
   const overlay = useArrival((s) => s.active)
   const [params, setParams] = useSearchParams()
 
-  useEffect(() => () => stopPlayback(), [])
+  useEffect(() => {
+    void useHome.getState().loadWorld()
+    return () => stopPlayback()
+  }, [])
 
   useLayoutEffect(() => {
     write(KEYS.arrive, null)

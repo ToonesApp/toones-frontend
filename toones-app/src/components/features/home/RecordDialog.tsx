@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { CATEGORIES, type Category } from '../../characters/clay'
 import { ClayButton, PaperChip } from '../../ui'
+import { getToken, uploadSound, type SoundCategory } from '../../lib/api'
 import { saveClip } from '../../lib/audioStore'
 import { Take } from '../../lib/take'
 import { fmtDur } from './format'
@@ -27,6 +28,7 @@ function RecordDialogBody() {
   const [note, setNote] = useState('')
   const [title, setTitle] = useState('')
   const [cat, setCat] = useState<Category>('Music')
+  const [busy, setBusy] = useState(false)
   const take = useRef<Take | null>(null)
   const result = useRef<{ blob: Blob | null; dur: number } | null>(null)
   const tick = useRef(0)
@@ -120,12 +122,25 @@ function RecordDialogBody() {
   const drop = async () => {
     const r = result.current
     const s = useHome.getState().spot
-    if (!r || !s) return
-    const id = crypto.randomUUID()
+    if (!r || !s || busy) return
+    setBusy(true)
+    const name = title.trim() || 'Untitled Toone'
+    let id: string = crypto.randomUUID()
+    let shared = false
+    if (r.blob && getToken()) {
+      try {
+        const res = await uploadSound({ audio: r.blob, title: name, category: cat.toLowerCase() as SoundCategory, lon: s.lon, lat: s.lat, durationSec: r.dur, placeName: spotLabel(s) })
+        id = res.sound.id
+        shared = true
+      } catch {
+        /* kept on this device below */
+      }
+    }
     if (r.blob) await saveClip(id, r.blob).catch(() => undefined)
     const home = useHome.getState()
-    const d = home.addDrop({ id, title: title.trim() || 'Untitled Toone', cat, dur: r.dur, lon: s.lon, lat: s.lat, standIn: !r.blob })
+    const d = home.addDrop({ id, title: name, cat, dur: r.dur, lon: s.lon, lat: s.lat, standIn: !r.blob })
     live.popped.set(d.id, performance.now())
+    if (r.blob && !shared) home.flash(getToken() ? 'Couldn’t share it, so it’s saved on this device only' : 'Saved on this device. Sign in to share it.')
     const g = home.globe
     if (g) g.flyTo([d.lon, d.lat], Math.max(g.zoom(), g.fitZoom() + 0.6))
   }
@@ -187,7 +202,9 @@ function RecordDialogBody() {
               <ClayButton variant="ghost" onClick={redo}>
                 Redo
               </ClayButton>
-              <ClayButton onClick={drop}>Drop on globe</ClayButton>
+              <ClayButton onClick={drop} disabled={busy}>
+                {busy ? 'Dropping…' : 'Drop on globe'}
+              </ClayButton>
             </div>
           </div>
         )}

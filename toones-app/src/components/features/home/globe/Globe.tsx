@@ -5,7 +5,7 @@ import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url'
 import { clamp, prefersReducedMotion, smoothstep } from '../../../characters/clay'
 import { countryAt, loadCountries, nearCity } from '../../../lib/geo'
 import { useNight } from '../../../lib/storage'
-import { useHome, type GlobeApi } from '../homeStore'
+import { findDrop, globeDrops, useHome, type GlobeApi } from '../homeStore'
 import { HOME_START, globeInsets, globeTarget } from '../layout'
 import { togglePlayback } from '../player'
 import { DropOverlay } from './dropOverlay'
@@ -180,7 +180,7 @@ export function Globe({ landing = false }: { landing?: boolean }) {
       touch()
       const id = overlay.hitTest(ev.point)
       if (id) {
-        const drop = useHome.getState().drops.find((d) => d.id === id)
+        const drop = findDrop(useHome.getState(), id)
         overlay.hop(id)
         if (drop) togglePlayback(drop)
         return
@@ -266,7 +266,7 @@ export function Globe({ landing = false }: { landing?: boolean }) {
         map.setCenter([c.lng - SPIN_DEG_PER_S * dt, c.lat])
       }
 
-      const visible = s.drops.filter((d) => s.visible.includes(d.cat))
+      const visible = globeDrops(s).filter((d) => s.visible.includes(d.cat))
       overlay.draw(map, { drops: visible, spot: s.spot, playingId: s.playing?.id ?? null, night: e(), fitZoom, dt, t })
     }
     raf = requestAnimationFrame(frame)
