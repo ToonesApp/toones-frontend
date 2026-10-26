@@ -4,7 +4,7 @@ import { BACKGROUNDS, COLORS, backgroundCss, EYES, FACIAL, GLASSES, HAIR, HAIR_C
 import { lookDataUrl } from '../../characters/avatarImage'
 import { ClayCharacter } from '../../characters/ClayCharacter'
 import { useLooks } from '../../characters/lookStore'
-import { ClayButton, CloseIcon } from '../../ui'
+import { ChevronIcon, ClayButton, CloseIcon } from '../../ui'
 import { useFeed } from '../feed/feedStore'
 import { usePresence } from '../feed/usePresence'
 import './profile.css'
@@ -55,6 +55,7 @@ function EditorBody({ open, email, initial, onClose }: Props) {
   const progress = useProgress()
   const closeRef = useRef<HTMLButtonElement>(null)
   const cheerTimer = useRef(0)
+  const strip = useRef<HTMLDivElement>(null)
   const dirty = JSON.stringify(look) !== JSON.stringify(initial)
 
   useEffect(() => {
@@ -73,6 +74,13 @@ function EditorBody({ open, email, initial, onClose }: Props) {
     window.clearTimeout(cheerTimer.current)
     cheerTimer.current = window.setTimeout(() => setCheer(false), 1100)
   }, [])
+
+  /** Selects a category and keeps its chip in view. */
+  const go = (id: Tab) => {
+    setTab(id)
+    requestAnimationFrame(() => strip.current?.querySelector('[aria-selected="true"]')?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' }))
+  }
+  const at = TABS.findIndex((t) => t.id === tab)
 
   const save = () => {
     useLooks.getState().save(email, look)
@@ -102,12 +110,20 @@ function EditorBody({ open, email, initial, onClose }: Props) {
           </button>
         </div>
 
-        <div className="chips pe__tabs" role="tablist" aria-label="Character parts">
-          {TABS.map((t) => (
-            <button key={t.id} type="button" role="tab" className="chip ui-press" aria-selected={tab === t.id} onClick={() => setTab(t.id)}>
-              {t.label}
-            </button>
-          ))}
+        <div className="pe__nav">
+          <button type="button" className="round-btn ui-press" aria-label="Previous category" disabled={at <= 0} onClick={() => go(TABS[at - 1].id)}>
+            <ChevronIcon dir="left" />
+          </button>
+          <div ref={strip} className="chips pe__tabs" role="tablist" aria-label="Character parts">
+            {TABS.map((t) => (
+              <button key={t.id} type="button" role="tab" className="chip ui-press" aria-selected={tab === t.id} onClick={() => go(t.id)}>
+                {t.label}
+              </button>
+            ))}
+          </div>
+          <button type="button" className="round-btn ui-press" aria-label="Next category" disabled={at >= TABS.length - 1} onClick={() => go(TABS[at + 1].id)}>
+            <ChevronIcon dir="right" />
+          </button>
         </div>
 
         {tab === 'colors' ? (

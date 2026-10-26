@@ -2,7 +2,10 @@
 .pe { gap: 12px; }
 .pe__stage { display: flex; flex-direction: column; align-items: center; gap: 10px; }
 .pe__well { display: grid; place-items: center; width: 240px; height: 250px; overflow: hidden; border-radius: 50% 50% 38px 38px / 42% 42% 38px 38px; background: var(--well); }
-.pe__tabs { flex-wrap: nowrap; overflow-x: auto; padding: 2px 2px 6px; scrollbar-width: none; }
+.pe__nav { display: flex; align-items: center; gap: 4px; }
+.pe__nav .round-btn { background: var(--well); }
+.pe__nav .round-btn:disabled { opacity: .35; cursor: default; }
+.pe__tabs { flex: 1; min-width: 0; flex-wrap: nowrap; overflow-x: auto; padding: 2px 2px 6px; scrollbar-width: none; }
 .pe__tabs::-webkit-scrollbar { display: none; }
 .pe__tabs .chip { flex: none; }
 .pe__tabs .chip[aria-selected="true"] { border-color: var(--ink); background: var(--field); color: var(--ink); box-shadow: 0 3px 0 rgb(27 36 48 / 8%); }
