@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import { KEYS, read, readJSON, useNight } from '../../lib/storage'
 import { Fab, MicIcon, NightToggle, PaperChip } from '../../ui'
+import { FriendsView } from '../friends/FriendsView'
 import { useHome, type User } from '../home/homeStore'
 import { AccountMenu } from '../home/hud/AccountMenu'
 import { stopPlayback } from '../home/player'
@@ -53,7 +54,7 @@ function FeedToast() {
 export default function FeedPage() {
   const { pathname } = useLocation()
   const [params, setParams] = useSearchParams()
-  const view: MenuId = pathname.endsWith('/inbox') ? 'inbox' : pathname.endsWith('/settings') ? 'settings' : 'feed'
+  const view: MenuId = pathname.endsWith('/inbox') ? 'inbox' : pathname.endsWith('/settings') ? 'settings' : pathname.endsWith('/friends') ? 'friends' : 'feed'
   const status = useFeed((s) => s.status)
   const scroller = useRef<HTMLDivElement>(null)
 
@@ -87,7 +88,7 @@ export default function FeedPage() {
       </header>
       <FeedRail active={view} />
 
-      <main key={view} className="feed-col">{view === 'inbox' ? <InboxView /> : view === 'settings' ? <SettingsView /> : <FeedView />}</main>
+      <main key={view} className="feed-col">{view === 'inbox' ? <InboxView /> : view === 'settings' ? <SettingsView /> : view === 'friends' ? <FriendsView /> : <FeedView />}</main>
 
       <div className="feed-corner">
         <NightToggle className="feed-night" />
