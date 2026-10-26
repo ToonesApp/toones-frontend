@@ -142,7 +142,7 @@ export function Globe({ landing = false }: { landing?: boolean }) {
       map.setProjection({ type: 'globe' })
       map.scrollZoom.setWheelZoomRate(1 / 420)
       map.scrollZoom.setZoomRate(1 / 90)
-      if (map.getLayer('water')) decorate(map, { graticule: !landing, night: !landing })
+      if (map.getLayer('water')) decorate(map, { graticule: !landing, night: false })
       styledRef.current = true
       painted = -1
       applyLayers()
