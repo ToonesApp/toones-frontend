@@ -11,3 +11,19 @@
 .friend__btn { flex: none; padding: 0 14px; }
 .friend__btn.is-add { border-color: var(--ink); background: var(--ink); color: var(--field); }
 .friend__btn:disabled { opacity: .5; cursor: default; }
+
+/* Posts / following / followers under the profile card */
+.pstats { display: flex; padding: 6px; }
+.pstats__cell { display: flex; flex: 1; flex-direction: column; align-items: center; gap: 2px; padding: 10px 4px; border: 0; border-radius: var(--r-icon); background: none; color: var(--ink); font: inherit; }
+.pstats__cell.is-link { cursor: pointer; }
+.pstats__cell.is-link:hover { background: var(--well); }
+.pstats__cell.is-link:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--focus-ring); }
+.pstats__n { font-size: 22px; font-weight: 600; line-height: 1.1; }
+.pstats__label { color: var(--muted); font-size: 12px; }
+
+/* Friends as a sheet over Settings */
+.fs { height: min(720px, calc(100dvh - 24px)); gap: 12px; }
+.fs > * { flex: none; }
+.fs .friends__tab { flex: none; }
+.friend__open { display: flex; align-items: center; gap: 14px; flex: 1; min-width: 0; padding: 0; border: 0; border-radius: var(--r-icon); background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.friend__open:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--focus-ring); }

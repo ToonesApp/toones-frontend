@@ -13,6 +13,8 @@ export type ApiUser = {
   level: number
   /** The saved character, or null until they make one. */
   look: Look | null
+  /** A short line about the user; empty until they write one. */
+  bio: string
   createdAt: string
 }
 
@@ -105,6 +107,38 @@ function authHeader(): Record<string, string> {
 export async function saveLook(look: Look): Promise<ApiUser> {
   const body = await request<{ user: ApiUser }>('/auth/me/look', { method: 'PUT', body: JSON.stringify({ look }), headers: authHeader() })
   return body.user
+}
+
+export const MAX_BIO_LENGTH = 160
+
+/** PUT /auth/me/bio (signed in): saves your bio. An empty string clears it. */
+export async function saveBio(bio: string): Promise<ApiUser> {
+  const body = await request<{ user: ApiUser }>('/auth/me/bio', { method: 'PUT', body: JSON.stringify({ bio }), headers: authHeader() })
+  return body.user
+}
+
+/** Someone's public profile from GET /users/:username. No email or raw xp. */
+export type ApiProfile = {
+  id: string
+  username: string
+  displayName: string
+  level: number
+  look: Look | null
+  bio: string
+  joinedAt: string
+  posts: number
+  following: number
+  followers: number
+  isMe: boolean
+  /** You follow them / they follow you. Both false when signed out. */
+  youFollow: boolean
+  followsYou: boolean
+  sounds: { id: string; title: string; category: string; durationSec: number; placeName: string; playCount: number; createdAt: string }[]
+}
+
+export async function getProfile(username: string): Promise<ApiProfile> {
+  const body = await request<{ profile: ApiProfile }>(`/users/${encodeURIComponent(username)}`, { headers: authHeader() })
+  return body.profile
 }
 
 /** A person as /friends returns them, with how they relate to the signed-in user. */

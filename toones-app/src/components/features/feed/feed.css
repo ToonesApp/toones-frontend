@@ -163,7 +163,7 @@
 .msg__dot { flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--terracotta); }
 
 /* Settings */
-.profile { display: flex; align-items: center; gap: 14px; padding: 16px 18px; }
+.profile { display: flex; flex-direction: column; padding: 0; }
 .profile__who { flex: 1; min-width: 0; }
 .profile__name { font-size: 16px; font-weight: 600; }
 .profile__sub { margin-top: 2px; color: var(--muted); font-size: 13px; }
