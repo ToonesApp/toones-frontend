@@ -127,10 +127,10 @@ function EditorBody({ open, email, initial, onClose }: Props) {
         </div>
 
         {tab === 'colors' ? (
-          <>
+          <div className="pe__colors">
             <Swatches title="Hair and facial hair" list={HAIR_COLORS} value={look.hairColor} onPick={(hairColor) => change({ hairColor })} />
             <Swatches title="Hats and outfits" list={COLORS} value={look.color} onPick={(color) => change({ color })} />
-          </>
+          </div>
         ) : (
           <div className="pe__grid" role="radiogroup" aria-label={TABS.find((t) => t.id === tab)?.label}>
             {OPTIONS[tab].map((o) => {
