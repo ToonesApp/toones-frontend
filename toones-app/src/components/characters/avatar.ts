@@ -2,7 +2,7 @@
    Everything draws in the character's local space (origin = base center, y up is negative),
    so it follows each species' size and eye positions. */
 
-import { SPECIES, drawCharacter, type SpeciesId } from './clay'
+import type { SpeciesId } from './clay'
 
 export type HatId = 'none' | 'beanie' | 'cap' | 'crown' | 'party'
 export type GlassesId = 'none' | 'round' | 'square' | 'shades' | 'star'
@@ -16,7 +16,14 @@ export type CategoryKey = keyof Look
 
 type Option<T extends string> = { id: T; label: string }
 
-export const SPECIES_OPTIONS: readonly Option<SpeciesId>[] = (Object.keys(SPECIES) as SpeciesId[]).map((id) => ({ id, label: SPECIES[id].name }))
+export const SPECIES_OPTIONS: readonly Option<SpeciesId>[] = [
+  { id: 'pip', label: 'Pip' },
+  { id: 'moss', label: 'Moss' },
+  { id: 'ima', label: 'Ima' },
+  { id: 'sol', label: 'Sol' },
+  { id: 'tomo', label: 'Tomo' },
+  { id: 'ned', label: 'Ned' },
+]
 
 export const HATS: readonly Option<HatId>[] = [
   { id: 'none', label: 'None' },
@@ -106,7 +113,7 @@ const surfaceY = (f: Face, x: number) => -f.chh + f.rt - Math.sqrt(Math.max(0, f
 
 /** Outfit and facial hair live on the body, so the caller clips them to the body shape first. */
 export function drawBodyDress(g: CanvasRenderingContext2D, f: Face, d: Dress) {
-  const { cw, chh, k, ey, er, my } = f
+  const { cw, chh, k, er, my } = f
   const col = COLORS[d.color]?.hex ?? COLORS[0].hex
   const left = -cw / 2 - 2
   const top = -chh * 0.3
@@ -208,7 +215,6 @@ export function drawBodyDress(g: CanvasRenderingContext2D, f: Face, d: Dress) {
     g.fillStyle = 'rgba(255,255,255,.1)'
     g.fillRect(-cw / 2, y + er * 0.3, cw, Math.max(1, er * 0.25))
   }
-  void ey
 }
 
 /** Glasses and hats sit on top of the face, drawn after the eyes and mouth. */
@@ -366,26 +372,4 @@ function drawHat(g: CanvasRenderingContext2D, f: Face, d: Dress) {
     g.arc(0, base - h, Math.max(3, 5 * k), 0, TAU)
     g.fill()
   }
-}
-
-const faceCache = new Map<string, string>()
-
-/** Static portrait of a look as a data URL, for list avatars and option tiles. */
-export function lookDataUrl(look: Look, px = 120) {
-  const key = `${px}:${look.species}:${look.hat}:${look.glasses}:${look.outfit}:${look.facial}:${look.color}`
-  let url = faceCache.get(key)
-  if (!url) {
-    const sp = SPECIES[look.species]
-    const c = document.createElement('canvas')
-    c.width = c.height = px
-    const g = c.getContext('2d')
-    if (!g) return ''
-    const s = px / 120
-    // Leave headroom for hats
-    const k = Math.min((88 * s) / sp.w, (78 * s) / sp.h)
-    drawCharacter(g, px / 2, px - 12 * s, k, sp, { look: { x: px / 2, y: px * 2 }, shadow: false, dress: look })
-    url = c.toDataURL()
-    faceCache.set(key, url)
-  }
-  return url
 }

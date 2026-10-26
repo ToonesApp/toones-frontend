@@ -1,5 +1,6 @@
 import { useEffect, useRef, type CSSProperties } from 'react'
 import { useNight } from '../lib/storage'
+import type { Dress } from './avatar'
 import {
   CharacterMotion,
   SPECIES,
@@ -32,6 +33,8 @@ type ClayCharacterProps = {
   /** Hover wiggles and waves; click hops and plays notes. */
   interactive?: boolean
   idleWaves?: boolean
+  /** Hat, glasses, outfit and facial hair. */
+  dress?: Dress
   /** Fraction of the box the character fills. */
   fill?: number
   className?: string
@@ -39,13 +42,13 @@ type ClayCharacterProps = {
 }
 
 /** One clay character on its own canvas. Scenes with many characters draw with `drawCharacter` directly. */
-export function ClayCharacter({ species, size = 48, mood = 'idle', cover = false, followCursor = true, lookAt = null, bounce = 0, interactive = false, idleWaves = false, fill = 0.8, className, style }: ClayCharacterProps) {
+export function ClayCharacter({ species, size = 48, mood = 'idle', cover = false, followCursor = true, lookAt = null, bounce = 0, interactive = false, idleWaves = false, dress, fill = 0.8, className, style }: ClayCharacterProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [night] = useNight()
-  const props = useRef({ mood, cover, followCursor, lookAt, bounce, interactive, idleWaves, fill, night })
+  const props = useRef({ mood, cover, followCursor, lookAt, bounce, interactive, idleWaves, fill, night, dress })
 
   useEffect(() => {
-    props.current = { mood, cover, followCursor, lookAt, bounce, interactive, idleWaves, fill, night }
+    props.current = { mood, cover, followCursor, lookAt, bounce, interactive, idleWaves, fill, night, dress }
   })
 
   useEffect(() => {
@@ -131,6 +134,7 @@ export function ClayCharacter({ species, size = 48, mood = 'idle', cover = false
         wave: motion.wave,
         squash: motion.s + breathe,
         night: smooth(nightAmt),
+        dress: p.dress,
         t,
       })
       geom = { x, by: base, k, ...size }

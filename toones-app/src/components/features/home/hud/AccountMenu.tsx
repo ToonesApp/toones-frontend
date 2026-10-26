@@ -1,4 +1,6 @@
 import { useNavigate } from 'react-router-dom'
+import { LookAvatar } from '../../../characters/LookAvatar'
+import { useLook } from '../../../characters/lookStore'
 import { PaperChip } from '../../../ui'
 import { XP_PER_DROP, XP_PER_LEVEL, XP_PER_LISTEN, levelFromXp, progressFromXp } from '../../../lib/xp'
 import { badges } from '../format'
@@ -16,7 +18,7 @@ export function AccountMenu() {
   const { open, setOpen, ref } = usePopover<HTMLDivElement>()
 
   const name = displayName(user)
-  const initial = name.charAt(0).toUpperCase()
+  const look = useLook(user.email)
   const level = levelFromXp(xp)
   const into = progressFromXp(xp)
 
@@ -33,12 +35,12 @@ export function AccountMenu() {
         <span className="hud-xp__xp">{xp} xp</span>
       </PaperChip>
       <button type="button" className="hud-avatar ui-press" aria-label="Account" aria-haspopup="true" aria-expanded={open} onClick={() => setOpen(!open)}>
-        {initial}
+        <LookAvatar look={look} size={36} />
       </button>
       {open && (
         <PaperChip radius="card" className="hud-menu" role="dialog" aria-label="Account">
           <div className="hud-menu__who">
-            <div className="hud-menu__av">{initial}</div>
+            <LookAvatar look={look} size={44} />
             <div className="hud-menu__names">
               <div className="ell hud-menu__name">{name}</div>
               {user.email && <div className="ell hud-menu__email">{user.email}</div>}

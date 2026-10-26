@@ -29,7 +29,7 @@
 .hud-xp { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; font-size: 12px; }
 .hud-xp__lv { font-weight: 600; }
 .hud-xp__xp { color: var(--muted); }
-.hud-avatar { width: 36px; height: 36px; border: 0; border-radius: var(--r-pill); background: #2A5F7A; color: var(--cream); font-size: 15px; font-weight: 600; box-shadow: inset 0 -3px 0 rgb(27 36 48 / 8%), 0 7px 0 rgb(27 36 48 / 5%); }
+.hud-avatar { overflow: hidden; width: 36px; height: 36px; padding: 0; border: 0; border-radius: var(--r-pill); background: #2A5F7A; color: var(--cream); font-size: 15px; font-weight: 600; box-shadow: inset 0 -3px 0 rgb(27 36 48 / 8%), 0 7px 0 rgb(27 36 48 / 5%); }
 .hud-menu { position: absolute; right: 0; top: 44px; width: 300px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
 .hud-menu__who { display: flex; align-items: center; gap: 12px; }
 .hud-menu__av { display: grid; place-items: center; flex: none; width: 44px; height: 44px; border-radius: var(--r-pill); background: #2A5F7A; color: var(--cream); font-size: 17px; font-weight: 600; box-shadow: inset 0 -3px 0 rgb(27 36 48 / 8%); }

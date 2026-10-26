@@ -9,6 +9,8 @@ export const KEYS = {
   xp: 'toones-home-xp',
   listens: 'toones-home-listens',
   layers: 'toones-layers',
+  /* Character looks by account email; the backend has no profile endpoint yet */
+  looks: 'toones-looks',
   /* Feed state the backend has no endpoints for yet */
   liked: 'toones-feed-liked',
   comments: 'toones-feed-comments',

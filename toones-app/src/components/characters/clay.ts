@@ -1,6 +1,8 @@
 /* Clay character species, renderer and motion. Framework-free so any canvas
    (Auth scene, globe, rail, arrival overlay) can draw the same characters. */
 
+import { drawBodyDress, drawFaceDress, type Dress, type Face } from './avatar'
+
 export type SpeciesId = 'moss' | 'ima' | 'sol' | 'tomo' | 'ned' | 'pip'
 export type Category = 'Nature' | 'Language' | 'Culture' | 'Music' | 'City'
 
@@ -81,13 +83,15 @@ export type Pose = {
   /** Day 0 → night 1, darkens the body gradient. */
   night?: number
   shadow?: boolean
+  /** Hat, glasses, outfit and facial hair the user picked. */
+  dress?: Dress
   /** Seconds, drives waving and talking phases. */
   t?: number
 }
 
 /** Draws a character standing with its base centered at (x, by). Returns its drawn size. */
 export function drawCharacter(g: CanvasRenderingContext2D, x: number, by: number, k: number, sp: Species, pose: Pose = {}) {
-  const { look = null, blink = 0, sleep = 0, cover = 0, happy = false, oh = false, talk, wave = 0, dance = 0, squash = 0, rot = 0, scale = 1, night = 0, shadow = true, t = 0 } = pose
+  const { look = null, blink = 0, sleep = 0, cover = 0, happy = false, oh = false, talk, wave = 0, dance = 0, squash = 0, rot = 0, scale = 1, night = 0, shadow = true, dress, t = 0 } = pose
   const cw = sp.w * k
   const chh = sp.h * k
   if (scale < 0.002) return { cw, chh }
@@ -103,6 +107,11 @@ export function drawCharacter(g: CanvasRenderingContext2D, x: number, by: number
   g.translate(x, by)
   if (rot) g.rotate(rot)
   g.scale(scale * (1 - squash * 0.6), scale * (1 + squash))
+
+  const ey = -chh + chh * (sp.h < 120 ? 0.45 : 0.31)
+  const gap = Math.max(20 * k, cw * 0.24) / 2
+  const er = Math.max(8 * k, cw * 0.085)
+  const face: Face = { cw, chh, k, rt: Math.min(sp.rt * k, cw / 2), ey, gap, er, my: ey + er * 2.5, night }
 
   // Body: lip, fill, light-to-navy overlay, highlight bar
   const rt = Math.min(sp.rt * k, cw / 2)
@@ -122,6 +131,7 @@ export function drawCharacter(g: CanvasRenderingContext2D, x: number, by: number
   grad.addColorStop(1, `rgba(10,16,40,${0.14 + 0.28 * night})`)
   g.fillStyle = grad
   g.fillRect(-cw / 2, -chh, cw, chh)
+  if (dress) drawBodyDress(g, face, dress)
   g.restore()
   g.fillStyle = 'rgba(255,255,255,.22)'
   g.beginPath()
@@ -129,9 +139,6 @@ export function drawCharacter(g: CanvasRenderingContext2D, x: number, by: number
   g.fill()
 
   // Eyes
-  const ey = -chh + chh * (sp.h < 120 ? 0.45 : 0.31)
-  const gap = Math.max(20 * k, cw * 0.24) / 2
-  const er = Math.max(8 * k, cw * 0.085)
   const open = 1 - Math.max(blink, cover, sleep)
   const isHappy = happy && sleep < 0.5
   g.lineCap = 'round'
@@ -203,6 +210,8 @@ export function drawCharacter(g: CanvasRenderingContext2D, x: number, by: number
     g.arc(0, my - er * 0.5, er * 0.8, Math.PI * 0.2, Math.PI * 0.8)
     g.stroke()
   }
+
+  if (dress) drawFaceDress(g, face, dress)
 
   // Hands
   const hr = Math.max(9 * k, cw * 0.075)

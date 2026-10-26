@@ -1,5 +1,9 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ClayCharacter } from '../../characters/ClayCharacter'
+import { LookAvatar } from '../../characters/LookAvatar'
+import { useLook } from '../../characters/lookStore'
+import { ProfileEditor } from '../profile/ProfileEditor'
 import { CATEGORIES } from '../../characters/clay'
 import { setNight, useNight } from '../../lib/storage'
 import { levelFromXp } from '../../lib/xp'
@@ -8,7 +12,6 @@ import { displayName, useHome } from '../home/homeStore'
 import { stopFeed } from './feedPlayer'
 import { inboxMessages, useFeed, visibleToones, type Settings, type Tab } from './feedStore'
 import { ago } from '../home/format'
-import { initialOf } from './format'
 import { SkeletonCard, ToonCard } from './ToonCard'
 
 const TABS: readonly { value: Tab; label: string }[] = [
@@ -126,6 +129,8 @@ export function SettingsView() {
   const signOut = useHome((s) => s.signOut)
   const [night] = useNight()
   const navigate = useNavigate()
+  const [editing, setEditing] = useState(false)
+  const look = useLook(user.email)
   const name = displayName(user)
   const handle = user.email ? `@${user.email.split('@')[0]}` : ''
 
@@ -135,15 +140,16 @@ export function SettingsView() {
         <h1>Settings</h1>
       </div>
       <PaperChip radius="card" className="profile">
-        <span className="avatar avatar--56" aria-hidden="true">
-          {initialOf(name)}
-        </span>
-        <div className="profile__who">
-          <div className="profile__name ell">{name}</div>
-          <div className="profile__sub ell num">
-            {handle && `${handle} · `}Lv {levelFromXp(xp)} · {xp} xp
-          </div>
-        </div>
+        <button type="button" className="profile__main" aria-haspopup="dialog" onClick={() => setEditing(true)}>
+          <LookAvatar look={look} size={56} />
+          <span className="profile__who">
+            <span className="profile__name ell">{name}</span>
+            <span className="profile__sub ell num">
+              {handle && `${handle} · `}Lv {levelFromXp(xp)} · {xp} xp
+            </span>
+          </span>
+          <span className="profile__edit">Edit character</span>
+        </button>
         <button
           type="button"
           className="ui-quiet"
@@ -156,6 +162,7 @@ export function SettingsView() {
           Sign out
         </button>
       </PaperChip>
+      <ProfileEditor open={editing} email={user.email} initial={look} onClose={() => setEditing(false)} />
       <PaperChip radius="card" className="settings">
         {SWITCHES.map((s) => {
           const on = s.key === 'night' ? night : settings[s.key]
