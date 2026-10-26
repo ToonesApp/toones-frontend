@@ -186,6 +186,18 @@
   .nowbar { left: 12px; right: 12px; bottom: 164px; width: auto; transform: none; }
 }
 
+/* Entrance: each view's blocks rise in with a short stagger */
+.feed-col > * { animation: toones-rise 480ms var(--ease-open) backwards; }
+.feed-col > :nth-child(2) { animation-delay: 70ms; }
+.feed-col > :nth-child(3) { animation-delay: 140ms; }
+.feed-col > :nth-child(4) { animation-delay: 210ms; }
+.feed-col > :nth-child(n+5) { animation-delay: 280ms; }
+.feed-top { animation: toones-fade 400ms ease-out backwards; }
+.feed-rail { animation: toones-slide 520ms var(--ease-open) backwards; }
+@keyframes toones-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes toones-slide { from { opacity: 0; transform: translateX(-18px); } to { opacity: 1; transform: none; } }
+
 @media (prefers-reduced-motion: reduce) {
+  .feed-col > *, .feed-top, .feed-rail { animation: none; }
   .photos__track, .drawer, .sheet, .nowbar { transition: none; animation: none; }
 }

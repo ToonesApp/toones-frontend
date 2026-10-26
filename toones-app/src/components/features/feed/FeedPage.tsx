@@ -87,7 +87,7 @@ export default function FeedPage() {
       </header>
       <FeedRail active={view} />
 
-      <main className="feed-col">{view === 'inbox' ? <InboxView /> : view === 'settings' ? <SettingsView /> : <FeedView />}</main>
+      <main key={view} className="feed-col">{view === 'inbox' ? <InboxView /> : view === 'settings' ? <SettingsView /> : <FeedView />}</main>
 
       <div className="feed-corner">
         <NightToggle className="feed-night" />
