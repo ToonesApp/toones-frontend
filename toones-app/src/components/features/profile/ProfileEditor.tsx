@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { BACKGROUNDS, COLORS, EYES, FACIAL, GLASSES, HAIR, HAIR_COLORS, HATS, MOUTHS, OUTFITS, SPECIES_OPTIONS, isUnlocked, lockHint, lookUnlocked, randomLook, type Look, type Option } from '../../characters/avatar'
+import { BACKGROUNDS, COLORS, backgroundCss, EYES, FACIAL, GLASSES, HAIR, HAIR_COLORS, HATS, MOUTHS, OUTFITS, SPECIES_OPTIONS, isUnlocked, lockHint, lookUnlocked, randomLook, type Look, type Option } from '../../characters/avatar'
 import { lookDataUrl } from '../../characters/avatarImage'
 import { ClayCharacter } from '../../characters/ClayCharacter'
 import { useLooks } from '../../characters/lookStore'
@@ -80,8 +80,7 @@ function EditorBody({ open, email, initial, onClose }: Props) {
     onClose()
   }
 
-  const { species, bg, ...dress } = look
-  void bg
+  const { species, ...dress } = look
 
   return (
     <>
