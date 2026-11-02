@@ -215,6 +215,27 @@ export const lookUnlocked = (look: Look, p: Progress) =>
     return !o || isUnlocked(o, p)
   })
 
+/** The parts of a look that can have a level lock, with their editor names. */
+const LOCKABLE = [
+  ['hair', 'Hair', HAIR],
+  ['hat', 'Hat', HATS],
+  ['glasses', 'Glasses', GLASSES],
+  ['eyes', 'Eyes', EYES],
+  ['mouth', 'Mouth', MOUTHS],
+  ['outfit', 'Outfit', OUTFITS],
+  ['facial', 'Facial hair', FACIAL],
+  ['bg', 'Backdrop', BACKGROUNDS],
+] as const
+
+export type LevelUnlock = { part: (typeof LOCKABLE)[number][0]; partLabel: string; id: string; label: string }
+
+/** The items that unlock at exactly this level, in editor order. */
+export function unlocksAtLevel(level: number): LevelUnlock[] {
+  return LOCKABLE.flatMap(([part, partLabel, opts]) =>
+    (opts as readonly Option<string>[]).filter((o) => o.lock && 'level' in o.lock && o.lock.level === level).map((o) => ({ part, partLabel, id: o.id, label: o.label })),
+  )
+}
+
 /** A random look using only what the user has earned. */
 export function randomLook(p: Progress): Look {
   const any = <T,>(a: readonly T[]) => a[Math.floor(Math.random() * a.length)]
