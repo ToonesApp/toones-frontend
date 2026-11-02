@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { PanelIcon, PaperChip } from '../../ui'
-import { MENU, MENU_PATH, type MenuId } from '../menu/menu'
+import { MENU_PATH, type MenuId } from '../menu/menu'
 import { MenuRail } from '../menu/MenuRail'
 import { unreadCount, useFeed } from '../feed/feedStore'
 import { useArrival } from '../transition/arrivalStore'

@@ -14,14 +14,10 @@ type CategoryPickerProps = {
 /** Compact typeahead over the 521 AudioSet labels. */
 export function CategoryPicker({ value, onChange, disabled, className }: CategoryPickerProps) {
   const listId = useId()
-  const [query, setQuery] = useState(value)
+  const [query, setQuery] = useState<string>(value)
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState(0)
   const wrap = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    setQuery(value)
-  }, [value])
 
   useEffect(() => {
     const onDoc = (e: MouseEvent) => {
@@ -69,13 +65,17 @@ export function CategoryPicker({ value, onChange, disabled, className }: Categor
         aria-activedescendant={open && results[active] ? `${listId}-${active}` : undefined}
         disabled={disabled}
         placeholder="Search a sound label"
-        value={query}
+        value={open ? query : value}
         onChange={(e) => {
           setQuery(e.target.value)
           setOpen(true)
           setActive(0)
         }}
-        onFocus={() => setOpen(true)}
+        onFocus={() => {
+          setQuery(value)
+          setOpen(true)
+          setActive(0)
+        }}
         onBlur={commitTyped}
         onKeyDown={(e) => {
           if (e.key === 'ArrowDown') {

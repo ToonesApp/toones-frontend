@@ -96,7 +96,7 @@ export function ArrivalOverlay() {
           squash = -Math.sin(lt * 15) * 0.28 * (1 - lt / SQUASH)
           if (!noted.has(i)) {
             noted.add(i)
-            for (let n = 0; n < 2; n++) notes.push(spawnNote(tx, ty - sp.h * fit.k - 4, { night: e > 0.5, speed: sp.w * fit.k * 0.8 }))
+            for (let n = 0; n < 2; n++) notes.push(spawnNote(tx, ty - sp.h * fit.k - 4, { night: e > 0.5 }))
           }
         }
         drawCharacter(g, x, y, k, sp, { happy: true, rot, squash, night: e, shadow: false, t: el })
