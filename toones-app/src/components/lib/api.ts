@@ -86,6 +86,21 @@ export function login(input: LoginInput): Promise<AuthResult> {
   return request<AuthResult>('/auth/login', { method: 'POST', body: JSON.stringify(input) })
 }
 
+/** Exchanges a Google ID token for a Toones session. Creates the account on first use. */
+export function googleLogin(credential: string): Promise<AuthResult> {
+  return request<AuthResult>('/auth/google', { method: 'POST', body: JSON.stringify({ credential }) })
+}
+
+/** Asks for a reset email. The server answers the same whether or not the address has an account. */
+export function forgotPassword(email: string): Promise<{ message: string }> {
+  return request('/auth/forgot-password', { method: 'POST', body: JSON.stringify({ email }) })
+}
+
+/** Sets a new password using the single-use token from the emailed link. */
+export function resetPassword(input: { token: string; password: string }): Promise<{ message: string }> {
+  return request('/auth/reset-password', { method: 'POST', body: JSON.stringify(input) })
+}
+
 /** Resolves the signed-in user from the stored token. */
 export async function me(): Promise<ApiUser> {
   const token = getToken()

@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import PageNotFound from './components/layout/PageNotFound'
 import { Preloader } from './components/microcomponents/Preloader'
 import AuthPage from './components/features/auth/AuthPage'
+import { ForgotPasswordPage, ResetPasswordPage } from './components/features/auth/RecoverPage'
 import DevPage from './dev/DevPage'
 import LandingPage from './components/layout/LandingPage'
 
@@ -20,6 +21,8 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/auth" element={<AuthPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route
             path="/home"
             element={
