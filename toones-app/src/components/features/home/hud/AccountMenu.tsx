@@ -7,6 +7,7 @@ import { badges } from '../format'
 import { displayName, useHome } from '../homeStore'
 import { stopPlayback } from '../player'
 import { usePopover } from '../usePopover'
+import { VerifyEmailNotice } from './VerifyEmailNotice'
 
 export function AccountMenu() {
   const user = useHome((s) => s.user)
@@ -72,6 +73,7 @@ export function AccountMenu() {
               </div>
             ))}
           </div>
+          <VerifyEmailNotice />
           <div className="hud-menu__rule" />
           <button type="button" className="hud-menuitem" onClick={onSignOut}>
             Sign out

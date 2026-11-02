@@ -1,7 +1,7 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ClayButton, EyeIcon, EyeOffIcon, NightToggle, PaperChip } from '../../ui'
-import { ApiError, forgotPassword, resetPassword } from '../../lib/api'
+import { ApiError, forgotPassword, resetPassword, verifyEmail } from '../../lib/api'
 import './auth.css'
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -11,7 +11,7 @@ const MAX_PASSWORD_BYTES = 72
 /** Courtesy delay before offering another email; the server enforces its own limits too. */
 const RESEND_SECONDS = 60
 
-function Shell({ children }: { children: ReactNode }) {
+export function Shell({ children }: { children: ReactNode }) {
   return (
     <div className="auth auth-recover">
       <header className="auth-header">
@@ -233,6 +233,60 @@ export function ResetPasswordPage() {
         <ClayButton type="submit" disabled={pending} aria-busy={pending}>
           {pending ? 'Updating…' : 'Update password'}
         </ClayButton>
+      </PaperChip>
+    </Shell>
+  )
+}
+
+// One request per token: React StrictMode mounts twice in development, and a second call would find the link already used.
+const verifications = new Map<string, Promise<unknown>>()
+
+/** The page behind the link in the sign-up email. Verifies on load; no sign-in needed. */
+export function VerifyEmailPage() {
+  const navigate = useNavigate()
+  const [token] = useState(() => new URLSearchParams(window.location.search).get('token') ?? '')
+  const [state, setState] = useState<'working' | 'ok' | 'failed'>(token ? 'working' : 'failed')
+
+  useEffect(() => {
+    if (!token) return
+    window.history.replaceState(null, '', window.location.pathname)
+    let call = verifications.get(token)
+    if (!call) {
+      call = verifyEmail(token)
+      verifications.set(token, call)
+    }
+    call.then(() => setState('ok'), () => setState('failed'))
+  }, [token])
+
+  return (
+    <Shell>
+      <PaperChip radius="card" className="auth-card">
+        {state === 'working' && (
+          <div className="auth-intro">
+            <div className="kicker">One moment</div>
+            <h1>Verifying your email…</h1>
+          </div>
+        )}
+        {state === 'ok' && (
+          <>
+            <div className="auth-intro">
+              <div className="kicker">Verified</div>
+              <h1>Your email is confirmed.</h1>
+              <p>Thanks! You're all set.</p>
+            </div>
+            <ClayButton onClick={() => navigate('/home')}>Open Toones</ClayButton>
+          </>
+        )}
+        {state === 'failed' && (
+          <>
+            <div className="auth-intro">
+              <div className="kicker">Link expired</div>
+              <h1>That link won't work.</h1>
+              <p>Verification links work once and expire after a day. Sign in and choose "Resend verification" from your account menu.</p>
+            </div>
+            <ClayButton onClick={() => navigate('/auth')}>Go to sign in</ClayButton>
+          </>
+        )}
       </PaperChip>
     </Shell>
   )
