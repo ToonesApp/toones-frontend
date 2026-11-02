@@ -11,6 +11,8 @@ export type ApiUser = {
   displayName: string
   xp: number
   level: number
+  /** Whether the user confirmed their email. Informational: it never blocks sign-in. */
+  emailVerified: boolean
   /** The saved character, or null until they make one. */
   look: Look | null
   /** A short line about the user; empty until they write one. */
@@ -86,6 +88,31 @@ export function login(input: LoginInput): Promise<AuthResult> {
   return request<AuthResult>('/auth/login', { method: 'POST', body: JSON.stringify(input) })
 }
 
+/** Exchanges a Google ID token for a Toones session. Creates the account on first use. */
+export function googleLogin(credential: string): Promise<AuthResult> {
+  return request<AuthResult>('/auth/google', { method: 'POST', body: JSON.stringify({ credential }) })
+}
+
+/** Asks for a reset email. The server answers the same whether or not the address has an account. */
+export function forgotPassword(email: string): Promise<{ message: string }> {
+  return request('/auth/forgot-password', { method: 'POST', body: JSON.stringify({ email }) })
+}
+
+/** Sets a new password using the single-use token from the emailed link. */
+export function resetPassword(input: { token: string; password: string }): Promise<{ message: string }> {
+  return request('/auth/reset-password', { method: 'POST', body: JSON.stringify(input) })
+}
+
+/** Confirms an email address using the single-use token from the emailed link. */
+export function verifyEmail(token: string): Promise<{ message: string }> {
+  return request('/auth/verify-email', { method: 'POST', body: JSON.stringify({ token }) })
+}
+
+/** Emails the signed-in user a fresh verification link. */
+export function resendVerification(): Promise<{ message: string; emailVerified: boolean }> {
+  return request('/auth/resend-verification', { method: 'POST', body: '{}', headers: authHeader() })
+}
+
 /** Resolves the signed-in user from the stored token. */
 export async function me(): Promise<ApiUser> {
   const token = getToken()
@@ -123,6 +150,8 @@ export type ApiProfile = {
   username: string
   displayName: string
   level: number
+  /** Whether the user confirmed their email. Informational: it never blocks sign-in. */
+  emailVerified: boolean
   look: Look | null
   bio: string
   joinedAt: string
@@ -147,6 +176,8 @@ export type ApiPerson = {
   username: string
   displayName: string
   level: number
+  /** Whether the user confirmed their email. Informational: it never blocks sign-in. */
+  emailVerified: boolean
   look: Look | null
   /** You follow them. */
   following: boolean
