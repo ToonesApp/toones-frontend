@@ -4,13 +4,13 @@ import { ClayCharacter } from '../../characters/ClayCharacter'
 import { LookAvatar } from '../../characters/LookAvatar'
 import { useLook } from '../../characters/lookStore'
 import { ProfileEditor } from '../profile/ProfileEditor'
-import { CATEGORIES } from '../../characters/clay'
 import { setNight, useNight } from '../../lib/storage'
 import { levelFromXp } from '../../lib/xp'
 import { ClayButton, PaperChip, SegmentedTabs } from '../../ui'
 import { displayName, useHome } from '../home/homeStore'
 import { stopFeed } from './feedPlayer'
 import { inboxMessages, useFeed, visibleToones, type Settings, type Tab } from './feedStore'
+import { accentForLabel } from './format'
 import { ago } from '../home/format'
 import { SkeletonCard, ToonCard } from './ToonCard'
 
@@ -25,11 +25,10 @@ export function FeedView() {
   const status = useFeed((s) => s.status)
   const settling = useFeed((s) => s.settling)
   const tab = useFeed((s) => s.tab)
-  const cats = useFeed((s) => s.cats)
   const liked = useFeed((s) => s.liked)
   const origin = useFeed((s) => s.origin)
-  const { setTab, toggleCat, allCats, load } = useFeed.getState()
-  const list = visibleToones({ toones, cats, tab, liked, origin })
+  const { setTab, load } = useFeed.getState()
+  const list = visibleToones({ toones, tab, liked, origin })
   const loading = status === 'idle' || (status === 'loading' && !toones.length) || settling
 
   return (
@@ -37,13 +36,6 @@ export function FeedView() {
       <div className="feed-head">
         <h1>Feed</h1>
         <SegmentedTabs aria-label="Sort the feed" options={TABS} value={tab} onChange={setTab} />
-      </div>
-      <div className="chips" role="group" aria-label="Categories">
-        {CATEGORIES.map((c) => (
-          <button key={c} type="button" className="chip ui-press" aria-pressed={cats.includes(c)} onClick={() => toggleCat(c)}>
-            {c}
-          </button>
-        ))}
       </div>
 
       {loading ? (
@@ -56,12 +48,10 @@ export function FeedView() {
       ) : !list.length ? (
         !toones.length ? (
           <Empty title="No Toones yet" body="Be the first: record a sound where you are." action="Record a Toone" onAction={() => useFeed.getState().setSheet(true)} />
-        ) : tab === 'saved' && cats.length ? (
+        ) : tab === 'saved' ? (
           <Empty title="No saved Toones yet" body="Tap the heart on a Toone to keep it here." action="Browse new Toones" onAction={() => setTab('new')} />
-        ) : !cats.length ? (
-          <Empty title="All categories are off" body="Turn a category back on to see Toones." action="Show all categories" onAction={allCats} />
         ) : (
-          <Empty title="Nothing nearby" body="No Toones match these categories right now." action="Show all categories" onAction={allCats} />
+          <Empty title="Nothing nearby" body="No Toones near you right now." action="Browse new Toones" onAction={() => setTab('new')} />
         )
       ) : (
         list.map((t) => <ToonCard key={t.id} toone={t} />)
@@ -99,7 +89,7 @@ export function InboxView() {
         const unread = !read.includes(m.id)
         return (
           <PaperChip key={m.id} as="button" type="button" radius="well" className={unread ? 'msg is-unread ui-press' : 'msg ui-press'} onClick={() => markRead(m.id)}>
-            <span className="avatar avatar--52" style={{ background: `var(--cat-${m.cat.toLowerCase()})` }} aria-hidden="true">
+            <span className="avatar avatar--52" style={{ background: accentForLabel(m.cat) }} aria-hidden="true">
               {m.initial}
             </span>
             <span className="msg__body">

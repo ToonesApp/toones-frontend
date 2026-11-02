@@ -129,6 +129,7 @@
 .rec__done { display: flex; flex-direction: column; gap: 16px; }
 .rec__cats-wrap { display: flex; flex-direction: column; gap: 8px; }
 .rec__label { color: var(--muted); font-size: 14px; }
+.rec__guess { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.4; }
 .rec__cats { display: flex; flex-wrap: wrap; gap: 8px; }
 .rec-tag { display: inline-flex; align-items: center; gap: 6px; height: 44px; padding: 0 16px; border: 1px solid transparent; border-radius: var(--r-pill); background: var(--ghost); color: var(--muted); font-size: 14px; }
 .rec-tag[aria-pressed="true"] { border-color: var(--ink); background: var(--field); color: var(--ink); box-shadow: 0 3px 0 rgb(27 36 48 / 8%); }

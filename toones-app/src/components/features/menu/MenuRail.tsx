@@ -1,6 +1,5 @@
 import type { ComponentProps } from 'react'
 import { ClayCharacter } from '../../characters/ClayCharacter'
-import { SPECIES, type Category } from '../../characters/clay'
 import { PaperChip } from '../../ui'
 import { MENU, type MenuId } from './menu'
 import './menu.css'
@@ -27,7 +26,7 @@ export function MenuRail({ active, onSelect, unread = false, character, classNam
           aria-current={active === m.id ? 'page' : undefined}
           aria-label={m.id === 'inbox' && unread ? 'Inbox, unread messages' : m.label}
           title={m.label}
-          data-cat={SPECIES[m.species].category as Category}
+          data-menu={m.id}
           onClick={() => onSelect(m.id)}
         >
           <ClayCharacter species={m.species} size={48} fill={0.86} {...character?.(m.id)} />

@@ -56,6 +56,11 @@
 .ui-input:focus-visible { box-shadow: 0 0 0 3px var(--focus-ring); }
 .ui-input[aria-invalid="true"] { border-color: var(--error); }
 
+.cat-pick { position: relative; }
+.cat-pick__list { position: absolute; z-index: 5; top: calc(100% + 4px); left: 0; right: 0; margin: 0; padding: 6px; list-style: none; max-height: 220px; overflow: auto; border: 1px solid var(--hair3); border-radius: var(--r-input); background: var(--paper, var(--field)); box-shadow: 0 10px 24px rgb(27 36 48 / 12%); }
+.cat-pick__opt { display: block; width: 100%; padding: 8px 10px; border: 0; border-radius: 8px; background: transparent; color: inherit; font: inherit; font-size: 13px; text-align: left; cursor: pointer; }
+.cat-pick__opt.is-active, .cat-pick__opt:hover { background: var(--well); }
+
 /* Quiet text button / link */
 .ui-quiet { display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border: 0; border-radius: var(--r-pill); background: transparent; color: var(--muted); font-size: 14px; text-decoration: none; cursor: pointer; transition: background var(--t-press), color var(--t-press); }
 .ui-quiet:hover { background: var(--field); color: var(--ink); }

@@ -266,8 +266,7 @@ export function Globe({ landing = false }: { landing?: boolean }) {
         map.setCenter([c.lng - SPIN_DEG_PER_S * dt, c.lat])
       }
 
-      const visible = globeDrops(s).filter((d) => s.visible.includes(d.cat))
-      overlay.draw(map, { drops: visible, spot: s.spot, playingId: s.playing?.id ?? null, night: e(), fitZoom, dt, t })
+      overlay.draw(map, { drops: globeDrops(s), spot: s.spot, playingId: s.playing?.id ?? null, night: e(), fitZoom, dt, t })
     }
     raf = requestAnimationFrame(frame)
 

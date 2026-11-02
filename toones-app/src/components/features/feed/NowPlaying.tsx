@@ -1,5 +1,4 @@
 import { ClayCharacter } from '../../characters/ClayCharacter'
-import { CATEGORY_SPECIES } from '../../characters/clay'
 import { NextIcon, PauseIcon, PrevIcon } from '../../ui'
 import { seekFeed, stepFeed, stopFeed } from './feedPlayer'
 import { useFeed } from './feedStore'
@@ -15,7 +14,7 @@ export function NowPlaying() {
   return (
     <div className="nowbar ui-chip ui-r-pill" role="region" aria-label="Now playing">
       <span className="nowbar__char">
-        <ClayCharacter species={CATEGORY_SPECIES[toone.cat]} size={44} mood="talk" fill={0.78} />
+        <ClayCharacter species="pip" size={44} mood="talk" fill={0.78} />
       </span>
       <div className="nowbar__info">
         <div className="nowbar__title ell">{toone.title}</div>

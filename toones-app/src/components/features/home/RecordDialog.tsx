@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { CATEGORIES, type Category } from '../../characters/clay'
-import { ClayButton, PaperChip } from '../../ui'
-import { getToken, uploadSound, type SoundCategory } from '../../lib/api'
+import { CategoryPicker, ClayButton, PaperChip } from '../../ui'
+import { getToken, uploadSound } from '../../lib/api'
+import { canonicalAudioSetLabel, type AudioSetLabel } from '../../lib/audioSetLabels'
 import { saveClip } from '../../lib/audioStore'
+import { classifySound, preloadYamnet } from '../../lib/classifySound'
 import { Take } from '../../lib/take'
 import { fmtDur } from './format'
 import { live, spotLabel, useHome } from './homeStore'
@@ -11,6 +12,7 @@ import { stopPlayback } from './player'
 const BARS = 28
 const MAX_SECONDS = 60
 const MIC_BLOCKED = 'Microphone is blocked here, so this take is a stand-in sound.'
+const DEFAULT_CAT: AudioSetLabel = 'Music'
 
 type Phase = 'idle' | 'rec' | 'done'
 
@@ -27,7 +29,9 @@ function RecordDialogBody() {
   const [seconds, setSeconds] = useState(0)
   const [note, setNote] = useState('')
   const [title, setTitle] = useState('')
-  const [cat, setCat] = useState<Category>('Music')
+  const [cat, setCat] = useState<AudioSetLabel>(DEFAULT_CAT)
+  const [guess, setGuess] = useState<string | null>(null)
+  const [guessing, setGuessing] = useState(false)
   const [busy, setBusy] = useState(false)
   const take = useRef<Take | null>(null)
   const result = useRef<{ blob: Blob | null; dur: number } | null>(null)
@@ -35,6 +39,7 @@ function RecordDialogBody() {
   const startRef = useRef<HTMLButtonElement>(null)
   const stopRef = useRef<HTMLButtonElement>(null)
   const titleRef = useRef<HTMLInputElement>(null)
+  const classifyGen = useRef(0)
 
   const endTick = () => {
     window.clearInterval(tick.current)
@@ -51,6 +56,7 @@ function RecordDialogBody() {
 
   useEffect(() => {
     stopPlayback()
+    preloadYamnet()
     const { spot: s, globe } = useHome.getState()
     if (s) globe?.flyTo([s.lon, s.lat])
     startRef.current?.focus()
@@ -80,7 +86,21 @@ function RecordDialogBody() {
     take.current = null
     result.current = { blob, dur }
     setSeconds(dur)
+    setGuess(null)
     setPhase('done')
+    if (!blob) return
+    const gen = ++classifyGen.current
+    setGuessing(true)
+    try {
+      const classified = await classifySound(blob)
+      if (gen !== classifyGen.current) return
+      if (classified.best) setGuess(classified.best.label)
+      if (classified.category) setCat(classified.category)
+    } catch {
+      if (gen === classifyGen.current) setGuess(null)
+    } finally {
+      if (gen === classifyGen.current) setGuessing(false)
+    }
   }
   const finishRef = useRef(finish)
   useEffect(() => {
@@ -108,7 +128,10 @@ function RecordDialogBody() {
   }
 
   const redo = () => {
+    classifyGen.current += 1
     result.current = null
+    setGuess(null)
+    setGuessing(false)
     setMeter([])
     setSeconds(0)
     setPhase('idle')
@@ -122,6 +145,7 @@ function RecordDialogBody() {
   const drop = async () => {
     const r = result.current
     const s = useHome.getState().spot
+    const category = canonicalAudioSetLabel(cat) ?? DEFAULT_CAT
     if (!r || !s || busy) return
     setBusy(true)
     const name = title.trim() || 'Untitled Toone'
@@ -129,7 +153,7 @@ function RecordDialogBody() {
     let shared = false
     if (r.blob && getToken()) {
       try {
-        const res = await uploadSound({ audio: r.blob, title: name, category: cat.toLowerCase() as SoundCategory, lon: s.lon, lat: s.lat, durationSec: r.dur, placeName: spotLabel(s) })
+        const res = await uploadSound({ audio: r.blob, title: name, category, lon: s.lon, lat: s.lat, durationSec: r.dur, placeName: spotLabel(s) })
         id = res.sound.id
         shared = true
       } catch {
@@ -138,7 +162,7 @@ function RecordDialogBody() {
     }
     if (r.blob) await saveClip(id, r.blob).catch(() => undefined)
     const home = useHome.getState()
-    const d = home.addDrop({ id, title: name, cat, dur: r.dur, lon: s.lon, lat: s.lat, standIn: !r.blob })
+    const d = home.addDrop({ id, title: name, cat: category, dur: r.dur, lon: s.lon, lat: s.lat, standIn: !r.blob })
     live.popped.set(d.id, performance.now())
     if (r.blob && !shared) home.flash(getToken() ? 'Couldn’t share it, so it’s saved on this device only' : 'Saved on this device. Sign in to share it.')
     const g = home.globe
@@ -190,19 +214,18 @@ function RecordDialogBody() {
             </label>
             <div className="rec__cats-wrap">
               <div className="rec__label">Category</div>
-              <div className="rec__cats">
-                {CATEGORIES.map((c) => (
-                  <button key={c} type="button" className="rec-tag ui-press" aria-pressed={cat === c} onClick={() => setCat(c)}>
-                    {c}
-                  </button>
-                ))}
-              </div>
+              {(guessing || guess) && (
+                <p className="rec__guess" aria-live="polite">
+                  {guessing ? 'Listening…' : `Sounds like ${guess}`}
+                </p>
+              )}
+              <CategoryPicker value={cat} onChange={setCat} disabled={guessing} />
             </div>
             <div className="rec__actions">
               <ClayButton variant="ghost" onClick={redo}>
                 Redo
               </ClayButton>
-              <ClayButton onClick={drop} disabled={busy}>
+              <ClayButton onClick={drop} disabled={busy || guessing}>
                 {busy ? 'Dropping…' : 'Drop on globe'}
               </ClayButton>
             </div>

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
-import { CATEGORIES, CATEGORY_SPECIES, SPECIES, clamp, drawCharacter, fitCanvas, fitPlacement, lerp, spawnNote, stepNotes, type Note } from '../../characters/clay'
+import { SPECIES, clamp, drawCharacter, fitCanvas, fitPlacement, lerp, spawnNote, stepNotes, type Note } from '../../characters/clay'
 import { useNight } from '../../lib/storage'
+import { MENU } from '../menu/menu'
 import { useHome } from '../home/homeStore'
 import { globeTarget } from '../home/layout'
 import { useArrival } from './arrivalStore'
@@ -62,21 +63,21 @@ export function ArrivalOverlay() {
 
       // The cast waits for the map: MapLibre's startup stalls the main thread until it loads
       const ct = mapAt == null ? -1 : el - mapAt
-      CATEGORIES.forEach((cat, i) => {
+      MENU.forEach((item, i) => {
         if (landed.has(i)) return
         const p = clamp((ct - 0.1 - i * STAGGER) / FLIGHT)
         if (p <= 0) return
-        const cell = document.querySelector(`.home-rail .menu-rail__cell[data-cat="${cat}"] canvas`)
+        const cell = document.querySelector(`.home-rail .menu-rail__cell[data-menu="${item.id}"] canvas`)
         if (!cell) return
         const r = cell.getBoundingClientRect()
-        const sp = SPECIES[CATEGORY_SPECIES[cat]]
+        const sp = SPECIES[item.species]
         const fit = fitPlacement(sp, r.width, r.height, 0.86)
         const tx = r.left + fit.x
         const ty = r.top + fit.base
         const lt = ct - 0.1 - i * STAGGER - FLIGHT
         if (lt >= SQUASH) {
           landed.add(i)
-          useArrival.getState().land(cat)
+          useArrival.getState().land(item.id)
           return
         }
         let x = tx
@@ -95,14 +96,14 @@ export function ArrivalOverlay() {
           squash = -Math.sin(lt * 15) * 0.28 * (1 - lt / SQUASH)
           if (!noted.has(i)) {
             noted.add(i)
-            for (let n = 0; n < 2; n++) notes.push(spawnNote(tx, ty - sp.h * fit.k - 4, { night: e > 0.5, spread: sp.w * fit.k * 0.8 }))
+            for (let n = 0; n < 2; n++) notes.push(spawnNote(tx, ty - sp.h * fit.k - 4, { night: e > 0.5, speed: sp.w * fit.k * 0.8 }))
           }
         }
         drawCharacter(g, x, y, k, sp, { happy: true, rot, squash, night: e, shadow: false, t: el })
       })
       notes = stepNotes(g, notes, dt, 0.6)
 
-      if (landed.size === CATEGORIES.length && globeAlpha <= 0 && !notes.length) {
+      if (landed.size === MENU.length && globeAlpha <= 0 && !notes.length) {
         cancelAnimationFrame(raf)
         useArrival.getState().end()
       }
