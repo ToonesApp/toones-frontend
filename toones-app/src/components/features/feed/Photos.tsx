@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import { useNight } from '../../lib/storage'
 import { ChevronIcon, ExpandIcon, PhotoIcon, PinIcon } from '../../ui'
 import { useFeed, type Toone } from './feedStore'
-import { TINT } from './format'
+import { tintForLabel } from './format'
 
 const MAX_PHOTOS = 3
 
@@ -33,7 +33,7 @@ export function Photos({ toone, height, onExpand }: { toone: Toone; height: numb
           </button>
         )}
         {!photos.length && !slot && (
-          <div className="photos__slide photos__none" style={{ backgroundColor: TINT[toone.cat][night ? 1 : 0] }} aria-hidden="true">
+          <div className="photos__slide photos__none" style={{ backgroundColor: tintForLabel(toone.cat)[night ? 1 : 0] }} aria-hidden="true">
             <span className="pin" />
           </div>
         )}

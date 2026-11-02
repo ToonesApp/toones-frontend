@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { ClayCharacter, type Mood } from '../components/characters/ClayCharacter'
-import { CATEGORIES, CATEGORY_SPECIES, SPECIES, type SpeciesId } from '../components/characters/clay'
+import { SPECIES, SPECIES_IDS, type SpeciesId } from '../components/characters/clay'
 import {
   ClayButton,
   Fab,
@@ -57,16 +57,6 @@ export default function DevPage() {
   const [mood, setMood] = useState<Mood>('idle')
   const [cover, setCover] = useState(false)
   const [playing, setPlaying] = useState(false)
-  const [visible, setVisible] = useState(() => new Set(CATEGORIES))
-
-  const toggleCat = (c: (typeof CATEGORIES)[number]) =>
-    setVisible((prev) => {
-      const next = new Set(prev)
-      if (next.has(c)) next.delete(c)
-      else next.add(c)
-      return next
-    })
-
   return (
     <main className="dev">
       <header className="dev-header">
@@ -97,15 +87,15 @@ export default function DevPage() {
             </div>
           ))}
         </div>
-        <h2>Category fills</h2>
+        <h2>Species fills</h2>
         <div className="dev-swatches">
-          {CATEGORIES.map((c) => {
-            const sp = SPECIES[CATEGORY_SPECIES[c]]
+          {SPECIES_IDS.map((id) => {
+            const sp = SPECIES[id]
             return (
-              <div key={c} className="dev-swatch">
+              <div key={id} className="dev-swatch">
                 <span style={{ background: sp.fill, boxShadow: `inset 0 -6px 0 ${sp.lip}` }} />
                 <div>
-                  <div>{c}</div>
+                  <div>{sp.name}</div>
                   <code>{sp.fill}</code>
                 </div>
               </div>
@@ -207,19 +197,16 @@ export default function DevPage() {
           {ALL_SPECIES.map((id) => (
             <figure key={id}>
               <ClayCharacter species={id} size={[180, 220]} mood={mood} cover={cover} interactive idleWaves />
-              <figcaption>
-                {SPECIES[id].name}
-                <span className="dev-muted"> · {SPECIES[id].category ?? 'Auth only'}</span>
-              </figcaption>
+              <figcaption>{SPECIES[id].name}</figcaption>
             </figure>
           ))}
         </div>
         <h2>Rail cells (48px)</h2>
-        <PaperChip radius="rail" role="toolbar" aria-label="Show categories" className="dev-rail">
-          {CATEGORIES.map((c) => (
-            <button key={c} type="button" className="dev-cell" aria-pressed={visible.has(c)} title={c} onClick={() => toggleCat(c)}>
-              <ClayCharacter species={CATEGORY_SPECIES[c]} size={48} mood={mood === 'sleep' ? 'sleep' : 'idle'} />
-              <span className="sr-only">{c}</span>
+        <PaperChip radius="rail" role="toolbar" aria-label="Species" className="dev-rail">
+          {SPECIES_IDS.map((id) => (
+            <button key={id} type="button" className="dev-cell" title={SPECIES[id].name}>
+              <ClayCharacter species={id} size={48} mood={mood === 'sleep' ? 'sleep' : 'idle'} />
+              <span className="sr-only">{SPECIES[id].name}</span>
             </button>
           ))}
         </PaperChip>
@@ -227,8 +214,8 @@ export default function DevPage() {
         <div className="dev-row">
           {[24, 30, 36].map((s) => (
             <div key={s} className="dev-row">
-              {CATEGORIES.map((c) => (
-                <ClayCharacter key={c} species={CATEGORY_SPECIES[c]} size={s} fill={0.95} />
+              {SPECIES_IDS.map((id) => (
+                <ClayCharacter key={id} species={id} size={s} fill={0.95} />
               ))}
             </div>
           ))}

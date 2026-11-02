@@ -4,12 +4,10 @@
 import { drawBack, drawBodyDress, drawFaceDress, drawMouth, type Dress, type Face } from './avatar'
 
 export type SpeciesId = 'moss' | 'ima' | 'sol' | 'tomo' | 'ned' | 'pip'
-export type Category = 'Nature' | 'Language' | 'Culture' | 'Music' | 'City'
 
 export type Species = {
   id: SpeciesId
   name: string
-  category: Category | null
   fill: string
   lip: string
   w: number
@@ -21,23 +19,15 @@ export type Species = {
 }
 
 export const SPECIES: Record<SpeciesId, Species> = {
-  moss: { id: 'moss', name: 'Moss', category: 'Nature', fill: '#2F6A4A', lip: '#214C35', w: 170, h: 104, rt: 85 },
-  ima: { id: 'ima', name: 'Ima', category: 'Language', fill: '#2A5F7A', lip: '#1D4458', w: 92, h: 124, rt: 46 },
-  sol: { id: 'sol', name: 'Sol', category: 'Culture', fill: '#7A5424', lip: '#553917', w: 104, h: 140, rt: 52 },
-  tomo: { id: 'tomo', name: 'Tomo', category: 'Music', fill: '#C45C3E', lip: '#9A3F28', w: 150, h: 230, rt: 75 },
-  ned: { id: 'ned', name: 'Ned', category: 'City', fill: '#3D4A58', lip: '#2A3440', w: 84, h: 84, rt: 42, lightMouth: true },
-  pip: { id: 'pip', name: 'Pip', category: null, fill: '#D4A030', lip: '#A87A1F', w: 92, h: 124, rt: 46, outlinedEyes: true },
+  moss: { id: 'moss', name: 'Moss', fill: '#2F6A4A', lip: '#214C35', w: 170, h: 104, rt: 85 },
+  ima: { id: 'ima', name: 'Ima', fill: '#2A5F7A', lip: '#1D4458', w: 92, h: 124, rt: 46 },
+  sol: { id: 'sol', name: 'Sol', fill: '#7A5424', lip: '#553917', w: 104, h: 140, rt: 52 },
+  tomo: { id: 'tomo', name: 'Tomo', fill: '#C45C3E', lip: '#9A3F28', w: 150, h: 230, rt: 75 },
+  ned: { id: 'ned', name: 'Ned', fill: '#3D4A58', lip: '#2A3440', w: 84, h: 84, rt: 42, lightMouth: true },
+  pip: { id: 'pip', name: 'Pip', fill: '#D4A030', lip: '#A87A1F', w: 92, h: 124, rt: 46, outlinedEyes: true },
 }
 
-export const CATEGORIES: readonly Category[] = ['Nature', 'Language', 'Culture', 'Music', 'City']
-
-export const CATEGORY_SPECIES: Record<Category, SpeciesId> = {
-  Nature: 'moss',
-  Language: 'ima',
-  Culture: 'sol',
-  Music: 'tomo',
-  City: 'ned',
-}
+export const SPECIES_IDS = Object.keys(SPECIES) as SpeciesId[]
 
 const INK = '#1B2430'
 const TAU = Math.PI * 2

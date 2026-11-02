@@ -1,17 +1,17 @@
 import { create } from 'zustand'
-import type { Category } from '../../characters/clay'
+import type { MenuId } from '../menu/menu'
 
 type ArrivalState = {
   /** True from Home's first paint until every character has landed in the rail. */
   active: boolean
   /** The map is up (or gave up waiting), so the cast flies and the HUD slides in. */
   mapReady: boolean
-  landed: Category[]
+  landed: MenuId[]
   /** Landed characters still wearing their happy face. */
-  happy: Category[]
+  happy: MenuId[]
   begin: () => void
   ready: () => void
-  land: (c: Category) => void
+  land: (id: MenuId) => void
   end: () => void
 }
 
@@ -22,9 +22,9 @@ export const useArrival = create<ArrivalState>()((set) => ({
   happy: [],
   begin: () => set({ active: true, mapReady: false, landed: [], happy: [] }),
   ready: () => set({ mapReady: true }),
-  land: (c) => {
-    set((s) => ({ landed: [...s.landed, c], happy: [...s.happy, c] }))
-    setTimeout(() => set((s) => ({ happy: s.happy.filter((h) => h !== c) })), 700)
+  land: (id) => {
+    set((s) => ({ landed: [...s.landed, id], happy: [...s.happy, id] }))
+    setTimeout(() => set((s) => ({ happy: s.happy.filter((h) => h !== id) })), 700)
   },
   end: () => set({ active: false, landed: [] }),
 }))

@@ -1,19 +1,16 @@
 import { create } from 'zustand'
-import { CATEGORIES, type Category } from '../../characters/clay'
 import { countryAt, nearCity, type LngLat, type SearchResult } from '../../lib/geo'
 import { KEYS, read, readJSON, write, writeJSON } from '../../lib/storage'
 import { XP_PER_DROP, XP_PER_LISTEN, levelFromXp } from '../../lib/xp'
+import { canonicalAudioSetLabel } from '../../lib/audioSetLabels'
 import { initialPanelOpen } from './layout'
 import { getSounds, getToken, recordListen, setToken, type ApiSound } from '../../lib/api'
-
-
-
-
 
 export type Drop = {
   id: string
   title: string
-  cat: Category
+  /** AudioSet class display name. */
+  cat: string
   /** Seconds. */
   dur: number
   when: number
@@ -51,7 +48,6 @@ type HomeState = {
   world: Drop[]
   xp: number
   listens: number
-  visible: Category[]
   panelOpen: boolean
   panelTab: 'drops' | 'places'
   spot: Spot | null
@@ -65,7 +61,6 @@ type HomeState = {
 
   setGlobe: (g: GlobeApi | null) => void
   loadWorld: () => Promise<void>
-  toggleCategory: (c: Category) => void
   setPanel: (open: boolean) => void
   setPanelTab: (t: 'drops' | 'places') => void
   selectSpot: (lon: number, lat: number) => void
@@ -89,13 +84,11 @@ function spotAt(lon: number, lat: number): Spot {
   return { lon, lat, place: countryAt(lon, lat) ?? 'Open water', city: nearCity(lon, lat) }
 }
 
-const capital = (c: string) => (c.charAt(0).toUpperCase() + c.slice(1)) as Category
-
 function fromApi(s: ApiSound): Drop {
   return {
     id: s.id,
     title: s.title,
-    cat: CATEGORIES.includes(capital(s.category)) ? capital(s.category) : 'Music',
+    cat: canonicalAudioSetLabel(s.category) ?? s.category,
     dur: s.durationSec,
     when: Date.parse(s.createdAt) || Date.now(),
     lon: s.lon,
@@ -119,11 +112,10 @@ export const spotLabel = (s: Pick<Spot, 'place' | 'city'>) => (s.city && s.city 
 
 export const useHome = create<HomeState>()((set, get) => ({
   user: readJSON<User>(KEYS.user, { name: '', email: '' }),
-  drops: readJSON<Drop[]>(KEYS.drops, []),
+  drops: readJSON<Drop[]>(KEYS.drops, []).map((d) => ({ ...d, cat: canonicalAudioSetLabel(d.cat) ?? d.cat })),
   world: [],
   xp: Number(read(KEYS.xp) ?? 0) || 0,
   listens: Number(read(KEYS.listens) ?? 0) || 0,
-  visible: [...CATEGORIES],
   panelOpen: initialPanelOpen(),
   panelTab: 'drops',
   spot: null,
@@ -144,12 +136,6 @@ export const useHome = create<HomeState>()((set, get) => ({
       // The globe still shows this device's drops
     }
   },
-
-  toggleCategory: (c) =>
-    set(({ visible }) => {
-      if (visible.includes(c)) return { visible: visible.length === 1 ? [...CATEGORIES] : visible.filter((v) => v !== c) }
-      return { visible: CATEGORIES.filter((v) => v === c || visible.includes(v)) }
-    }),
 
   setPanel: (panelOpen) => set({ panelOpen }),
   setPanelTab: (panelTab) => set({ panelTab }),
@@ -173,8 +159,14 @@ export const useHome = create<HomeState>()((set, get) => ({
   closeRecord: () => set({ recordOpen: false }),
 
   addDrop: (input) => {
-    const { drops, xp, visible } = get()
-    const drop: Drop = { ...input, id: input.id ?? crypto.randomUUID(), when: Date.now(), place: countryAt(input.lon, input.lat) ?? 'Open water' }
+    const { drops, xp } = get()
+    const drop: Drop = {
+      ...input,
+      cat: canonicalAudioSetLabel(input.cat) ?? input.cat,
+      id: input.id ?? crypto.randomUUID(),
+      when: Date.now(),
+      place: countryAt(input.lon, input.lat) ?? 'Open water',
+    }
     const nextXp = xp + XP_PER_DROP
     const levelled = levelFromXp(nextXp) > levelFromXp(xp)
     const next = [drop, ...drops]
@@ -185,7 +177,6 @@ export const useHome = create<HomeState>()((set, get) => ({
       xp: nextXp,
       spot: null,
       recordOpen: false,
-      visible: visible.includes(drop.cat) ? visible : CATEGORIES.filter((v) => v === drop.cat || visible.includes(v)),
     })
     get().flash(levelled ? `Dropped in ${drop.place} · Lv ${levelFromXp(nextXp)}` : `Dropped in ${drop.place} · +${XP_PER_DROP} xp`)
     return drop

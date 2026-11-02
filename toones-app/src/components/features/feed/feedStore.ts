@@ -1,13 +1,14 @@
 import { create } from 'zustand'
 import { sanitizeLook, type Look } from '../../characters/avatar'
-import { CATEGORIES, type Category } from '../../characters/clay'
 import { getSounds, getToken, uploadPhoto, type ApiSound } from '../../lib/api'
+import { canonicalAudioSetLabel } from '../../lib/audioSetLabels'
 import { angularDistance, type LngLat } from '../../lib/geo'
 import { KEYS, readJSON, writeJSON } from '../../lib/storage'
 
 export type Toone = {
   id: string
-  cat: Category
+  /** AudioSet class display name. */
+  cat: string
   name: string
   handle: string
   when: number
@@ -28,7 +29,7 @@ export type Toone = {
 export type Comment = { id: string; name: string; text: string; when: number }
 export type Tab = 'nearby' | 'new' | 'saved'
 export type Settings = { autoplay: boolean; react: boolean; notify: boolean }
-export type InboxMessage = { id: string; initial: string; cat: Category; text: string; when: number }
+export type InboxMessage = { id: string; initial: string; cat: string; text: string; when: number }
 
 const DEFAULT_SETTINGS: Settings = { autoplay: true, react: true, notify: true }
 const FIRST_SKELETON_MS = 1100
@@ -38,10 +39,9 @@ const TOAST_MS = 2000
 type FeedState = {
   toones: Toone[]
   status: 'idle' | 'loading' | 'ready' | 'error'
-  /** Brief skeleton after a tab or chip change. */
+  /** Brief skeleton after a tab change. */
   settling: boolean
   tab: Tab
-  cats: Category[]
   liked: string[]
   comments: Record<string, Comment[]>
   /** Server photo URLs, plus object URLs for uploads in flight and for Toones that only live on this device. */
@@ -60,8 +60,6 @@ type FeedState = {
 
   load: () => Promise<void>
   setTab: (t: Tab) => void
-  toggleCat: (c: Category) => void
-  allCats: () => void
   toggleLike: (id: string) => void
   addComment: (id: string, name: string, text: string) => void
   addPhoto: (id: string, file: File) => void
@@ -78,13 +76,11 @@ type FeedState = {
   setHover: (on: boolean) => void
 }
 
-const capital = (c: string) => (c.charAt(0).toUpperCase() + c.slice(1)) as Category
-
 function fromApi(s: ApiSound): Toone {
   const name = s.author?.displayName || s.author?.username || 'Someone'
   return {
     id: s.id,
-    cat: CATEGORIES.includes(capital(s.category)) ? capital(s.category) : 'Music',
+    cat: canonicalAudioSetLabel(s.category) ?? s.category,
     name,
     handle: s.author ? `@${s.author.username}` : '',
     when: Date.parse(s.createdAt) || Date.now(),
@@ -116,7 +112,6 @@ export const useFeed = create<FeedState>()((set, get) => {
     status: 'idle',
     settling: false,
     tab: 'new',
-    cats: [...CATEGORIES],
     liked: readJSON<string[]>(KEYS.liked, []),
     comments: readJSON<Record<string, Comment[]>>(KEYS.comments, {}),
     photos: {},
@@ -160,17 +155,6 @@ export const useFeed = create<FeedState>()((set, get) => {
         () => get().flash('Location is off, showing newest first'),
         { timeout: 8000, maximumAge: 600000 },
       )
-    },
-
-    toggleCat: (c) => {
-      const { cats } = get()
-      set({ cats: cats.includes(c) ? cats.filter((v) => v !== c) : CATEGORIES.filter((v) => v === c || cats.includes(v)) })
-      settle()
-    },
-
-    allCats: () => {
-      set({ cats: [...CATEGORIES], tab: get().tab === 'saved' ? 'new' : get().tab })
-      settle()
     },
 
     toggleLike: (id) => {
@@ -229,7 +213,7 @@ export const useFeed = create<FeedState>()((set, get) => {
     setListens: (id, n) => set({ toones: get().toones.map((t) => (t.id === id ? { ...t, listens: n } : t)) }),
 
     prepend: (t) => {
-      set({ toones: [t, ...get().toones], tab: 'new', cats: [...CATEGORIES] })
+      set({ toones: [t, ...get().toones], tab: 'new' })
       settle()
     },
 
@@ -249,8 +233,8 @@ export function shareToone(t: Toone) {
   useFeed.getState().flash('Link copied')
 }
 
-export function visibleToones(s: Pick<FeedState, 'toones' | 'cats' | 'tab' | 'liked' | 'origin'>) {
-  let list = s.toones.filter((t) => s.cats.includes(t.cat))
+export function visibleToones(s: Pick<FeedState, 'toones' | 'tab' | 'liked' | 'origin'>) {
+  let list = s.toones
   if (s.tab === 'saved') list = list.filter((t) => s.liked.includes(t.id))
   const origin = s.origin
   if (s.tab === 'nearby' && origin) list = [...list].sort((a, b) => angularDistance(origin, [a.lon, a.lat]) - angularDistance(origin, [b.lon, b.lat]))

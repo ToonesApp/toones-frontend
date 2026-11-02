@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ClayCharacter } from '../../characters/ClayCharacter'
-import { CATEGORIES, type Category } from '../../characters/clay'
-import { getToken, uploadSound, type SoundCategory } from '../../lib/api'
+import { getToken, uploadSound } from '../../lib/api'
+import { canonicalAudioSetLabel, type AudioSetLabel } from '../../lib/audioSetLabels'
 import { saveClip } from '../../lib/audioStore'
+import { classifySound, preloadYamnet } from '../../lib/classifySound'
 import { loadCountries, placeName, searchPlaces, type LngLat } from '../../lib/geo'
 import { Take } from '../../lib/take'
-import { CloseIcon, PhotoIcon } from '../../ui'
+import { CategoryPicker, CloseIcon, PhotoIcon } from '../../ui'
 import { displayName, useHome } from '../home/homeStore'
 import { stopFeed } from './feedPlayer'
 import { useFeed } from './feedStore'
@@ -15,6 +16,7 @@ import { usePresence } from './usePresence'
 const BARS = 36
 const MAX_SECONDS = 60
 const OPEN_MS = 500
+const DEFAULT_CAT: AudioSetLabel = 'Music'
 
 type Phase = 'idle' | 'rec' | 'done'
 
@@ -39,11 +41,14 @@ function SheetBody({ open }: { open: boolean }) {
   const [phase, setPhase] = useState<Phase>('idle')
   const [meter, setMeter] = useState<number[]>([])
   const [seconds, setSeconds] = useState(0)
-  const [cat, setCat] = useState<Category>('Music')
+  const [cat, setCat] = useState<AudioSetLabel>(DEFAULT_CAT)
+  const [guess, setGuess] = useState<string | null>(null)
+  const [guessing, setGuessing] = useState(false)
   const [title, setTitle] = useState('')
   const [place, setPlace] = useState('')
   const [photo, setPhoto] = useState<File | null>(null)
   const [busy, setBusy] = useState(false)
+  const classifyGen = useRef(0)
   const photoUrl = useMemo(() => (photo ? URL.createObjectURL(photo) : null), [photo])
   useEffect(() => () => {
     if (photoUrl) URL.revokeObjectURL(photoUrl)
@@ -56,6 +61,7 @@ function SheetBody({ open }: { open: boolean }) {
 
   useEffect(() => {
     stopFeed()
+    preloadYamnet()
     void loadCountries()
     closeRef.current?.focus()
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && close()
@@ -76,7 +82,21 @@ function SheetBody({ open }: { open: boolean }) {
     take.current = null
     result.current = { blob, dur }
     setSeconds(dur)
+    setGuess(null)
     setPhase('done')
+    if (!blob) return
+    const gen = ++classifyGen.current
+    setGuessing(true)
+    try {
+      const classified = await classifySound(blob)
+      if (gen !== classifyGen.current) return
+      if (classified.best) setGuess(classified.best.label)
+      if (classified.category) setCat(classified.category)
+    } catch {
+      if (gen === classifyGen.current) setGuess(null)
+    } finally {
+      if (gen === classifyGen.current) setGuessing(false)
+    }
   }
   const finishRef = useRef(finish)
   useEffect(() => {
@@ -84,6 +104,9 @@ function SheetBody({ open }: { open: boolean }) {
   })
 
   const start = async () => {
+    classifyGen.current += 1
+    setGuess(null)
+    setGuessing(false)
     const t = new Take()
     take.current = t
     const ok = await t.start()
@@ -117,13 +140,14 @@ function SheetBody({ open }: { open: boolean }) {
     const [lon, lat] = coords
     const name = title.trim() || 'Untitled Toone'
     const where = typed || placeName(lon, lat)
+    const category = canonicalAudioSetLabel(cat) ?? DEFAULT_CAT
 
     let id = `local-${crypto.randomUUID()}`
     let audioUrl = r.blob ? URL.createObjectURL(r.blob) : null
     let uploaded = false
     if (r.blob && getToken()) {
       try {
-        const res = await uploadSound({ audio: r.blob, title: name, category: cat.toLowerCase() as SoundCategory, lon, lat, durationSec: r.dur, placeName: where })
+        const res = await uploadSound({ audio: r.blob, title: name, category, lon, lat, durationSec: r.dur, placeName: where })
         id = res.sound.id
         audioUrl = res.sound.audioUrl
         uploaded = true
@@ -134,9 +158,9 @@ function SheetBody({ open }: { open: boolean }) {
 
     const home = useHome.getState()
     if (r.blob) await saveClip(id, r.blob).catch(() => undefined)
-    home.addDrop({ id, title: name, cat, dur: r.dur, lon, lat, standIn: !r.blob })
+    home.addDrop({ id, title: name, cat: category, dur: r.dur, lon, lat, standIn: !r.blob })
     const me = displayName(home.user)
-    feed.prepend({ id, cat, name: me, handle: '', when: Date.now(), title: name, place: where, caption: '', dur: r.dur, listens: 0, lon, lat, audioUrl, mine: true })
+    feed.prepend({ id, cat: category, name: me, handle: '', when: Date.now(), title: name, place: where, caption: '', dur: r.dur, listens: 0, lon, lat, audioUrl, mine: true })
     if (photo) feed.addPhoto(id, photo)
     feed.setSheet(false)
     feed.flash(uploaded || !r.blob ? 'Dropped. It will appear on the globe.' : 'Saved on this device. Sign in to share it.')
@@ -188,16 +212,18 @@ function SheetBody({ open }: { open: boolean }) {
         </button>
         <input ref={photoInput} type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={(e) => setPhoto(e.target.files?.[0] ?? null)} />
 
-        <div className="chips" role="group" aria-label="Category">
-          {CATEGORIES.map((c) => (
-            <button key={c} type="button" className="chip ui-press" aria-pressed={cat === c} onClick={() => setCat(c)}>
-              {c}
-            </button>
-          ))}
-        </div>
+        {(guessing || guess) && (
+          <p className="sheet__guess" aria-live="polite">
+            {guessing ? 'Listening…' : `Sounds like ${guess}`}
+          </p>
+        )}
+        <label className="ui-field sheet__cat">
+          Category
+          <CategoryPicker value={cat} onChange={setCat} disabled={guessing || phase !== 'done'} />
+        </label>
         <input className="pill-input" type="text" placeholder="Name this sound" aria-label="Name this sound" maxLength={80} value={title} onChange={(e) => setTitle(e.target.value)} />
         <input className="pill-input" type="text" placeholder="Where are you?" aria-label="Where are you?" maxLength={80} value={place} onChange={(e) => setPlace(e.target.value)} />
-        <button type="button" className="drop-btn ui-press" disabled={phase !== 'done' || busy} onClick={drop}>
+        <button type="button" className="drop-btn ui-press" disabled={phase !== 'done' || busy || guessing} onClick={drop}>
           {busy ? 'Dropping…' : 'Drop it'}
         </button>
       </section>

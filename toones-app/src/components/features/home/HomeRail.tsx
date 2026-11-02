@@ -1,14 +1,10 @@
 import { useNavigate } from 'react-router-dom'
-import { SPECIES, type Category } from '../../characters/clay'
 import { PanelIcon, PaperChip } from '../../ui'
-import { MENU, MENU_PATH, type MenuId } from '../menu/menu'
+import { MENU_PATH, type MenuId } from '../menu/menu'
 import { MenuRail } from '../menu/MenuRail'
 import { unreadCount, useFeed } from '../feed/feedStore'
 import { useArrival } from '../transition/arrivalStore'
 import { useHome } from './homeStore'
-
-/** The arrival lands characters by their drawing key, which is still the category name. */
-const CATEGORY_OF = Object.fromEntries(MENU.map((m) => [m.id, SPECIES[m.species].category])) as Record<MenuId, Category>
 
 export function HomeRail() {
   const navigate = useNavigate()
@@ -48,14 +44,10 @@ export function HomeRail() {
         active="globe"
         unread={unread}
         onSelect={onSelect}
-        character={(id) => {
-          const cat = CATEGORY_OF[id]
-          return {
-            mood: cat && happy.includes(cat) ? 'happy' : 'idle',
-            // Friends' mascot has no category, so it isn't part of the landing and stays put
-            style: cat && arriving && !landed.includes(cat) ? { visibility: 'hidden' } : undefined,
-          }
-        }}
+        character={(id) => ({
+          mood: happy.includes(id) ? 'happy' : 'idle',
+          style: arriving && !landed.includes(id) ? { visibility: 'hidden' } : undefined,
+        })}
       />
     </div>
   )

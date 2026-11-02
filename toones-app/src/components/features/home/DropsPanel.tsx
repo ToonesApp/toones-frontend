@@ -128,19 +128,12 @@ export function DropsPanel() {
   const tab = useHome((s) => s.panelTab)
   const setTab = useHome((s) => s.setPanelTab)
   const drops = useHome((s) => s.drops)
-  const visible = useHome((s) => s.visible)
   const now = useNow(60_000)
-  const list = drops.filter((d) => visible.includes(d.cat))
-  const hidden = drops.length - list.length
 
   const empty =
     tab === 'drops'
-      ? drops.length
-        ? 'No drops in these categories.'
-        : 'Nothing yet. Your first drop earns 40 xp.'
-      : drops.length
-        ? 'No places for these categories.'
-        : 'Places you drop in show up here.'
+      ? 'Nothing yet. Your first drop earns 40 xp.'
+      : 'Places you drop in show up here.'
 
   return (
     <aside id="drops-panel" className={open ? 'panel' : 'panel is-closed'} aria-label="Your Toones" aria-hidden={!open} inert={!open} data-arrive="left" data-arrive-narrow="bottom">
@@ -151,10 +144,9 @@ export function DropsPanel() {
           <button type="button" className="ui-quiet panel-close" onClick={() => setPanel(false)}>
             Close
           </button>
-          {hidden > 0 && <span className="num panel-count">{hidden} hidden by filter</span>}
         </div>
         <div id="drops-list" role="tabpanel" className="panel-list__body">
-          {list.length === 0 ? <div className="panel-empty">{empty}</div> : tab === 'drops' ? <DropRows list={list} now={now} /> : <PlaceRows list={list} now={now} />}
+          {drops.length === 0 ? <div className="panel-empty">{empty}</div> : tab === 'drops' ? <DropRows list={drops} now={now} /> : <PlaceRows list={drops} now={now} />}
         </div>
       </PaperChip>
     </aside>

@@ -176,7 +176,8 @@ export function removeFriend(username: string) {
   return request<{ ok: boolean }>(`/friends/${encodeURIComponent(username)}`, { method: 'DELETE', headers: authHeader() })
 }
 
-export type SoundCategory = 'nature' | 'language' | 'culture' | 'music' | 'city'
+/** AudioSet class display name (one of 521 YAMNet labels). */
+export type SoundCategory = string
 
 /** Mirrors the sound objects returned by /sounds. */
 export type ApiSound = {

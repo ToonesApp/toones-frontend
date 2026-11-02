@@ -1,9 +1,15 @@
 import { loadClip } from '../../lib/audioStore'
 import { live, useHome, type Drop } from './homeStore'
 
-const STAND_IN_BASE: Record<Drop['cat'], number> = { Nature: 330, Language: 294, Culture: 262, Music: 349, City: 220 }
+const STAND_IN_BASES = [330, 294, 262, 349, 220, 196, 392]
 const SCALE = [0, 2, 4, 7, 9, 12, 14]
 const MAX_STAND_IN = 30
+
+function standInBase(cat: string) {
+  let h = 0
+  for (let i = 0; i < cat.length; i++) h = (h * 31 + cat.charCodeAt(i)) >>> 0
+  return STAND_IN_BASES[h % STAND_IN_BASES.length]
+}
 
 let audio: HTMLAudioElement | null = null
 let objectUrl: string | null = null
@@ -91,7 +97,7 @@ export function synthesize(ac: AudioContext, out: AudioNode, drop: Pick<Drop, 'i
   gain.connect(out)
   let seed = [...drop.id].reduce((a, c) => (a * 31 + c.charCodeAt(0)) | 0, 7)
   const rnd = () => ((seed = (seed * 1103515245 + 12345) | 0) >>> 0) / 4294967296
-  const base = STAND_IN_BASE[drop.cat]
+  const base = standInBase(drop.cat)
   for (let t = 0; t < seconds; t += 0.32) {
     if (rnd() < 0.25) continue
     const osc = ac.createOscillator()
