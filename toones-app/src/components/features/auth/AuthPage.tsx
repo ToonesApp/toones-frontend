@@ -161,7 +161,7 @@ export default function AuthPage() {
       <header className="auth-header">
         <PaperChip as={Link} to="/auth" className="auth-wordmark">TOONES</PaperChip>
         <SegmentedTabs aria-label="Sign in or sign up" className="auth-tabs" value={mode} onChange={changeMode} options={TABS} />
-        <Link to="/home" className="ui-quiet auth-back">Back to globe</Link>
+        <Link to="/" className="ui-quiet auth-back">Back to home</Link>
       </header>
 
       <AuthScene engineRef={engine} formRef={formRef} />

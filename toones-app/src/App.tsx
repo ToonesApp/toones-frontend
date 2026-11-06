@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import PageNotFound from './components/layout/PageNotFound'
 import { Preloader } from './components/microcomponents/Preloader'
 import AuthPage from './components/features/auth/AuthPage'
+import { RequireAuth } from './components/features/auth/RequireAuth'
 import { ForgotPasswordPage, ResetPasswordPage, VerifyEmailPage } from './components/features/auth/RecoverPage'
 import DevPage from './dev/DevPage'
 import LandingPage from './components/layout/LandingPage'
@@ -27,17 +28,21 @@ function App() {
           <Route
             path="/home"
             element={
-              <Suspense fallback={null}>
-                <HomePage />
-              </Suspense>
+              <RequireAuth>
+                <Suspense fallback={null}>
+                  <HomePage />
+                </Suspense>
+              </RequireAuth>
             }
           />
           <Route
             path="/feed/*"
             element={
-              <Suspense fallback={null}>
-                <FeedPage />
-              </Suspense>
+              <RequireAuth>
+                <Suspense fallback={null}>
+                  <FeedPage />
+                </Suspense>
+              </RequireAuth>
             }
           />
           <Route path="/dev" element={<DevPage />} />
