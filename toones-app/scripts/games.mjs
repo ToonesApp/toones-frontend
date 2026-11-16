@@ -8,8 +8,9 @@ import { fileURLToPath } from 'node:url'
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const dataDir = join(root, 'src/components/features/games/data')
 const GAMES = { language: 'lang', instrument: 'inst', animal: 'anim' }
-/** Licenses that allow redistributing a trimmed clip with credit. */
-const LICENSE = /^(CC0( 1\.0)?|Public domain|CC BY(-SA)? \d\.\d)$/
+/** Licenses that allow redistributing a trimmed clip with credit. Pictures may also be share-alike. */
+const CLIP_LICENSE = /^(CC0 1\.0|Public domain|CC BY \d\.\d)$/
+const IMAGE_LICENSE = /^(CC0 1\.0|Public domain|CC BY(-SA)? \d\.\d)$/
 const BANNED_SOURCE = /macaulay/i
 
 const read = (name) => JSON.parse(readFileSync(join(dataDir, name), 'utf8'))
@@ -30,11 +31,11 @@ function distractors(item, pools, items) {
   return [...new Set([...order(mates), ...order(peers)])].slice(0, 3)
 }
 
-function checkCredit(where, credit) {
+function checkCredit(where, credit, allowed) {
   if (!credit || typeof credit !== 'object') return errors.push(`${where}: missing credit`)
   for (const key of ['source', 'author', 'url']) if (!text(credit[key])) errors.push(`${where}: credit.${key} is empty`)
   if (!text(credit.license)) errors.push(`${where}: missing license`)
-  else if (!LICENSE.test(credit.license)) errors.push(`${where}: license "${credit.license}" is not on the allowed list`)
+  else if (!allowed.test(credit.license)) errors.push(`${where}: license "${credit.license}" is not on the allowed list`)
   if (BANNED_SOURCE.test(`${credit.source} ${credit.url}`)) errors.push(`${where}: Macaulay Library audio is not allowed`)
 }
 
@@ -63,9 +64,9 @@ function check(game, prefix, items) {
     if (geo && !(Math.abs(geo.lat) <= 90 && Math.abs(geo.lng) <= 180)) errors.push(`${at}: reveal.geo is off the globe`)
     if (item.reveal?.image !== undefined) {
       checkFile(`${at} image`, game, item.reveal.image)
-      checkCredit(`${at} image`, item.reveal.imageCredit)
+      checkCredit(`${at} image`, item.reveal.imageCredit, IMAGE_LICENSE)
     }
-    checkCredit(at, item.credit)
+    checkCredit(at, item.credit, CLIP_LICENSE)
   }
 }
 

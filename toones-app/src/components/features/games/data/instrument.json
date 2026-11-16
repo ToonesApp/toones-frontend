@@ -1,1 +1,1040 @@
-[]
+[
+  {
+    "id": "inst-001",
+    "audio": "/games/instrument/inst-001.mp3",
+    "caption": "One plucked note with a warm, woody ring that fades quickly.",
+    "answer": "Acoustic guitar",
+    "options": [
+      "Acoustic guitar",
+      "Banjo",
+      "Ukulele",
+      "Electric guitar"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "The shape of the modern classical guitar was set by Antonio de Torres in 19th-century Spain.",
+      "geo": {
+        "lat": 37.39,
+        "lng": -5.99
+      },
+      "where": "Spain, in its modern form",
+      "family": "Strings (plucked)",
+      "image": "/games/instrument/inst-001.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "User:Martin Möller",
+        "license": "CC BY-SA 2.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Classical_Guitar_two_views2.png"
+      }
+    },
+    "credit": {
+      "source": "NSynth",
+      "author": "Google Magenta (note guitar_acoustic_021-058-100)",
+      "license": "CC BY 4.0",
+      "url": "https://magenta.tensorflow.org/datasets/nsynth"
+    }
+  },
+  {
+    "id": "inst-002",
+    "audio": "/games/instrument/inst-002.mp3",
+    "caption": "A deep, round plucked note, low enough to feel.",
+    "answer": "Electric bass",
+    "options": [
+      "Electric bass",
+      "Banjo",
+      "Double bass",
+      "Acoustic guitar"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Leo Fender's 1951 Precision Bass had frets so bassists could play precisely in tune, hence the name.",
+      "geo": {
+        "lat": 33.87,
+        "lng": -117.92
+      },
+      "where": "California, United States",
+      "family": "Strings (plucked, amplified)",
+      "image": "/games/instrument/inst-002.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "C. Leo Fender, inventor",
+        "license": "Public domain",
+        "url": "https://commons.wikimedia.org/wiki/File:Fender_Bass_Guitar_Patent.jpg"
+      }
+    },
+    "credit": {
+      "source": "NSynth",
+      "author": "Google Magenta (note bass_electronic_018-040-100)",
+      "license": "CC BY 4.0",
+      "url": "https://magenta.tensorflow.org/datasets/nsynth"
+    }
+  },
+  {
+    "id": "inst-003",
+    "audio": "/games/instrument/inst-003.mp3",
+    "caption": "A pure, breathy high note with no buzz at all.",
+    "answer": "Flute",
+    "options": [
+      "Flute",
+      "Electric organ",
+      "Bansuri",
+      "Ney"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Flutes are among the oldest instruments known: bone flutes found in Germany are about 40,000 years old.",
+      "geo": {
+        "lat": 48.14,
+        "lng": 11.58
+      },
+      "where": "Worldwide; the modern concert flute took shape in Germany",
+      "family": "Woodwind",
+      "image": "/games/instrument/inst-003.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Tubamirum",
+        "license": "CC BY-SA 4.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Fl%C3%BBte_traversi%C3%A8re.png"
+      }
+    },
+    "credit": {
+      "source": "NSynth",
+      "author": "Google Magenta (note flute_acoustic_002-073-127)",
+      "license": "CC BY 4.0",
+      "url": "https://magenta.tensorflow.org/datasets/nsynth"
+    }
+  },
+  {
+    "id": "inst-004",
+    "audio": "/games/instrument/inst-004.mp3",
+    "caption": "A bold, buzzing note that swells, like a fanfare held on one pitch.",
+    "answer": "Brass instrument",
+    "options": [
+      "Brass instrument",
+      "Bowed string instrument",
+      "Reed instrument",
+      "Electric organ"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Brass players make every note by buzzing their lips into a cup-shaped mouthpiece.",
+      "where": "Orchestras and bands worldwide",
+      "family": "Brass",
+      "image": "/games/instrument/inst-004.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "en:User:Nevilley",
+        "license": "CC BY-SA 3.0",
+        "url": "https://commons.wikimedia.org/wiki/File:High-brass-x6-large.jpg"
+      }
+    },
+    "credit": {
+      "source": "NSynth",
+      "author": "Google Magenta (note brass_acoustic_006-061-100)",
+      "license": "CC BY 4.0",
+      "url": "https://magenta.tensorflow.org/datasets/nsynth"
+    }
+  },
+  {
+    "id": "inst-005",
+    "audio": "/games/instrument/inst-005.mp3",
+    "caption": "A singing note that swells and shimmers, drawn out by a bow.",
+    "answer": "Bowed string instrument",
+    "options": [
+      "Bowed string instrument",
+      "Electric organ",
+      "Flute",
+      "Reed instrument"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Violin-family bows are strung with horsehair, rubbed with rosin so that it grips the string.",
+      "geo": {
+        "lat": 45.13,
+        "lng": 10.02
+      },
+      "where": "Northern Italy, for the violin family",
+      "family": "Strings (bowed)",
+      "image": "/games/instrument/inst-005.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Georg Feitscher",
+        "license": "CC BY-SA 3.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Cello_front_side.jpg"
+      }
+    },
+    "credit": {
+      "source": "NSynth",
+      "author": "Google Magenta (note string_acoustic_057-061-100)",
+      "license": "CC BY 4.0",
+      "url": "https://magenta.tensorflow.org/datasets/nsynth"
+    }
+  },
+  {
+    "id": "inst-006",
+    "audio": "/games/instrument/inst-006.mp3",
+    "caption": "A struck bar: a clear ping that dies away fast.",
+    "answer": "Mallet percussion",
+    "options": [
+      "Mallet percussion",
+      "Glockenspiel",
+      "Kalimba",
+      "Steelpan"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Marimbas, xylophones and vibraphones are all rows of tuned bars struck with mallets.",
+      "where": "Africa, Asia and the Americas",
+      "family": "Percussion (tuned)",
+      "image": "/games/instrument/inst-006.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Marimbaone",
+        "license": "CC BY-SA 3.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Marimba_One_4000_Series.jpg"
+      }
+    },
+    "credit": {
+      "source": "NSynth",
+      "author": "Google Magenta (note mallet_acoustic_047-066-100)",
+      "license": "CC BY 4.0",
+      "url": "https://magenta.tensorflow.org/datasets/nsynth"
+    }
+  },
+  {
+    "id": "inst-007",
+    "audio": "/games/instrument/inst-007.mp3",
+    "caption": "A loud, reedy melody over a constant humming drone.",
+    "answer": "Bagpipes",
+    "options": [
+      "Bagpipes",
+      "Hurdy-gurdy",
+      "Accordion",
+      "Oboe"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "A piper never pauses for breath: an arm squeezes air from the bag while the drones hold one note.",
+      "geo": {
+        "lat": 57,
+        "lng": -4.5
+      },
+      "where": "Scotland, for the Great Highland bagpipe",
+      "family": "Woodwind (reeds and a bag)",
+      "image": "/games/instrument/inst-007.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Chris 73 at en.wikipedia",
+        "license": "Public domain",
+        "url": "https://commons.wikimedia.org/wiki/File:HighlandersPiperMajor.jpg"
+      }
+    },
+    "credit": {
+      "source": "Freesound",
+      "author": "Urkki69",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/Urkki69/sounds/588640/"
+    }
+  },
+  {
+    "id": "inst-008",
+    "audio": "/games/instrument/inst-008.mp3",
+    "caption": "A sweep of plucked notes cascading downward.",
+    "answer": "Harp",
+    "options": [
+      "Harp",
+      "Pipa",
+      "Koto",
+      "Piano"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Ireland is the only country whose national emblem is a musical instrument: the harp.",
+      "geo": {
+        "lat": 53.35,
+        "lng": -6.26
+      },
+      "where": "Worldwide since antiquity; a national symbol of Ireland",
+      "family": "Strings (plucked)",
+      "image": "/games/instrument/inst-008.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Mary Mark Ockerbloom",
+        "license": "CC0 1.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Camac_Harp,_France,_belonging_to_M%C3%A1ire_N%C3%AD_Chathasaigh_2026-10-08-08.jpg"
+      }
+    },
+    "credit": {
+      "source": "Freesound",
+      "author": "Cunningar0807",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/Cunningar0807/sounds/436129/"
+    }
+  },
+  {
+    "id": "inst-009",
+    "audio": "/games/instrument/inst-009.mp3",
+    "caption": "Bright, twangy picked notes in a rolling pattern.",
+    "answer": "Banjo",
+    "options": [
+      "Banjo",
+      "Pipa",
+      "Acoustic guitar",
+      "Electric bass"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "The banjo descends from gourd instruments that enslaved West Africans recreated in the Americas.",
+      "geo": {
+        "lat": 36.6,
+        "lng": -82.2
+      },
+      "where": "The United States, from West African roots",
+      "family": "Strings (plucked)",
+      "image": "/games/instrument/inst-009.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "W. Duke, Sons & Co.",
+        "license": "CC0 1.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Banjo,_from_the_Musical_Instruments_series_(N82)_for_Duke_brand_cigarettes_MET_DPB883184.jpg"
+      }
+    },
+    "credit": {
+      "source": "Freesound",
+      "author": "pflanigan",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/pflanigan/sounds/390309/"
+    }
+  },
+  {
+    "id": "inst-010",
+    "audio": "/games/instrument/inst-010.mp3",
+    "caption": "A full, wheezy, reedy sound squeezed in and out.",
+    "answer": "Accordion",
+    "options": [
+      "Accordion",
+      "Reed instrument",
+      "Bagpipes",
+      "Electric organ"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "The accordion was patented in Vienna in 1829. Its bellows push air across metal reeds.",
+      "geo": {
+        "lat": 48.21,
+        "lng": 16.37
+      },
+      "where": "Central Europe",
+      "family": "Free reed (bellows)",
+      "image": "/games/instrument/inst-010.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Necz0r",
+        "license": "CC BY-SA 3.0",
+        "url": "https://commons.wikimedia.org/wiki/File:A_converter_free-bass_piano-accordion_and_a_Russian_bayan.jpg"
+      }
+    },
+    "credit": {
+      "source": "Freesound",
+      "author": "lepolainyann",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/lepolainyann/sounds/149091/"
+    }
+  },
+  {
+    "id": "inst-011",
+    "audio": "/games/instrument/inst-011.mp3",
+    "caption": "Light, cheerful strummed chords on short strings.",
+    "answer": "Ukulele",
+    "options": [
+      "Ukulele",
+      "Acoustic guitar",
+      "Mandolin",
+      "Charango"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "The ukulele grew out of small guitars that Portuguese immigrants from Madeira brought to Hawaii in the 1880s.",
+      "geo": {
+        "lat": 21.3,
+        "lng": -157.86
+      },
+      "where": "Hawaii",
+      "family": "Strings (plucked)",
+      "image": "/games/instrument/inst-011.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "St Cecilia's Hall: all things musical instruments",
+        "license": "CC BY 3.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Kumalae_ukulele_of_c._1910.webm"
+      }
+    },
+    "credit": {
+      "source": "Freesound",
+      "author": "gadzooks",
+      "license": "CC BY 4.0",
+      "url": "https://freesound.org/people/gadzooks/sounds/14879/"
+    }
+  },
+  {
+    "id": "inst-012",
+    "audio": "/games/instrument/inst-012.mp3",
+    "caption": "One plucked note with a bright, sustained electric tone.",
+    "answer": "Electric guitar",
+    "options": [
+      "Electric guitar",
+      "Electric bass",
+      "Double bass",
+      "Acoustic guitar"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "The first electric guitar sold commercially, the 1932 Rickenbacker “Frying Pan”, was a lap steel made in Los Angeles.",
+      "geo": {
+        "lat": 34.05,
+        "lng": -118.24
+      },
+      "where": "California, United States",
+      "family": "Strings (plucked, amplified)",
+      "image": "/games/instrument/inst-012.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "ArtBrom from Seattle",
+        "license": "CC BY-SA 2.0",
+        "url": "https://commons.wikimedia.org/wiki/File:1966_Fender_Telecaster_(SN159266)_neck_joint_plate.jpg"
+      }
+    },
+    "credit": {
+      "source": "NSynth",
+      "author": "Google Magenta (note guitar_electronic_028-062-127)",
+      "license": "CC BY 4.0",
+      "url": "https://magenta.tensorflow.org/datasets/nsynth"
+    }
+  },
+  {
+    "id": "inst-013",
+    "audio": "/games/instrument/inst-013.mp3",
+    "caption": "A nasal, slightly buzzy held note, mellower than brass.",
+    "answer": "Reed instrument",
+    "options": [
+      "Reed instrument",
+      "Electric organ",
+      "Harmonica",
+      "Brass instrument"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "A reed instrument sounds when a thin strip of cane vibrates against the mouthpiece, or against a second reed.",
+      "where": "Orchestras and bands worldwide",
+      "family": "Woodwind (reed)",
+      "image": "/games/instrument/inst-013.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "No machine-readable author provided. Reisio assumed (based on copyright claims).",
+        "license": "Public domain",
+        "url": "https://commons.wikimedia.org/wiki/File:Saxophone_reeds-alto,_tenor.jpeg"
+      }
+    },
+    "credit": {
+      "source": "NSynth",
+      "author": "Google Magenta (note reed_acoustic_037-061-127)",
+      "license": "CC BY 4.0",
+      "url": "https://magenta.tensorflow.org/datasets/nsynth"
+    }
+  },
+  {
+    "id": "inst-014",
+    "audio": "/games/instrument/inst-014.mp3",
+    "caption": "A steady, hollow tone that starts at once and never fades while held.",
+    "answer": "Electric organ",
+    "options": [
+      "Electric organ",
+      "Flute",
+      "Reed instrument",
+      "Harmonica"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "Laurens Hammond's 1935 organ made its tones with spinning metal wheels and was sold as a cheaper pipe organ.",
+      "geo": {
+        "lat": 41.88,
+        "lng": -87.63
+      },
+      "where": "Chicago, United States",
+      "family": "Keyboard (electric)",
+      "image": "/games/instrument/inst-014.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Dongui",
+        "license": "Public domain",
+        "url": "https://commons.wikimedia.org/wiki/File:Hammond_c3_Emilio_Mu%C3%B1oz.jpg"
+      }
+    },
+    "credit": {
+      "source": "NSynth",
+      "author": "Google Magenta (note organ_electronic_028-061-127)",
+      "license": "CC BY 4.0",
+      "url": "https://magenta.tensorflow.org/datasets/nsynth"
+    }
+  },
+  {
+    "id": "inst-015",
+    "audio": "/games/instrument/inst-015.mp3",
+    "caption": "Plucked strings with a bright, buzzing twang over a shimmering drone.",
+    "answer": "Sitar",
+    "options": [
+      "Sitar",
+      "Sarod",
+      "Bouzouki",
+      "Tanpura"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "A sitar's shimmer comes from a dozen or so sympathetic strings that ring without ever being plucked.",
+      "geo": {
+        "lat": 25.3,
+        "lng": 83
+      },
+      "where": "North India, Pakistan and Bangladesh",
+      "family": "Strings (plucked)",
+      "image": "/games/instrument/inst-015.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Alephalpha",
+        "license": "CC BY-SA 3.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Dia5275_Ravi_Shankar.jpg"
+      }
+    },
+    "credit": {
+      "source": "Freesound",
+      "author": "mannhawks",
+      "license": "CC BY 3.0",
+      "url": "https://freesound.org/people/mannhawks/sounds/147895/"
+    }
+  },
+  {
+    "id": "inst-016",
+    "audio": "/games/instrument/inst-016.mp3",
+    "caption": "A pair of hand drums: crisp taps and a deep, bending boom.",
+    "answer": "Tabla",
+    "options": [
+      "Tabla",
+      "Conga",
+      "Madal",
+      "Djembe"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "Tabla players learn rhythms as spoken syllables such as “dha” and “tin” before playing them.",
+      "geo": {
+        "lat": 28.6,
+        "lng": 77.2
+      },
+      "where": "North India and Pakistan",
+      "family": "Percussion (hand drums)",
+      "image": "/games/instrument/inst-016.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Nagarjun Kandukuru from Bangalore, India",
+        "license": "CC BY 2.0",
+        "url": "https://commons.wikimedia.org/wiki/File:6_ancient_drum_types_of_Madhya_Pradesh,_Indian_subcontinent.jpg"
+      }
+    },
+    "credit": {
+      "source": "Freesound",
+      "author": "lezaarth",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/lezaarth/sounds/242591/"
+    }
+  },
+  {
+    "id": "inst-017",
+    "audio": "/games/instrument/inst-017.mp3",
+    "caption": "Soft, bell-like plucked notes, like a music box.",
+    "answer": "Kalimba",
+    "options": [
+      "Kalimba",
+      "Vibraphone",
+      "Music box",
+      "Steelpan"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "A kalimba's metal tines are plucked with the thumbs, which is why it is also called a thumb piano.",
+      "geo": {
+        "lat": -17.83,
+        "lng": 31.05
+      },
+      "where": "Southern Africa; modelled on the Shona mbira of Zimbabwe",
+      "family": "Percussion (plucked tines)",
+      "image": "/games/instrument/inst-017.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Zanzambira at English Wikipedia",
+        "license": "Public domain",
+        "url": "https://commons.wikimedia.org/wiki/File:Ene_mbira.jpg"
+      }
+    },
+    "credit": {
+      "source": "Freesound",
+      "author": "dobroide",
+      "license": "CC BY 4.0",
+      "url": "https://freesound.org/people/dobroide/sounds/7395/"
+    }
+  },
+  {
+    "id": "inst-018",
+    "audio": "/games/instrument/inst-018.mp3",
+    "caption": "Ringing, bell-like notes with a warm metallic shimmer.",
+    "answer": "Steelpan",
+    "options": [
+      "Steelpan",
+      "Vibraphone",
+      "Glockenspiel",
+      "Mallet percussion"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "The steelpan was invented in Trinidad in the 1930s and 40s by hammering notes into used oil drums.",
+      "geo": {
+        "lat": 10.65,
+        "lng": -61.5
+      },
+      "where": "Trinidad and Tobago",
+      "family": "Percussion (tuned)",
+      "image": "/games/instrument/inst-018.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Kip1234",
+        "license": "CC BY-SA 4.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Steelpan_Instruments_at_Trinidad_and_Tobago_Carnival.jpg"
+      }
+    },
+    "credit": {
+      "source": "Freesound",
+      "author": "ingsey101",
+      "license": "CC BY 3.0",
+      "url": "https://freesound.org/people/ingsey101/sounds/51830/"
+    }
+  },
+  {
+    "id": "inst-019",
+    "audio": "/games/instrument/inst-019.mp3",
+    "caption": "A hand drum with booming bass hits and sharp slaps.",
+    "answer": "Djembe",
+    "options": [
+      "Djembe",
+      "Madal",
+      "Tabla",
+      "Bongos"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "A djembe is carved from one piece of hardwood and topped with goatskin, and makes three sounds: bass, tone and slap.",
+      "geo": {
+        "lat": 12.65,
+        "lng": -8
+      },
+      "where": "Mande peoples of West Africa",
+      "family": "Percussion (hand drum)",
+      "image": "/games/instrument/inst-019.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Djembe Art",
+        "license": "CC BY-SA 3.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Lenke_djembe_from_Mali.jpeg"
+      }
+    },
+    "credit": {
+      "source": "Freesound",
+      "author": "GR3AVE5Y",
+      "license": "CC BY 4.0",
+      "url": "https://freesound.org/people/GR3AVE5Y/sounds/149109/"
+    }
+  },
+  {
+    "id": "inst-020",
+    "audio": "/games/instrument/inst-020.mp3",
+    "caption": "A low, continuous buzzing drone with wobbling overtones.",
+    "answer": "Didgeridoo",
+    "options": [
+      "Didgeridoo",
+      "Jaw harp",
+      "Tuba",
+      "Alphorn"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "Didgeridoos are traditionally made from eucalyptus branches hollowed out by termites.",
+      "geo": {
+        "lat": -12.5,
+        "lng": 133
+      },
+      "where": "Aboriginal peoples of northern Australia",
+      "family": "Wind (lip-buzzed)",
+      "image": "/games/instrument/inst-020.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Hmarin",
+        "license": "Public domain",
+        "url": "https://commons.wikimedia.org/wiki/File:Australiandidgeridoos.jpg"
+      }
+    },
+    "credit": {
+      "source": "Freesound",
+      "author": "didgebaba",
+      "license": "CC BY 4.0",
+      "url": "https://freesound.org/people/didgebaba/sounds/30554/"
+    }
+  },
+  {
+    "id": "inst-021",
+    "audio": "/games/instrument/inst-021.mp3",
+    "caption": "A bright, piping whistled tune.",
+    "answer": "Tin whistle",
+    "options": [
+      "Tin whistle",
+      "Ocarina",
+      "Flute",
+      "Bansuri"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "The tin whistle has just six holes and is often the first instrument Irish traditional players learn.",
+      "geo": {
+        "lat": 53,
+        "lng": -8
+      },
+      "where": "Ireland and Britain",
+      "family": "Woodwind (whistle)",
+      "image": "/games/instrument/inst-021.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Daniel Fernandez",
+        "license": "CC BY-SA 3.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Tin_Whistles.jpg"
+      }
+    },
+    "credit": {
+      "source": "Freesound",
+      "author": "neild101",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/neild101/sounds/255835/"
+    }
+  },
+  {
+    "id": "inst-022",
+    "audio": "/games/instrument/inst-022.mp3",
+    "caption": "An eerie, gliding electronic tone, like a wordless voice.",
+    "answer": "Theremin",
+    "options": [
+      "Theremin",
+      "Musical saw",
+      "Violin",
+      "Synthesizer"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "The theremin, invented by Leon Theremin around 1920, is played without touching it: the hands move near two antennas.",
+      "geo": {
+        "lat": 59.93,
+        "lng": 30.34
+      },
+      "where": "Russia",
+      "family": "Electronic",
+      "image": "/games/instrument/inst-022.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Hutschi",
+        "license": "CC BY-SA 3.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Etherwave_Theremin_Kit.jpg"
+      }
+    },
+    "credit": {
+      "source": "Wikimedia Commons",
+      "author": "Effebit",
+      "license": "Public domain",
+      "url": "https://commons.wikimedia.org/wiki/File:Epro_theremin_middle_bach.ogg"
+    }
+  },
+  {
+    "id": "inst-023",
+    "audio": "/games/instrument/inst-023.mp3",
+    "caption": "Rippling, harp-like plucked notes, light and cascading.",
+    "answer": "Kora",
+    "options": [
+      "Kora",
+      "Harp",
+      "Guzheng",
+      "Piano"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "The kora has 21 strings, and its body is half a calabash gourd covered with cowhide.",
+      "geo": {
+        "lat": 13.45,
+        "lng": -16.58
+      },
+      "where": "Mande peoples of West Africa: Mali, Senegal, Gambia and Guinea",
+      "family": "Strings (harp-lute)",
+      "image": "/games/instrument/inst-023.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "KannanShanmugamstudio,Main Road,Kollam",
+        "license": "CC BY-SA 3.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Kora_DSC_0355.JPG"
+      }
+    },
+    "credit": {
+      "source": "Freesound",
+      "author": "dobroide",
+      "license": "CC BY 4.0",
+      "url": "https://freesound.org/people/dobroide/sounds/136576/"
+    }
+  },
+  {
+    "id": "inst-024",
+    "audio": "/games/instrument/inst-024.mp3",
+    "caption": "Dry, snappy plucked notes with a percussive slap.",
+    "answer": "Shamisen",
+    "options": [
+      "Shamisen",
+      "Banjo",
+      "Guzheng",
+      "Koto"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "The shamisen has three strings and is struck with a large plectrum, the bachi, which also slaps the skin of the body.",
+      "geo": {
+        "lat": 35,
+        "lng": 135.77
+      },
+      "where": "Japan",
+      "family": "Strings (plucked)",
+      "image": "/games/instrument/inst-024.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "KogeJoe",
+        "license": "CC0 1.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Bachi_compare.JPG"
+      }
+    },
+    "credit": {
+      "source": "Wikimedia Commons",
+      "author": "Nesnad",
+      "license": "CC BY 3.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Shamisenwithvocals_2006.ogg"
+    }
+  },
+  {
+    "id": "inst-025",
+    "audio": "/games/instrument/inst-025.mp3",
+    "caption": "Deep, mellow plucked notes that slide between pitches.",
+    "answer": "Oud",
+    "options": [
+      "Oud",
+      "Lute",
+      "Sitar",
+      "Tanpura"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "The oud has no frets, and its Arabic name, al-ʿūd, gave Europe the word “lute”.",
+      "geo": {
+        "lat": 33.3,
+        "lng": 44.4
+      },
+      "where": "The Arab world, Turkey and Iran",
+      "family": "Strings (plucked)",
+      "image": "/games/instrument/inst-025.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Creator:Manol (Emmanuel Venios)",
+        "license": "CC0 1.0",
+        "url": "https://commons.wikimedia.org/wiki/File:%C5%AAd_MET_DP340079.jpg"
+      }
+    },
+    "credit": {
+      "source": "Freesound",
+      "author": "xserra",
+      "license": "CC BY 4.0",
+      "url": "https://freesound.org/people/xserra/sounds/115399/"
+    }
+  },
+  {
+    "id": "inst-026",
+    "audio": "/games/instrument/inst-026.mp3",
+    "caption": "A bowed, voice-like melody that slides and wails.",
+    "answer": "Erhu",
+    "options": [
+      "Erhu",
+      "Morin khuur",
+      "Cello",
+      "Sarangi"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "The erhu has just two strings, and its bow stays threaded between them.",
+      "geo": {
+        "lat": 31.2,
+        "lng": 121.5
+      },
+      "where": "China",
+      "family": "Strings (bowed)",
+      "image": "/games/instrument/inst-026.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "No machine-readable author provided. LDHan assumed (based on copyright claims).",
+        "license": "Public domain",
+        "url": "https://commons.wikimedia.org/wiki/File:Erhu-8-sided-front.png"
+      }
+    },
+    "credit": {
+      "source": "Freesound",
+      "author": "irzirgpznj",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/irzirgpznj/sounds/477169/"
+    }
+  },
+  {
+    "id": "inst-027",
+    "audio": "/games/instrument/inst-027.mp3",
+    "caption": "Bright plucked notes with sweeping runs and bent pitches.",
+    "answer": "Guzheng",
+    "options": [
+      "Guzheng",
+      "Shamisen",
+      "Kora",
+      "Harp"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "A modern guzheng has 21 strings, each over its own movable bridge, and players bend notes by pressing behind it.",
+      "geo": {
+        "lat": 34.3,
+        "lng": 108.9
+      },
+      "where": "China",
+      "family": "Strings (plucked zither)",
+      "image": "/games/instrument/inst-027.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Toglenn",
+        "license": "CC BY-SA 4.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Guzheng_2020_by_Glenn_Francis.jpg"
+      }
+    },
+    "credit": {
+      "source": "Freesound",
+      "author": "neolein",
+      "license": "CC0 1.0",
+      "url": "https://freesound.org/people/neolein/sounds/472707/"
+    }
+  },
+  {
+    "id": "inst-028",
+    "audio": "/games/instrument/inst-028.mp3",
+    "caption": "A soft, breathy bamboo flute note.",
+    "answer": "Bansuri",
+    "options": [
+      "Bansuri",
+      "Ney",
+      "Pan flute",
+      "Shakuhachi"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "The bansuri is a side-blown bamboo flute, the instrument the god Krishna is shown playing.",
+      "geo": {
+        "lat": 27.5,
+        "lng": 77.67
+      },
+      "where": "India, Nepal and Bangladesh",
+      "family": "Woodwind (flute)",
+      "image": "/games/instrument/inst-028.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Betelgeuse",
+        "license": "CC BY-SA 3.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Bansuri_bamboo_flute_23inch.jpg"
+      }
+    },
+    "credit": {
+      "source": "Freesound",
+      "author": "sankalp",
+      "license": "CC BY 4.0",
+      "url": "https://freesound.org/people/sankalp/sounds/179696/"
+    }
+  },
+  {
+    "id": "inst-029",
+    "audio": "/games/instrument/inst-029.mp3",
+    "caption": "A soft, mournful, breathy reed melody.",
+    "answer": "Duduk",
+    "options": [
+      "Duduk",
+      "Oboe",
+      "Clarinet",
+      "Bansuri"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "The duduk is carved from apricot wood, and its music is on UNESCO's list of intangible cultural heritage.",
+      "geo": {
+        "lat": 40.18,
+        "lng": 44.51
+      },
+      "where": "Armenia",
+      "family": "Woodwind (double reed)",
+      "image": "/games/instrument/inst-029.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Andznakan",
+        "license": "CC BY-SA 4.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Kids_Playing_duduk.jpg"
+      }
+    },
+    "credit": {
+      "source": "Freesound",
+      "author": "juskiddink",
+      "license": "CC BY 4.0",
+      "url": "https://freesound.org/people/juskiddink/sounds/184267/"
+    }
+  },
+  {
+    "id": "inst-030",
+    "audio": "/games/instrument/inst-030.mp3",
+    "caption": "Bright, spacious plucked notes on a long zither.",
+    "answer": "Koto",
+    "options": [
+      "Koto",
+      "Banjo",
+      "Guzheng",
+      "Kora"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "The koto is Japan's national instrument: 13 strings stretched over a body about 1.8 metres long.",
+      "geo": {
+        "lat": 35.68,
+        "lng": 139.69
+      },
+      "where": "Japan",
+      "family": "Strings (plucked zither)",
+      "image": "/games/instrument/inst-030.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Original uploader and author was Smgregory at en.wikipedia",
+        "license": "CC BY-SA 3.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Japanese_Koto.jpg"
+      }
+    },
+    "credit": {
+      "source": "Wikimedia Commons",
+      "author": "Torsodog",
+      "license": "CC BY 3.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Koto_performance.ogg"
+    }
+  }
+]
