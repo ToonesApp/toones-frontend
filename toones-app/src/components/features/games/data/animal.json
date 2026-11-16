@@ -1,1 +1,1018 @@
-[]
+[
+  {
+    "id": "anim-001",
+    "audio": "/games/animal/anim-001.mp3",
+    "caption": "Sharp, repeated barks.",
+    "answer": "Dog",
+    "options": [
+      "Dog",
+      "Gray wolf",
+      "Coyote",
+      "Red fox"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Adult wolves rarely bark. Barking became common in dogs as they were domesticated.",
+      "where": "Alongside people on every continent",
+      "image": "/games/animal/anim-001.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "M. Rehemtulla",
+        "license": "CC BY 2.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Huskiesatrest.jpg"
+      }
+    },
+    "credit": {
+      "source": "ESC-10",
+      "author": "ronfont (Freesound), via ESC-10 by K. J. Piczak",
+      "license": "CC BY 3.0",
+      "url": "https://freesound.org/people/ronfont/sounds/30344/"
+    }
+  },
+  {
+    "id": "anim-002",
+    "audio": "/games/animal/anim-002.mp3",
+    "caption": "A loud, rising crow in several syllables: cock-a-doodle-doo.",
+    "answer": "Rooster",
+    "options": [
+      "Rooster",
+      "Indian peafowl",
+      "Wild turkey",
+      "Hen"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Roosters start crowing about two hours before dawn, following their internal body clock.",
+      "geo": {
+        "lat": 15,
+        "lng": 101
+      },
+      "where": "Farms worldwide; descended from the red junglefowl of Southeast Asia",
+      "image": "/games/animal/anim-002.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Andrei Niemimäki from Turku, Finland",
+        "license": "CC BY-SA 2.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Male_and_female_chicken_sitting_together.jpg"
+      }
+    },
+    "credit": {
+      "source": "ESC-10",
+      "author": "dobroide (Freesound), via ESC-10 by K. J. Piczak",
+      "license": "CC BY 3.0",
+      "url": "https://freesound.org/people/dobroide/sounds/39923/"
+    }
+  },
+  {
+    "id": "anim-003",
+    "audio": "/games/animal/anim-003.mp3",
+    "caption": "A drawn-out, pleading meow.",
+    "answer": "Cat",
+    "options": [
+      "Cat",
+      "Raccoon",
+      "Bobcat",
+      "Red fox"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Adult cats rarely meow at each other. Meowing is mostly saved for people.",
+      "geo": {
+        "lat": 35,
+        "lng": 38
+      },
+      "where": "Homes worldwide; first tamed in the Near East",
+      "image": "/games/animal/anim-003.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Karin Langner-Bahmann, upload von Martin Bahmann",
+        "license": "CC BY-SA 3.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Siam_lilacpoint.jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "Miyrumiyru",
+      "license": "CC0 1.0",
+      "url": "https://www.inaturalist.org/observations/342887103"
+    }
+  },
+  {
+    "id": "anim-004",
+    "audio": "/games/animal/anim-004.mp3",
+    "caption": "Deep, rumbling roars that fade into grunts.",
+    "answer": "Lion",
+    "options": [
+      "Lion",
+      "Brown bear",
+      "Tiger",
+      "Leopard"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "A lion's roar can carry about 8 km across open savanna.",
+      "geo": {
+        "lat": -2.3,
+        "lng": 34.8
+      },
+      "where": "Savannas of sub-Saharan Africa, and one forest in India",
+      "image": "/games/animal/anim-004.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Giles Laurent",
+        "license": "CC BY-SA 4.0",
+        "url": "https://commons.wikimedia.org/wiki/File:020_The_lion_king_Snyggve_in_the_Serengeti_National_Park_Photo_by_Giles_Laurent.jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "Damien Wallace",
+      "license": "CC0 1.0",
+      "url": "https://www.inaturalist.org/observations/303066452"
+    }
+  },
+  {
+    "id": "anim-005",
+    "audio": "/games/animal/anim-005.mp3",
+    "caption": "A run of loud, nasal quacks.",
+    "answer": "Mallard duck",
+    "options": [
+      "Mallard duck",
+      "Mute swan",
+      "Common loon",
+      "Canada goose"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Only female mallards give the classic loud quack. Males make a quieter, raspy call.",
+      "geo": {
+        "lat": 45,
+        "lng": -93
+      },
+      "where": "Wetlands across the Northern Hemisphere",
+      "image": "/games/animal/anim-005.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Jacek Halicki",
+        "license": "CC BY-SA 4.0",
+        "url": "https://commons.wikimedia.org/wiki/File:2015_Kaczka_krzy%C5%BCowka_w_wodzie_(samiec)_(tight_crop).jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "Pavel Borodin",
+      "license": "CC BY 4.0",
+      "url": "https://www.inaturalist.org/observations/185026410"
+    }
+  },
+  {
+    "id": "anim-006",
+    "audio": "/games/animal/anim-006.mp3",
+    "caption": "Loud, two-note honks.",
+    "answer": "Canada goose",
+    "options": [
+      "Canada goose",
+      "Common loon",
+      "Mallard duck",
+      "Mute swan"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Canada geese honk in flight to keep the flock together, and fly in a V to save energy.",
+      "geo": {
+        "lat": 50,
+        "lng": -97
+      },
+      "where": "Lakes and fields of North America",
+      "image": "/games/animal/anim-006.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "USFWS Mountain-Prairie",
+        "license": "Public domain",
+        "url": "https://commons.wikimedia.org/wiki/File:Canada_goose_on_Seedskadee_NWR_(27826185489).jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "Chase Harris",
+      "license": "CC0 1.0",
+      "url": "https://www.inaturalist.org/observations/343301392"
+    }
+  },
+  {
+    "id": "anim-007",
+    "audio": "/games/animal/anim-007.mp3",
+    "caption": "Harsh, clear caws in a row.",
+    "answer": "American crow",
+    "options": [
+      "American crow",
+      "Blue jay",
+      "Common raven",
+      "Black-billed magpie"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Crows recognize individual human faces and can remember them for years.",
+      "geo": {
+        "lat": 40,
+        "lng": -95
+      },
+      "where": "Woods, farms and cities across North America",
+      "image": "/games/animal/anim-007.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "(c) Justin Flint, some rights reserved (CC BY)",
+        "license": "CC BY 4.0",
+        "url": "https://commons.wikimedia.org/wiki/File:American_Crow_imported_from_iNaturalist_photo_250510645_on_5_December_2024.jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "Corvi Zeman",
+      "license": "CC BY 4.0",
+      "url": "https://www.inaturalist.org/observations/107896857"
+    }
+  },
+  {
+    "id": "anim-008",
+    "audio": "/games/animal/anim-008.mp3",
+    "caption": "Deep, rhythmic hoots that end on a drawn-out note.",
+    "answer": "Barred owl",
+    "options": [
+      "Barred owl",
+      "Great horned owl",
+      "Mourning dove",
+      "Eastern screech owl"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Birders remember the barred owl's hoot as “Who cooks for you? Who cooks for you-all?”",
+      "geo": {
+        "lat": 36,
+        "lng": -82
+      },
+      "where": "Forests of eastern North America",
+      "image": "/games/animal/anim-008.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Andy Reago & Chrissy McClarren",
+        "license": "CC BY 2.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Barred_Owl_(33795815188).jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "Chase Harris",
+      "license": "CC0 1.0",
+      "url": "https://www.inaturalist.org/observations/344110459"
+    }
+  },
+  {
+    "id": "anim-009",
+    "audio": "/games/animal/anim-009.mp3",
+    "caption": "A steady, high buzz.",
+    "answer": "Honey bee",
+    "options": [
+      "Honey bee",
+      "Housefly",
+      "Mosquito",
+      "Cicada"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "A honey bee's buzz is the sound of its wings beating more than 200 times a second.",
+      "geo": {
+        "lat": 45,
+        "lng": 10
+      },
+      "where": "Worldwide; native to Europe, Africa and western Asia",
+      "image": "/games/animal/anim-009.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Andreas Trepte",
+        "license": "CC BY-SA 2.5",
+        "url": "https://commons.wikimedia.org/wiki/File:Apis_mellifera_Western_honey_bee.jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "Claire T.",
+      "license": "CC BY 4.0",
+      "url": "https://www.inaturalist.org/observations/121898399"
+    }
+  },
+  {
+    "id": "anim-010",
+    "audio": "/games/animal/anim-010.mp3",
+    "caption": "Bright, even chirps, repeated without a break.",
+    "answer": "Field cricket",
+    "options": [
+      "Field cricket",
+      "Cicada",
+      "Katydid",
+      "Tokay gecko"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Only male crickets chirp, by rubbing one wing against the other.",
+      "geo": {
+        "lat": 45.1,
+        "lng": 15.2
+      },
+      "where": "Fields and grasslands on most continents",
+      "image": "/games/animal/anim-010.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Roberto Zanon",
+        "license": "CC BY-SA 3.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Gryllus_campestris_3.jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "Marino Linić",
+      "license": "CC0 1.0",
+      "url": "https://www.inaturalist.org/observations/219272343"
+    }
+  },
+  {
+    "id": "anim-011",
+    "audio": "/games/animal/anim-011.mp3",
+    "caption": "Deep, hoarse croaks.",
+    "answer": "Common raven",
+    "options": [
+      "Common raven",
+      "American crow",
+      "Blue jay",
+      "Black-billed magpie"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "A raven's croak is deeper and hoarser than a crow's caw, and ravens can learn to mimic human speech.",
+      "geo": {
+        "lat": 47,
+        "lng": -120
+      },
+      "where": "Mountains, coasts and forests across the Northern Hemisphere",
+      "image": "/games/animal/anim-011.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Frank Schulenburg",
+        "license": "CC BY-SA 4.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Corvus_corax_clarionensis,_Point_Reyes_National_Seashore.jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "siznax",
+      "license": "CC0 1.0",
+      "url": "https://www.inaturalist.org/observations/15337150"
+    }
+  },
+  {
+    "id": "anim-012",
+    "audio": "/games/animal/anim-012.mp3",
+    "caption": "High yips and yaps that break into short howls.",
+    "answer": "Coyote",
+    "options": [
+      "Coyote",
+      "Red fox",
+      "Elk",
+      "Common loon"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "Two coyotes can sound like a whole pack, because each one keeps changing pitch as it yips and howls.",
+      "geo": {
+        "lat": 39,
+        "lng": -105
+      },
+      "where": "Prairies, deserts and cities of North America",
+      "image": "/games/animal/anim-012.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Yathin S Krishnappa",
+        "license": "CC BY-SA 3.0",
+        "url": "https://commons.wikimedia.org/wiki/File:2009-Coyote-Yosemite.jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "Aaron Stoll",
+      "license": "CC0 1.0",
+      "url": "https://www.inaturalist.org/observations/221977550"
+    }
+  },
+  {
+    "id": "anim-013",
+    "audio": "/games/animal/anim-013.mp3",
+    "caption": "A short, loud, musical trill.",
+    "answer": "Gray treefrog",
+    "options": [
+      "Gray treefrog",
+      "Spring peeper",
+      "Pacific chorus frog",
+      "Green frog"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "Gray treefrogs can survive being partly frozen in winter and thaw out again in spring.",
+      "geo": {
+        "lat": 40,
+        "lng": -85
+      },
+      "where": "Woodlands of eastern North America",
+      "image": "/games/animal/anim-013.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Randidawn",
+        "license": "CC BY-SA 4.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Gray_tree_frog_in_arboreal_forest_habitat,_MA.jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "Clifton Ladd, C.W.B.",
+      "license": "CC BY 4.0",
+      "url": "https://www.inaturalist.org/observations/42369497"
+    }
+  },
+  {
+    "id": "anim-014",
+    "audio": "/games/animal/anim-014.mp3",
+    "caption": "A two-part “rib-bit”, repeated.",
+    "answer": "Pacific chorus frog",
+    "options": [
+      "Pacific chorus frog",
+      "Green frog",
+      "American bullfrog",
+      "Gray treefrog"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "Its “ribbit” is the frog call heard in countless Hollywood films, even ones set far from the Pacific coast.",
+      "geo": {
+        "lat": 45,
+        "lng": -122.5
+      },
+      "where": "The west coast of North America",
+      "image": "/games/animal/anim-014.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "The High Fin Sperm Whale",
+        "license": "CC BY-SA 3.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Pacific_Tree_Frog_(Pseudacris_regilla)_3.JPG"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "Juli Mallett",
+      "license": "CC BY 4.0",
+      "url": "https://www.inaturalist.org/observations/72863887"
+    }
+  },
+  {
+    "id": "anim-015",
+    "audio": "/games/animal/anim-015.mp3",
+    "caption": "High, piercing peeps, about one a second.",
+    "answer": "Spring peeper",
+    "options": [
+      "Spring peeper",
+      "American bullfrog",
+      "Gray treefrog",
+      "Common coquí"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "A spring peeper is about the size of a paperclip, yet a chorus can be heard from more than a kilometre away.",
+      "geo": {
+        "lat": 44,
+        "lng": -76
+      },
+      "where": "Woodland ponds of eastern North America",
+      "image": "/games/animal/anim-015.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "USGS",
+        "license": "Public domain",
+        "url": "https://commons.wikimedia.org/wiki/File:H_crucifer_USGS.jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "Thomas Koffel",
+      "license": "CC BY 4.0",
+      "url": "https://www.inaturalist.org/observations/21372070"
+    }
+  },
+  {
+    "id": "anim-016",
+    "audio": "/games/animal/anim-016.mp3",
+    "caption": "A deep, droning bellow, like a distant cow.",
+    "answer": "American bullfrog",
+    "options": [
+      "American bullfrog",
+      "Green frog",
+      "Gray treefrog",
+      "Pacific chorus frog"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "The bullfrog is named for its deep call, which sounds like a cow lowing far away.",
+      "geo": {
+        "lat": 35,
+        "lng": -86
+      },
+      "where": "Ponds and lakes of eastern North America",
+      "image": "/games/animal/anim-016.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Carl D. Howe",
+        "license": "CC BY-SA 2.5",
+        "url": "https://commons.wikimedia.org/wiki/File:North-American-bullfrog1.jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "familiarjumpingspider",
+      "license": "CC BY 4.0",
+      "url": "https://www.inaturalist.org/observations/349128529"
+    }
+  },
+  {
+    "id": "anim-017",
+    "audio": "/games/animal/anim-017.mp3",
+    "caption": "Clear, slurred whistles, repeated faster and faster.",
+    "answer": "Northern cardinal",
+    "options": [
+      "Northern cardinal",
+      "Song thrush",
+      "American robin",
+      "Eurasian blackbird"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "Unlike most North American songbirds, female cardinals sing too, sometimes from the nest.",
+      "geo": {
+        "lat": 36,
+        "lng": -84
+      },
+      "where": "Woodlands and gardens of eastern North America",
+      "image": "/games/animal/anim-017.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Rhododendrites",
+        "license": "CC BY-SA 4.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Male_northern_cardinal_in_Central_Park_(52612).jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "Zoë-Blue Coates",
+      "license": "CC0 1.0",
+      "url": "https://www.inaturalist.org/observations/121828536"
+    }
+  },
+  {
+    "id": "anim-018",
+    "audio": "/games/animal/anim-018.mp3",
+    "caption": "Rich whistles, trills and gurgles, never quite the same twice.",
+    "answer": "Common nightingale",
+    "options": [
+      "Common nightingale",
+      "Eurasian blackbird",
+      "American robin",
+      "Northern cardinal"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "A male nightingale knows around 200 different song phrases, and often sings them at night.",
+      "geo": {
+        "lat": 45,
+        "lng": 5
+      },
+      "where": "Thickets of Europe and western Asia; winters in Africa",
+      "image": "/games/animal/anim-018.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Warrieboy",
+        "license": "CC BY-SA 4.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Luscinia_megarhynchos_-_Common_nightingale_-_Nachtegaal_(cropped).jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "Felicia Seichter",
+      "license": "CC BY 4.0",
+      "url": "https://www.inaturalist.org/observations/361662450"
+    }
+  },
+  {
+    "id": "anim-019",
+    "audio": "/games/animal/anim-019.mp3",
+    "caption": "Two soft, falling notes: cuck-oo.",
+    "answer": "Common cuckoo",
+    "options": [
+      "Common cuckoo",
+      "Eurasian collared dove",
+      "Hoopoe",
+      "Common hawk-cuckoo"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "The cuckoo lays its eggs in other birds' nests, and its two-note call is the sound of the cuckoo clock.",
+      "geo": {
+        "lat": 51,
+        "lng": 0
+      },
+      "where": "Europe and Asia; winters in Africa",
+      "image": "/games/animal/anim-019.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Andy Morffew from Itchen Abbas, Hampshire, UK",
+        "license": "CC BY 2.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Cuckoo_(51169010335).jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "Josie Rylands",
+      "license": "CC0 1.0",
+      "url": "https://www.inaturalist.org/observations/214251860"
+    }
+  },
+  {
+    "id": "anim-020",
+    "audio": "/games/animal/anim-020.mp3",
+    "caption": "A whistled three-note chant, repeated over and over.",
+    "answer": "Eastern whip-poor-will",
+    "options": [
+      "Eastern whip-poor-will",
+      "Northern mockingbird",
+      "Chuck-will's-widow",
+      "Common nighthawk"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "The whip-poor-will sings its own name, sometimes hundreds of times in a row without a pause.",
+      "geo": {
+        "lat": 41.7,
+        "lng": -70.5
+      },
+      "where": "Forests of eastern North America",
+      "image": "/games/animal/anim-020.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Mikeschafer.wildlife",
+        "license": "CC BY 4.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Eastern_Whip-poor-will_in_Central_Park.jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "Jake McCumber",
+      "license": "CC BY 4.0",
+      "url": "https://www.inaturalist.org/observations/382544291"
+    }
+  },
+  {
+    "id": "anim-021",
+    "audio": "/games/animal/anim-021.mp3",
+    "caption": "A deep, guttural roar that swells and rolls.",
+    "answer": "Mantled howler monkey",
+    "options": [
+      "Mantled howler monkey",
+      "Chimpanzee",
+      "Lar gibbon",
+      "Indri"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "Howler monkeys are among the loudest land animals: their calls carry several kilometres through forest.",
+      "geo": {
+        "lat": 8,
+        "lng": -81
+      },
+      "where": "Rainforests of Central America",
+      "image": "/games/animal/anim-021.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Dr. Ariel Rodriguez-Vargas",
+        "license": "CC BY 4.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Panamanian_Male_Adult_Howler_Monkey.jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "keesgroenendijk",
+      "license": "CC BY 4.0",
+      "url": "https://www.inaturalist.org/observations/335749025"
+    }
+  },
+  {
+    "id": "anim-022",
+    "audio": "/games/animal/anim-022.mp3",
+    "caption": "Long, rising whoops that climb like a siren.",
+    "answer": "Lar gibbon",
+    "options": [
+      "Lar gibbon",
+      "Chimpanzee",
+      "Mantled howler monkey",
+      "Indri"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "Gibbon pairs sing duets at dawn to tell their neighbours where their territory is.",
+      "geo": {
+        "lat": 14.4,
+        "lng": 101.4
+      },
+      "where": "Rainforests of Southeast Asia",
+      "image": "/games/animal/anim-022.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "User:MatthiasKabel",
+        "license": "CC BY 2.5",
+        "url": "https://commons.wikimedia.org/wiki/File:Hylobates_lar_pair_of_white_and_black_01.jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "Thomas Gyselinck",
+      "license": "CC BY 4.0",
+      "url": "https://www.inaturalist.org/observations/386482709"
+    }
+  },
+  {
+    "id": "anim-023",
+    "audio": "/games/animal/anim-023.mp3",
+    "caption": "A wavering, yodel-like tremolo.",
+    "answer": "Common loon",
+    "options": [
+      "Common loon",
+      "Mallard duck",
+      "Gray wolf",
+      "Elk"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "The loon's wavering tremolo is often called its “laugh”. It is an alarm call, also given in flight.",
+      "geo": {
+        "lat": 48,
+        "lng": -89
+      },
+      "where": "Northern lakes of Canada and the northern United States",
+      "image": "/games/animal/anim-023.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "John Picken from Chicago, USA",
+        "license": "CC BY 2.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Gavia_immer_-Minocqua,_Wisconsin,_USA_-swimming-8.jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "Sean Frey",
+      "license": "CC BY 4.0",
+      "url": "https://www.inaturalist.org/observations/81394323"
+    }
+  },
+  {
+    "id": "anim-024",
+    "audio": "/games/animal/anim-024.mp3",
+    "caption": "A long, hoarse, groaning roar.",
+    "answer": "Red deer",
+    "options": [
+      "Red deer",
+      "Elk",
+      "Moose",
+      "Cow"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "In the autumn rut, red deer stags roar for hours to warn off rivals.",
+      "geo": {
+        "lat": 57,
+        "lng": -4
+      },
+      "where": "Woods and moors of Europe and western Asia",
+      "image": "/games/animal/anim-024.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Lviatour",
+        "license": "CC BY-SA 3.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Cervus_elaphus_Luc_Viatour_6.jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "Andrew Skotnicki",
+      "license": "CC BY 4.0",
+      "url": "https://www.inaturalist.org/observations/138361274"
+    }
+  },
+  {
+    "id": "anim-025",
+    "audio": "/games/animal/anim-025.mp3",
+    "caption": "A loud, wailing “may-awe” scream.",
+    "answer": "Indian peafowl",
+    "options": [
+      "Indian peafowl",
+      "Hen",
+      "Common hawk-cuckoo",
+      "Asian koel"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "In India the peacock's far-carrying call is traditionally said to announce the monsoon rains.",
+      "geo": {
+        "lat": 23,
+        "lng": 78
+      },
+      "where": "Forests and farmland of India and Sri Lanka",
+      "image": "/games/animal/anim-025.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Kandukuru Nagarjun from Bangalore, India",
+        "license": "CC BY 2.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Peacock_on_tree_(52077240794).jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "Jono",
+      "license": "CC BY 4.0",
+      "url": "https://www.inaturalist.org/observations/244103043"
+    }
+  },
+  {
+    "id": "anim-026",
+    "audio": "/games/animal/anim-026.mp3",
+    "caption": "Deep, snoring grunts and bellows.",
+    "answer": "Koala",
+    "options": [
+      "Koala",
+      "Tasmanian devil",
+      "Brushtail possum",
+      "Wild boar"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "A male koala's bellow is far deeper than its size suggests, thanks to an extra pair of vocal folds outside the voice box.",
+      "geo": {
+        "lat": -37.6,
+        "lng": 144
+      },
+      "where": "Eucalyptus forests of eastern Australia",
+      "image": "/games/animal/anim-026.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Diliff",
+        "license": "CC BY-SA 3.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Koala_climbing_tree.jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "graeme lunt",
+      "license": "CC BY 4.0",
+      "url": "https://www.inaturalist.org/observations/189334655"
+    }
+  },
+  {
+    "id": "anim-027",
+    "audio": "/games/animal/anim-027.mp3",
+    "caption": "A cackling “koo-koo-kaa-kaa” that sounds like laughter.",
+    "answer": "Laughing kookaburra",
+    "options": [
+      "Laughing kookaburra",
+      "Chimpanzee",
+      "Spotted hyena",
+      "Sulphur-crested cockatoo"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "Kookaburras “laugh” together as a family to mark their territory, mostly at dawn and dusk.",
+      "geo": {
+        "lat": -27,
+        "lng": 152
+      },
+      "where": "Woodlands of eastern Australia",
+      "image": "/games/animal/anim-027.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Photo by: Paulweberphoto - paulweberphoto.com",
+        "license": "CC BY 4.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Laughing_Kookaburra_1.jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "Bethlea Bell",
+      "license": "CC0 1.0",
+      "url": "https://www.inaturalist.org/observations/129511980"
+    }
+  },
+  {
+    "id": "anim-028",
+    "audio": "/games/animal/anim-028.mp3",
+    "caption": "A sharp two-note whistle: co-quí.",
+    "answer": "Common coquí",
+    "options": [
+      "Common coquí",
+      "Tokay gecko",
+      "Spring peeper",
+      "Field cricket"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "The coquí is named for its call: the “co” warns off other males, and the “quí” attracts females.",
+      "geo": {
+        "lat": 18.2,
+        "lng": -66.4
+      },
+      "where": "Forests of Puerto Rico",
+      "image": "/games/animal/anim-028.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "United States Department of Agriculture",
+        "license": "Public domain",
+        "url": "https://commons.wikimedia.org/wiki/File:Common_Coqu%C3%AD.jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "alexbarnard",
+      "license": "CC BY 4.0",
+      "url": "https://www.inaturalist.org/observations/305436860"
+    }
+  },
+  {
+    "id": "anim-029",
+    "audio": "/games/animal/anim-029.mp3",
+    "caption": "A whistled “ko-el” that climbs higher each time.",
+    "answer": "Asian koel",
+    "options": [
+      "Asian koel",
+      "Common cuckoo",
+      "Indian peafowl",
+      "Common hawk-cuckoo"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "The koel's rising call is a sign of summer across India, and like a cuckoo it lays its eggs in crows' nests.",
+      "geo": {
+        "lat": 17.4,
+        "lng": 78.5
+      },
+      "where": "Gardens and woods of South and Southeast Asia",
+      "image": "/games/animal/anim-029.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Challiyan",
+        "license": "CC BY-SA 4.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Asian_koel.jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "Ram Dayal Vaishnav",
+      "license": "CC BY 4.0",
+      "url": "https://www.inaturalist.org/observations/326637710"
+    }
+  },
+  {
+    "id": "anim-030",
+    "audio": "/games/animal/anim-030.mp3",
+    "caption": "Bell-like notes mixed with clicks, coughs and wheezes.",
+    "answer": "Tūī",
+    "options": [
+      "Tūī",
+      "Australian magpie",
+      "Superb lyrebird",
+      "New Zealand bellbird"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "Tūī have two voice boxes, and some of their notes are too high for people to hear.",
+      "geo": {
+        "lat": -41.3,
+        "lng": 174.8
+      },
+      "where": "Forests and gardens of New Zealand",
+      "image": "/games/animal/anim-030.webp",
+      "imageCredit": {
+        "source": "Wikimedia Commons",
+        "author": "Charles J. Sharp",
+        "license": "CC BY-SA 4.0",
+        "url": "https://commons.wikimedia.org/wiki/File:Tui_(Prosthemadera_novaeseelandiae)_Tiritiri_Matangi.jpg"
+      }
+    },
+    "credit": {
+      "source": "iNaturalist",
+      "author": "Jon Sullivan",
+      "license": "CC BY 4.0",
+      "url": "https://www.inaturalist.org/observations/154663860"
+    }
+  }
+]
