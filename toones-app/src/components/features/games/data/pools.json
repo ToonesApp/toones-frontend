@@ -1,5 +1,22 @@
 {
-  "language": [],
+  "language": [
+    ["Spanish", "Portuguese", "Italian", "Catalan"],
+    ["French", "Italian", "Romanian", "Occitan"],
+    ["Japanese", "Korean", "Mandarin Chinese", "Cantonese"],
+    ["Arabic", "Persian", "Hebrew", "Turkish"],
+    ["Russian", "Ukrainian", "Polish", "Bulgarian"],
+    ["Hindi", "Urdu", "Punjabi", "Nepali"],
+    ["Swedish", "Norwegian", "Danish", "Icelandic"],
+    ["Turkish", "Azerbaijani", "Persian", "Kazakh"],
+    ["Thai", "Lao", "Vietnamese", "Khmer"],
+    ["Indonesian", "Malay", "Tagalog", "Javanese"],
+    ["Swahili", "Kinyarwanda", "Luganda", "Zulu"],
+    ["Welsh", "Irish", "Breton", "Cornish"],
+    ["Nepali", "Hindi", "Bengali", "Marathi"],
+    ["Basque", "Catalan", "Galician", "Occitan"],
+    ["Guarani", "Quechua", "Aymara", "Nahuatl"],
+    ["Kinyarwanda", "Swahili", "Luganda", "Hausa"]
+  ],
   "instrument": [],
   "animal": []
 }

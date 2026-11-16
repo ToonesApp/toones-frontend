@@ -9,9 +9,6 @@ const SPEED_BONUS = 50
 const NEAR_KM = 1000
 /** A pin this far scores nothing. */
 const FAR_KM = 4000
-/** Five perfect instant answers. Keep in sync with toones-backend/src/models/GameScore.ts. */
-export const MAX_SCORE = 1125
-
 /** Difficulty of each round in order: easy first, hardest last. */
 const RAMP = [1, 1, 2, 2, 3]
 

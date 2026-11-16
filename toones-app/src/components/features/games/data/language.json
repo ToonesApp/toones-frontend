@@ -1,1 +1,812 @@
-[]
+[
+  {
+    "id": "lang-001",
+    "audio": "/games/language/lang-001.mp3",
+    "caption": "A la cama no te irás sin saber una cosa más.",
+    "answer": "Spanish",
+    "options": [
+      "Spanish",
+      "Catalan",
+      "Italian",
+      "Portuguese"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Spanish opens questions and exclamations with upside-down marks: ¿ and ¡.",
+      "geo": {
+        "lat": 40.2,
+        "lng": -3.6
+      },
+      "where": "Spain and most of Latin America"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_es_18310146)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/es/datasets"
+    }
+  },
+  {
+    "id": "lang-002",
+    "audio": "/games/language/lang-002.mp3",
+    "caption": "C’est faux, c’est une hausse de la pression fiscale pour les familles.",
+    "answer": "French",
+    "options": [
+      "French",
+      "Romanian",
+      "Occitan",
+      "Italian"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "French is an official language in more than 25 countries, on five continents.",
+      "geo": {
+        "lat": 46.6,
+        "lng": 2.4
+      },
+      "where": "France, and much of West and Central Africa"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_fr_17312183)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/fr/datasets"
+    }
+  },
+  {
+    "id": "lang-003",
+    "audio": "/games/language/lang-003.mp3",
+    "caption": "もう一杯水を飲みます。",
+    "answer": "Japanese",
+    "options": [
+      "Japanese",
+      "Cantonese",
+      "Korean",
+      "Mandarin Chinese"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Japanese mixes three scripts in one sentence: kanji, hiragana and katakana.",
+      "geo": {
+        "lat": 36.2,
+        "lng": 138.2
+      },
+      "where": "Japan"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_ja_19710848)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/ja/datasets"
+    }
+  },
+  {
+    "id": "lang-004",
+    "audio": "/games/language/lang-004.mp3",
+    "caption": "部分祖先来自福建的温州人也会使用浙南闽语。",
+    "answer": "Mandarin Chinese",
+    "options": [
+      "Mandarin Chinese",
+      "Cantonese",
+      "Korean",
+      "Japanese"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Mandarin has four tones, so the syllable “ma” can mean mother, hemp, horse or scold.",
+      "geo": {
+        "lat": 39.9,
+        "lng": 116.4
+      },
+      "where": "China, Taiwan and Singapore"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_zh-CN_18592644)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/zh-CN/datasets"
+    }
+  },
+  {
+    "id": "lang-005",
+    "audio": "/games/language/lang-005.mp3",
+    "caption": "تزداد جمالاً يوماً بعد يوم",
+    "answer": "Arabic",
+    "options": [
+      "Arabic",
+      "Persian",
+      "Hebrew",
+      "Turkish"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Arabic is written right to left, and everyday writing leaves out most short vowels.",
+      "geo": {
+        "lat": 30,
+        "lng": 31.2
+      },
+      "where": "North Africa and the Middle East"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_ar_19174090)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/ar/datasets"
+    }
+  },
+  {
+    "id": "lang-006",
+    "audio": "/games/language/lang-006.mp3",
+    "caption": "Кажется, сегодня также национальный праздник в России.",
+    "answer": "Russian",
+    "options": [
+      "Russian",
+      "Bulgarian",
+      "Polish",
+      "Ukrainian"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Russian is one of the two working languages aboard the International Space Station.",
+      "geo": {
+        "lat": 55.75,
+        "lng": 37.6
+      },
+      "where": "Russia and much of Eastern Europe and Central Asia"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_ru_18867293)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/ru/datasets"
+    }
+  },
+  {
+    "id": "lang-007",
+    "audio": "/games/language/lang-007.mp3",
+    "caption": "कम बारिश से बढ़ेगा मुद्रास्फीतिक दबाव: रिजर्व बैंक",
+    "answer": "Hindi",
+    "options": [
+      "Hindi",
+      "Punjabi",
+      "Urdu",
+      "Nepali"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Hindi is written in Devanagari, where a line along the top joins the letters of each word.",
+      "geo": {
+        "lat": 28.6,
+        "lng": 77.2
+      },
+      "where": "Northern and central India"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_hi_24026212)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/hi/datasets"
+    }
+  },
+  {
+    "id": "lang-008",
+    "audio": "/games/language/lang-008.mp3",
+    "caption": "Eu fui influenciado por ele desde que eu era jovem.",
+    "answer": "Portuguese",
+    "options": [
+      "Portuguese",
+      "Italian",
+      "Spanish",
+      "Catalan"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "Brazil has more Portuguese speakers than every other country combined.",
+      "geo": {
+        "lat": 39.6,
+        "lng": -8
+      },
+      "where": "Portugal, Brazil, Angola and Mozambique"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_pt_19288265)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/pt/datasets"
+    }
+  },
+  {
+    "id": "lang-009",
+    "audio": "/games/language/lang-009.mp3",
+    "caption": "Det är ett härligt hus, men jag ska prata med banken.",
+    "answer": "Swedish",
+    "options": [
+      "Swedish",
+      "Norwegian",
+      "Danish",
+      "Icelandic"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "Swedish has a pitch accent: “anden” means the duck or the spirit depending on its melody.",
+      "geo": {
+        "lat": 59.3,
+        "lng": 18.1
+      },
+      "where": "Sweden and coastal Finland"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_sv-SE_18746447)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/sv-SE/datasets"
+    }
+  },
+  {
+    "id": "lang-010",
+    "audio": "/games/language/lang-010.mp3",
+    "caption": "Bu kalıplaşmış düşünceye tepkiniz nedir?",
+    "answer": "Turkish",
+    "options": [
+      "Turkish",
+      "Arabic",
+      "Hebrew",
+      "Persian"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "Turkish stacks endings onto a word, so one long word can say a whole sentence.",
+      "geo": {
+        "lat": 39,
+        "lng": 35.2
+      },
+      "where": "Turkey and Cyprus"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_tr_17346626)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/tr/datasets"
+    }
+  },
+  {
+    "id": "lang-011",
+    "audio": "/games/language/lang-011.mp3",
+    "caption": "ยิงปืนนัดเดียวได้นกสองตัว",
+    "answer": "Thai",
+    "options": [
+      "Thai",
+      "Khmer",
+      "Lao",
+      "Vietnamese"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "Thai has five tones and is written without spaces between words.",
+      "geo": {
+        "lat": 13.75,
+        "lng": 100.5
+      },
+      "where": "Thailand"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_th_23655568)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/th/datasets"
+    }
+  },
+  {
+    "id": "lang-012",
+    "audio": "/games/language/lang-012.mp3",
+    "caption": "Segera tindak lanjuti laporan",
+    "answer": "Indonesian",
+    "options": [
+      "Indonesian",
+      "Javanese",
+      "Malay",
+      "Tagalog"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "Indonesian verbs have no tenses; words like “already” and “tomorrow” do the job.",
+      "geo": {
+        "lat": -6.2,
+        "lng": 106.8
+      },
+      "where": "Indonesia"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_id_19059313)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/id/datasets"
+    }
+  },
+  {
+    "id": "lang-013",
+    "audio": "/games/language/lang-013.mp3",
+    "caption": "Kuna ndizi za aina mbalimbali na kwa matumizi tofauti.",
+    "answer": "Swahili",
+    "options": [
+      "Swahili",
+      "Kinyarwanda",
+      "Zulu",
+      "Hausa"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "English got the word “safari” from Swahili, where it simply means a journey.",
+      "geo": {
+        "lat": -6.4,
+        "lng": 34.9
+      },
+      "where": "Tanzania, Kenya and much of East Africa"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_sw_28258477)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/sw/datasets"
+    }
+  },
+  {
+    "id": "lang-014",
+    "audio": "/games/language/lang-014.mp3",
+    "caption": "Ble mae'r bws yma'n mynd?",
+    "answer": "Welsh",
+    "options": [
+      "Welsh",
+      "Breton",
+      "Cornish",
+      "Irish"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "Welsh words change their first letter after certain words: “cath” (cat) can become “gath”, “chath” or “nghath”.",
+      "geo": {
+        "lat": 52.3,
+        "lng": -3.8
+      },
+      "where": "Wales"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_cy_19113260)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/cy/datasets"
+    }
+  },
+  {
+    "id": "lang-015",
+    "audio": "/games/language/lang-015.mp3",
+    "caption": "پر اپنی محنت سے حاصل کیا ہے",
+    "answer": "Urdu",
+    "options": [
+      "Urdu",
+      "Punjabi",
+      "Hindi",
+      "Nepali"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "Urdu and Hindi sound alike in everyday speech, but Urdu is written right to left in a Persian-style script.",
+      "geo": {
+        "lat": 33.7,
+        "lng": 73.1
+      },
+      "where": "Pakistan and northern India"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_ur_26630004)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/ur/datasets"
+    }
+  },
+  {
+    "id": "lang-016",
+    "audio": "/games/language/lang-016.mp3",
+    "caption": "Langt ut i boka forstår vi årsakene til at ho er som ho er.",
+    "answer": "Norwegian",
+    "options": [
+      "Norwegian",
+      "Danish",
+      "Swedish",
+      "Icelandic"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "Norwegian has two official written forms, Bokmål and Nynorsk. This speaker is reading Nynorsk.",
+      "geo": {
+        "lat": 60.4,
+        "lng": 5.3
+      },
+      "where": "Norway"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_nn-NO_31396545)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/nn-NO/datasets"
+    }
+  },
+  {
+    "id": "lang-017",
+    "audio": "/games/language/lang-017.mp3",
+    "caption": "बाटोमा फोहोर गर्नु नराम्रो हो ।",
+    "answer": "Nepali",
+    "options": [
+      "Nepali",
+      "Urdu",
+      "Marathi",
+      "Bengali"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "Nepali is written in Devanagari like Hindi, and its everyday greeting is “namaste”.",
+      "geo": {
+        "lat": 27.7,
+        "lng": 85.3
+      },
+      "where": "Nepal, and parts of India and Bhutan"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_ne-NP_32914763)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/ne-NP/datasets"
+    }
+  },
+  {
+    "id": "lang-018",
+    "audio": "/games/language/lang-018.mp3",
+    "caption": "Mendian gora joan eta aurkitu nuen bidea.",
+    "answer": "Basque",
+    "options": [
+      "Basque",
+      "Catalan",
+      "Galician",
+      "Occitan"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "Basque is related to no other living language; it was spoken here before Latin arrived.",
+      "geo": {
+        "lat": 43,
+        "lng": -2.6
+      },
+      "where": "The Basque Country, across Spain and France"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_eu_18543711)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/eu/datasets"
+    }
+  },
+  {
+    "id": "lang-019",
+    "audio": "/games/language/lang-019.mp3",
+    "caption": "Oĩséva guive upépe ohepymeʼẽvaʼerã",
+    "answer": "Guarani",
+    "options": [
+      "Guarani",
+      "Aymara",
+      "Nahuatl",
+      "Quechua"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "Guarani is an official language of Paraguay, spoken by most people there whatever their ancestry.",
+      "geo": {
+        "lat": -23.4,
+        "lng": -58.4
+      },
+      "where": "Paraguay"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_gn_26664085)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/gn/datasets"
+    }
+  },
+  {
+    "id": "lang-020",
+    "audio": "/games/language/lang-020.mp3",
+    "caption": "Ibyo bitavuze ko amajyaruguru yari ahejwe.",
+    "answer": "Kinyarwanda",
+    "options": [
+      "Kinyarwanda",
+      "Luganda",
+      "Hausa",
+      "Zulu"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "Nearly everyone in Rwanda speaks Kinyarwanda, a tonal language where pitch can change a word’s meaning.",
+      "geo": {
+        "lat": -1.94,
+        "lng": 29.87
+      },
+      "where": "Rwanda"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_rw_20998216)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/rw/datasets"
+    }
+  },
+  {
+    "id": "lang-021",
+    "audio": "/games/language/lang-021.mp3",
+    "caption": "A falta de hombres buenos, a mi padre hicieron alcalde.",
+    "answer": "Spanish",
+    "options": [
+      "Spanish",
+      "Portuguese",
+      "Italian",
+      "Catalan"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Spanish opens questions and exclamations with upside-down marks: ¿ and ¡.",
+      "geo": {
+        "lat": 40.2,
+        "lng": -3.6
+      },
+      "where": "Spain and most of Latin America"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_es_18312934)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/es/datasets"
+    }
+  },
+  {
+    "id": "lang-022",
+    "audio": "/games/language/lang-022.mp3",
+    "caption": "ゆうべは疲れていたので、早く寝ました。",
+    "answer": "Japanese",
+    "options": [
+      "Japanese",
+      "Cantonese",
+      "Korean",
+      "Mandarin Chinese"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Japanese mixes three scripts in one sentence: kanji, hiragana and katakana.",
+      "geo": {
+        "lat": 36.2,
+        "lng": 138.2
+      },
+      "where": "Japan"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_ja_20068743)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/ja/datasets"
+    }
+  },
+  {
+    "id": "lang-023",
+    "audio": "/games/language/lang-023.mp3",
+    "caption": "恩骑尉，是中国清朝时的爵名。",
+    "answer": "Mandarin Chinese",
+    "options": [
+      "Mandarin Chinese",
+      "Korean",
+      "Japanese",
+      "Cantonese"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Mandarin has four tones, so the syllable “ma” can mean mother, hemp, horse or scold.",
+      "geo": {
+        "lat": 39.9,
+        "lng": 116.4
+      },
+      "where": "China, Taiwan and Singapore"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_zh-CN_18551061)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/zh-CN/datasets"
+    }
+  },
+  {
+    "id": "lang-024",
+    "audio": "/games/language/lang-024.mp3",
+    "caption": "كل ما عليك هو إمضاء إسمك هنا",
+    "answer": "Arabic",
+    "options": [
+      "Arabic",
+      "Persian",
+      "Turkish",
+      "Hebrew"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Arabic is written right to left, and everyday writing leaves out most short vowels.",
+      "geo": {
+        "lat": 30,
+        "lng": 31.2
+      },
+      "where": "North Africa and the Middle East"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_ar_19058345)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/ar/datasets"
+    }
+  },
+  {
+    "id": "lang-025",
+    "audio": "/games/language/lang-025.mp3",
+    "caption": "Скорость света в цезии выше, чем в вакууме.",
+    "answer": "Russian",
+    "options": [
+      "Russian",
+      "Ukrainian",
+      "Bulgarian",
+      "Polish"
+    ],
+    "difficulty": 1,
+    "reveal": {
+      "fact": "Russian is one of the two working languages aboard the International Space Station.",
+      "geo": {
+        "lat": 55.75,
+        "lng": 37.6
+      },
+      "where": "Russia and much of Eastern Europe and Central Asia"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_ru_18890897)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/ru/datasets"
+    }
+  },
+  {
+    "id": "lang-026",
+    "audio": "/games/language/lang-026.mp3",
+    "caption": "Apresentando uma paisagem especial",
+    "answer": "Portuguese",
+    "options": [
+      "Portuguese",
+      "Italian",
+      "Catalan",
+      "Spanish"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "Brazil has more Portuguese speakers than every other country combined.",
+      "geo": {
+        "lat": 39.6,
+        "lng": -8
+      },
+      "where": "Portugal, Brazil, Angola and Mozambique"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_pt_19334207)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/pt/datasets"
+    }
+  },
+  {
+    "id": "lang-027",
+    "audio": "/games/language/lang-027.mp3",
+    "caption": "Arnavutluk'ta turizm hala emekleme döneminde.",
+    "answer": "Turkish",
+    "options": [
+      "Turkish",
+      "Persian",
+      "Arabic",
+      "Kazakh"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "Turkish stacks endings onto a word, so one long word can say a whole sentence.",
+      "geo": {
+        "lat": 39,
+        "lng": 35.2
+      },
+      "where": "Turkey and Cyprus"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_tr_17348749)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/tr/datasets"
+    }
+  },
+  {
+    "id": "lang-028",
+    "audio": "/games/language/lang-028.mp3",
+    "caption": "Lengo lake ni siku moja kufanya kazi Umoja wa Mataifa.",
+    "answer": "Swahili",
+    "options": [
+      "Swahili",
+      "Zulu",
+      "Luganda",
+      "Kinyarwanda"
+    ],
+    "difficulty": 2,
+    "reveal": {
+      "fact": "English got the word “safari” from Swahili, where it simply means a journey.",
+      "geo": {
+        "lat": -6.4,
+        "lng": 34.9
+      },
+      "where": "Tanzania, Kenya and much of East Africa"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_sw_27798437)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/sw/datasets"
+    }
+  },
+  {
+    "id": "lang-029",
+    "audio": "/games/language/lang-029.mp3",
+    "caption": "प्वाँप्वाँ गर्दै बस आयो, रोके एकै छिन ।",
+    "answer": "Nepali",
+    "options": [
+      "Nepali",
+      "Marathi",
+      "Hindi",
+      "Urdu"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "Nepali is written in Devanagari like Hindi, and its everyday greeting is “namaste”.",
+      "geo": {
+        "lat": 27.7,
+        "lng": 85.3
+      },
+      "where": "Nepal, and parts of India and Bhutan"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_ne-NP_32518583)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/ne-NP/datasets"
+    }
+  },
+  {
+    "id": "lang-030",
+    "audio": "/games/language/lang-030.mp3",
+    "caption": "Kolore guztietako bidea izan da.",
+    "answer": "Basque",
+    "options": [
+      "Basque",
+      "Occitan",
+      "Galician",
+      "Catalan"
+    ],
+    "difficulty": 3,
+    "reveal": {
+      "fact": "Basque is related to no other living language; it was spoken here before Latin arrived.",
+      "geo": {
+        "lat": 43,
+        "lng": -2.6
+      },
+      "where": "The Basque Country, across Spain and France"
+    },
+    "credit": {
+      "source": "Common Voice 17.0",
+      "author": "Common Voice contributor (clip common_voice_eu_18257216)",
+      "license": "CC0 1.0",
+      "url": "https://commonvoice.mozilla.org/eu/datasets"
+    }
+  }
+]
