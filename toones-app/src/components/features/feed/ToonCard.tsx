@@ -1,6 +1,7 @@
 import { ClayCharacter } from '../../characters/ClayCharacter'
 import { LookAvatar } from '../../characters/LookAvatar'
 import { useLooks } from '../../characters/lookStore'
+import { getToken } from '../../lib/api'
 import { useHome } from '../home/homeStore'
 import { CommentIcon, HeartIcon, PauseIcon, PlayIcon, ShareIcon } from '../../ui'
 import { toggleFeed } from './feedPlayer'
@@ -11,7 +12,7 @@ import { Photos } from './Photos'
 import { Waveform } from './Waveform'
 
 export function LikeButton({ toone, className }: { toone: Toone; className?: string }) {
-  const liked = useFeed((s) => s.liked.includes(toone.id))
+  const { liked, likes } = toone
   const toggleLike = useFeed((s) => s.toggleLike)
   return (
     <button
@@ -20,12 +21,12 @@ export function LikeButton({ toone, className }: { toone: Toone; className?: str
       aria-pressed={liked}
       aria-label={liked ? 'Unlike' : 'Like'}
       onClick={(e) => {
-        if (!liked) burstNotes(e.clientX, e.clientY)
+        if (!liked && getToken() && !toone.id.startsWith('local-')) burstNotes(e.clientX, e.clientY)
         toggleLike(toone.id)
       }}
     >
       <HeartIcon filled={liked} />
-      <span className="num">{liked ? 1 : 0}</span>
+      <span className="num">{likes}</span>
     </button>
   )
 }
@@ -34,7 +35,7 @@ export function ToonCard({ toone }: { toone: Toone }) {
   const playing = useFeed((s) => s.playing?.id === toone.id)
   const elapsed = useFeed((s) => (s.playing?.id === toone.id ? s.playing.elapsed : 0))
   const email = useHome((s) => s.user.email)
-  const comments = useFeed((s) => s.comments[toone.id]?.length ?? 0)
+  const comments = toone.comments
   const openDetail = useFeed((s) => s.openDetail)
   const setHover = useFeed((s) => s.setHover)
   const open = () => openDetail(toone.id)

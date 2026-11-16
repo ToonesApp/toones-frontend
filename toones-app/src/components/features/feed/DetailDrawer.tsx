@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { MAX_COMMENT_LENGTH } from '../../lib/api'
 import { BackIcon, PauseIcon, PlayIcon } from '../../ui'
-import { displayName, useHome } from '../home/homeStore'
 import { seekFeed, toggleFeed } from './feedPlayer'
 import { useFeed } from './feedStore'
 import { fmtDur, initialOf, shortAgo } from './format'
@@ -29,13 +29,16 @@ function DrawerBody({ id, open }: { id: string; open: boolean }) {
   const toone = useFeed((s) => s.toones.find((t) => t.id === id))
   const playing = useFeed((s) => s.playing?.id === id)
   const elapsed = useFeed((s) => (s.playing?.id === id ? s.playing.elapsed : 0))
-  const comments = useFeed((s) => s.comments[id]) ?? []
+  const thread = useFeed((s) => s.threads[id])
   const hasPhotos = useFeed((s) => !!s.photos[id]?.length)
-  const close = useFeed((s) => s.closeDetail)
-  const addComment = useFeed((s) => s.addComment)
-  const me = useHome((s) => displayName(s.user))
+  const { closeDetail: close, loadComments, addComment, removeComment } = useFeed.getState()
   const [text, setText] = useState('')
+  const [posting, setPosting] = useState(false)
   const backRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    void loadComments(id)
+  }, [id, loadComments])
 
   useEffect(() => {
     if (!open) return
@@ -46,10 +49,13 @@ function DrawerBody({ id, open }: { id: string; open: boolean }) {
   }, [open, close])
 
   if (!toone) return null
-  const post = () => {
-    if (!text.trim()) return
-    addComment(id, me, text.trim())
-    setText('')
+  const comments = thread?.items ?? []
+  const post = async () => {
+    const body = text.trim()
+    if (!body || posting) return
+    setPosting(true)
+    if (await addComment(id, body)) setText('')
+    setPosting(false)
   }
 
   return (
@@ -112,9 +118,21 @@ function DrawerBody({ id, open }: { id: string; open: boolean }) {
         </div>
 
         <div className="drawer__comments-head">
-          <span>Comments · {comments.length}</span>
+          <span>Comments · {toone.comments}</span>
           <LikeButton toone={toone} />
         </div>
+        <form
+          className="drawer__post"
+          onSubmit={(e) => {
+            e.preventDefault()
+            void post()
+          }}
+        >
+          <input className="pill-input" type="text" placeholder="Add a comment" aria-label="Add a comment" maxLength={MAX_COMMENT_LENGTH} value={text} onChange={(e) => setText(e.target.value)} />
+          <button type="submit" className="ui-btn ui-btn--ink ui-press drawer__post-btn" disabled={!text.trim() || posting}>
+            Post
+          </button>
+        </form>
         {comments.map((c) => (
           <div key={c.id} className="comment">
             <span className="avatar avatar--34" aria-hidden="true">
@@ -122,21 +140,28 @@ function DrawerBody({ id, open }: { id: string; open: boolean }) {
             </span>
             <div className="comment__bubble">
               <b>{c.name}</b> {c.text}
+              <div className="comment__meta">
+                {shortAgo(c.when)}
+                {c.canDelete && (
+                  <button type="button" className="comment__delete ui-quiet" onClick={() => void removeComment(id, c.id)}>
+                    Delete
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         ))}
-        <form
-          className="drawer__post"
-          onSubmit={(e) => {
-            e.preventDefault()
-            post()
-          }}
-        >
-          <input className="pill-input" type="text" placeholder="Add a comment" aria-label="Add a comment" maxLength={280} value={text} onChange={(e) => setText(e.target.value)} />
-          <button type="submit" className="ui-btn ui-btn--ink ui-press drawer__post-btn" disabled={!text.trim()}>
-            Post
+        {thread?.status === 'loading' && <p className="comment__note">Loading comments…</p>}
+        {thread?.status === 'error' && (
+          <button type="button" className="comment__note ui-quiet" onClick={() => void loadComments(id, !!comments.length)}>
+            Couldn’t load comments. Try again
           </button>
-        </form>
+        )}
+        {thread?.status === 'ready' && thread.nextBefore && (
+          <button type="button" className="comment__note ui-quiet" onClick={() => void loadComments(id, true)}>
+            Show older comments
+          </button>
+        )}
       </aside>
     </>
   )

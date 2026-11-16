@@ -25,10 +25,9 @@ export function FeedView() {
   const status = useFeed((s) => s.status)
   const settling = useFeed((s) => s.settling)
   const tab = useFeed((s) => s.tab)
-  const liked = useFeed((s) => s.liked)
   const origin = useFeed((s) => s.origin)
   const { setTab, load } = useFeed.getState()
-  const list = visibleToones({ toones, tab, liked, origin })
+  const list = visibleToones({ toones, tab, origin })
   const loading = status === 'idle' || (status === 'loading' && !toones.length) || settling
 
   return (
