@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { Suspense, lazy, useEffect, useRef } from 'react'
 import { Link, Route, Routes } from 'react-router-dom'
 import { KEYS, read, readJSON, useNight } from '../../lib/storage'
 import { NightToggle, PaperChip } from '../../ui'
@@ -10,6 +10,8 @@ import { Hub } from './Hub'
 import { useScores } from './scores'
 import '../home/home.css'
 import './games.css'
+
+const Play = lazy(() => import('./Play'))
 
 function Sky() {
   const ref = useRef<HTMLCanvasElement>(null)
@@ -51,9 +53,12 @@ export default function GamesPage() {
           <AccountMenu />
         </div>
       </header>
-      <Routes>
-        <Route index element={<Hub />} />
-      </Routes>
+      <Suspense fallback={null}>
+        <Routes>
+          <Route index element={<Hub />} />
+          <Route path=":game" element={<Play />} />
+        </Routes>
+      </Suspense>
     </div>
   )
 }

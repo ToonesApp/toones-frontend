@@ -16,6 +16,9 @@ export const KEYS = {
   comments: 'toones-feed-comments',
   feedSettings: 'toones-feed-settings',
   inboxRead: 'toones-feed-read',
+  gamesMuted: 'toones-games-muted',
+  /* Daily challenges already played on this device, by game */
+  gamesDaily: 'toones-games-daily',
 } as const
 
 export type StorageKey = (typeof KEYS)[keyof typeof KEYS]

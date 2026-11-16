@@ -170,3 +170,16 @@ export const EyeOffIcon = (p: IconProps) => (
     <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" />
   </Icon>
 )
+
+export const ReplayIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M4 12a8 8 0 1 0 2.6-5.9M4 4v4.5h4.5" />
+  </Icon>
+)
+
+export const SoundIcon = ({ off, ...p }: IconProps & { off?: boolean }) => (
+  <Icon size={20} {...p}>
+    <path d="M4 9.5v5h3.5L12 18V6L7.5 9.5z" />
+    <path d={off ? 'M16 9.5l5 5M21 9.5l-5 5' : 'M15.5 9a4.2 4.2 0 0 1 0 6M18.3 6.5a8 8 0 0 1 0 11'} />
+  </Icon>
+)

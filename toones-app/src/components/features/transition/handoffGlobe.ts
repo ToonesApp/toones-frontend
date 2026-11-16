@@ -6,7 +6,7 @@ import { feature, mesh } from 'topojson-client'
 import type { Feature, MultiLineString, MultiPolygon, Polygon } from 'geojson'
 import type { GeometryCollection, Topology } from 'topojson-specification'
 import { clamp } from '../../characters/clay'
-import { sunPosition } from '../../lib/geo'
+import { sunPosition, type LngLat } from '../../lib/geo'
 import { HOME_START } from '../home/layout'
 
 export type RGB = [number, number, number]
@@ -44,9 +44,11 @@ type DrawOpts = {
   reveal: number
   hill?: { color: RGB; alpha: number }
   geo: HandoffGeo | null
+  /** [lon, lat] facing the viewer. Defaults to Home's first frame. */
+  center?: LngLat
 }
 
-export function drawHandoffGlobe(g: CanvasRenderingContext2D, { cx, cy, rx, ry, night: e, reveal: q, hill, geo }: DrawOpts) {
+export function drawHandoffGlobe(g: CanvasRenderingContext2D, { cx, cy, rx, ry, night: e, reveal: q, hill, geo, center = HOME_START }: DrawOpts) {
   const R = rx
   const TAU = Math.PI * 2
   const landIn = clamp((q - 0.62) / 0.38)
@@ -83,7 +85,7 @@ export function drawHandoffGlobe(g: CanvasRenderingContext2D, { cx, cy, rx, ry, 
   g.globalAlpha = 1
 
   if (landIn > 0 && geo) {
-    const proj = geoOrthographic().clipAngle(90).precision(0.4).scale(R).translate([0, 0]).rotate([-HOME_START[0], -HOME_START[1], 0])
+    const proj = geoOrthographic().clipAngle(90).precision(0.4).scale(R).translate([0, 0]).rotate([-center[0], -center[1], 0])
     const path = geoPath(proj, g)
     const sun = sunPosition()
     const nightCap = geoCircle().center([sun.lon + 180, -sun.decl]).radius(90)()
