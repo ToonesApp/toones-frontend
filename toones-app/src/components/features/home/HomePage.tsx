@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { prefersReducedMotion } from '../../characters/clay'
 import { Fab, MicIcon, NightToggle, PaperChip } from '../../ui'
 import { KEYS, read, readJSON, write } from '../../lib/storage'
@@ -38,8 +38,12 @@ function Corner() {
   const count = useHome((s) => s.drops.length)
   const setPanel = useHome((s) => s.setPanel)
   const openRecord = useHome((s) => s.openRecord)
+  const navigate = useNavigate()
   return (
     <div className="hud-corner" data-arrive="right">
+      <PaperChip as="button" type="button" className="hud-games-btn ui-press" onClick={() => navigate('/games')}>
+        Games
+      </PaperChip>
       <PaperChip as="button" type="button" className="hud-drops-btn ui-press" aria-controls="drops-panel" onClick={() => setPanel(true)}>
         {count ? `Drops · ${count}` : 'Drops'}
       </PaperChip>

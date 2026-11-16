@@ -11,6 +11,7 @@ import './App.css'
 
 const HomePage = lazy(() => import('./components/features/home/HomePage'))
 const FeedPage = lazy(() => import('./components/features/feed/FeedPage'))
+const GamesPage = lazy(() => import('./components/features/games/GamesPage'))
 
 function App() {
   return (
@@ -33,6 +34,14 @@ function App() {
             element={
               <Suspense fallback={null}>
                 <FeedPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/games/*"
+            element={
+              <Suspense fallback={null}>
+                <GamesPage />
               </Suspense>
             }
           />

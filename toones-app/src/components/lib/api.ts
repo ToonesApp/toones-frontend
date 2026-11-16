@@ -247,6 +247,14 @@ export function recordListen(id: string) {
   return request<{ firstListen: boolean; playCount: number; xp: number; level: number }>(`/sounds/${id}/listen`, { method: 'POST', headers: authHeader() })
 }
 
+export type GameBest = { today: number | null; allTime: number | null }
+
+/** GET /games/bests (signed in): your best score today and ever, keyed by game id. */
+export async function getGameBests() {
+  const body = await request<{ bests: Record<string, GameBest> }>('/games/bests', { headers: authHeader() })
+  return body.bests
+}
+
 export function health(): Promise<{ ok: boolean; service: string }> {
   return request<{ ok: boolean; service: string }>('/health')
 }
