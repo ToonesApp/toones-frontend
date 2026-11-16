@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { sanitizeLook, type Look } from '../../characters/avatar'
-import { getSounds, getToken, uploadPhoto, type ApiSound } from '../../lib/api'
+import { deleteComment, getComments, getSounds, getToken, likeSound, postComment, unlikeSound, uploadPhoto, type ApiComment, type ApiSound } from '../../lib/api'
 import { canonicalAudioSetLabel } from '../../lib/audioSetLabels'
 import { angularDistance, type LngLat } from '../../lib/geo'
 import { KEYS, readJSON, writeJSON } from '../../lib/storage'
@@ -18,6 +18,10 @@ export type Toone = {
   /** Seconds. */
   dur: number
   listens: number
+  likes: number
+  /** The signed-in user liked it. */
+  liked: boolean
+  comments: number
   lon: number
   lat: number
   audioUrl: string | null
@@ -26,7 +30,8 @@ export type Toone = {
   look?: Look | null
 }
 
-export type Comment = { id: string; name: string; text: string; when: number }
+export type Comment = { id: string; name: string; handle: string; look: Look | null; text: string; when: number; canDelete: boolean }
+export type Thread = { status: 'loading' | 'ready' | 'error'; items: Comment[]; nextBefore: string | null }
 export type Tab = 'nearby' | 'new' | 'saved'
 export type Settings = { autoplay: boolean; react: boolean; notify: boolean }
 export type InboxMessage = { id: string; initial: string; cat: string; text: string; when: number }
@@ -42,8 +47,8 @@ type FeedState = {
   /** Brief skeleton after a tab change. */
   settling: boolean
   tab: Tab
-  liked: string[]
-  comments: Record<string, Comment[]>
+  /** Loaded when a Toone's drawer opens, newest first. */
+  threads: Record<string, Thread>
   /** Server photo URLs, plus object URLs for uploads in flight and for Toones that only live on this device. */
   photos: Record<string, string[]>
   slide: Record<string, number>
@@ -61,7 +66,10 @@ type FeedState = {
   load: () => Promise<void>
   setTab: (t: Tab) => void
   toggleLike: (id: string) => void
-  addComment: (id: string, name: string, text: string) => void
+  loadComments: (id: string, more?: boolean) => Promise<void>
+  /** Resolves true once the server accepted it. */
+  addComment: (id: string, text: string) => Promise<boolean>
+  removeComment: (id: string, commentId: string) => Promise<void>
   addPhoto: (id: string, file: File) => void
   setSlide: (id: string, i: number) => void
   openDetail: (id: string) => void
@@ -89,6 +97,9 @@ function fromApi(s: ApiSound): Toone {
     caption: s.description,
     dur: s.durationSec,
     listens: s.playCount,
+    likes: s.likeCount ?? 0,
+    liked: !!s.liked,
+    comments: s.commentCount ?? 0,
     lon: s.lon,
     lat: s.lat,
     audioUrl: s.audioUrl || null,
@@ -97,10 +108,27 @@ function fromApi(s: ApiSound): Toone {
   }
 }
 
+function commentFromApi(c: ApiComment): Comment {
+  return {
+    id: c.id,
+    name: c.author?.displayName || c.author?.username || 'Someone',
+    handle: c.author ? `@${c.author.username}` : '',
+    look: c.author?.look ? sanitizeLook(c.author.look) : null,
+    text: c.text,
+    when: Date.parse(c.createdAt) || Date.now(),
+    canDelete: c.canDelete,
+  }
+}
+
+const errorText = (e: unknown, fallback: string) => (e instanceof Error ? e.message : fallback)
+
 let settleTimer = 0
 let toastTimer = 0
+/** Latest like request per Toone, so an older response can't overwrite a newer tap. */
+const likeSeq: Record<string, number> = {}
 
 export const useFeed = create<FeedState>()((set, get) => {
+  const patch = (id: string, change: Partial<Toone>) => set({ toones: get().toones.map((t) => (t.id === id ? { ...t, ...change } : t)) })
   const settle = () => {
     window.clearTimeout(settleTimer)
     set({ settling: true })
@@ -112,8 +140,7 @@ export const useFeed = create<FeedState>()((set, get) => {
     status: 'idle',
     settling: false,
     tab: 'new',
-    liked: readJSON<string[]>(KEYS.liked, []),
-    comments: readJSON<Record<string, Comment[]>>(KEYS.comments, {}),
+    threads: {},
     photos: {},
     slide: {},
     detail: null,
@@ -158,16 +185,75 @@ export const useFeed = create<FeedState>()((set, get) => {
     },
 
     toggleLike: (id) => {
-      const { liked } = get()
-      const next = liked.includes(id) ? liked.filter((v) => v !== id) : [...liked, id]
-      writeJSON(KEYS.liked, next)
-      set({ liked: next })
+      const toone = get().toones.find((t) => t.id === id)
+      if (!toone) return
+      if (id.startsWith('local-')) return get().flash('Sign in and share this Toone first')
+      if (!getToken()) return get().flash('Sign in to like Toones')
+
+      const liked = !toone.liked
+      patch(id, { liked, likes: Math.max(0, toone.likes + (liked ? 1 : -1)) })
+      const seq = (likeSeq[id] = (likeSeq[id] ?? 0) + 1)
+      ;(liked ? likeSound : unlikeSound)(id)
+        .then((r) => {
+          if (likeSeq[id] === seq) patch(id, { liked: r.liked, likes: r.likeCount })
+        })
+        .catch((e: unknown) => {
+          if (likeSeq[id] !== seq) return
+          patch(id, { liked: toone.liked, likes: toone.likes })
+          get().flash(errorText(e, 'Couldn’t save your like'))
+        })
     },
 
-    addComment: (id, name, text) => {
-      const comments = { ...get().comments, [id]: [...(get().comments[id] ?? []), { id: crypto.randomUUID(), name, text, when: Date.now() }] }
-      writeJSON(KEYS.comments, comments)
-      set({ comments })
+    loadComments: async (id, more = false) => {
+      if (id.startsWith('local-')) {
+        set({ threads: { ...get().threads, [id]: { status: 'ready', items: [], nextBefore: null } } })
+        return
+      }
+      const prev = get().threads[id]
+      if (prev?.status === 'loading' || (more && !prev?.nextBefore)) return
+      const before = more ? prev?.nextBefore ?? undefined : undefined
+      const keep = more ? prev?.items ?? [] : []
+      set({ threads: { ...get().threads, [id]: { status: 'loading', items: prev?.items ?? [], nextBefore: prev?.nextBefore ?? null } } })
+      try {
+        const r = await getComments(id, { before })
+        const items = [...keep, ...r.comments.map(commentFromApi)]
+        set({ threads: { ...get().threads, [id]: { status: 'ready', items, nextBefore: r.nextBefore } } })
+        patch(id, { comments: r.commentCount })
+      } catch {
+        set({ threads: { ...get().threads, [id]: { status: 'error', items: prev?.items ?? [], nextBefore: prev?.nextBefore ?? null } } })
+      }
+    },
+
+    addComment: async (id, text) => {
+      if (id.startsWith('local-')) {
+        get().flash('Sign in and share this Toone first')
+        return false
+      }
+      if (!getToken()) {
+        get().flash('Sign in to comment')
+        return false
+      }
+      try {
+        const r = await postComment(id, text)
+        const thread = get().threads[id] ?? { status: 'ready', items: [], nextBefore: null }
+        set({ threads: { ...get().threads, [id]: { ...thread, items: [commentFromApi(r.comment), ...thread.items] } } })
+        patch(id, { comments: r.commentCount })
+        return true
+      } catch (e) {
+        get().flash(errorText(e, 'Couldn’t post your comment'))
+        return false
+      }
+    },
+
+    removeComment: async (id, commentId) => {
+      try {
+        const r = await deleteComment(id, commentId)
+        const thread = get().threads[id]
+        if (thread) set({ threads: { ...get().threads, [id]: { ...thread, items: thread.items.filter((c) => c.id !== commentId) } } })
+        patch(id, { comments: r.commentCount })
+      } catch (e) {
+        get().flash(errorText(e, 'Couldn’t delete the comment'))
+      }
     },
 
     addPhoto: (id, file) => {
@@ -210,7 +296,7 @@ export const useFeed = create<FeedState>()((set, get) => {
       set({ read })
     },
 
-    setListens: (id, n) => set({ toones: get().toones.map((t) => (t.id === id ? { ...t, listens: n } : t)) }),
+    setListens: (id, n) => patch(id, { listens: n }),
 
     prepend: (t) => {
       set({ toones: [t, ...get().toones], tab: 'new' })
@@ -233,9 +319,9 @@ export function shareToone(t: Toone) {
   useFeed.getState().flash('Link copied')
 }
 
-export function visibleToones(s: Pick<FeedState, 'toones' | 'tab' | 'liked' | 'origin'>) {
+export function visibleToones(s: Pick<FeedState, 'toones' | 'tab' | 'origin'>) {
   let list = s.toones
-  if (s.tab === 'saved') list = list.filter((t) => s.liked.includes(t.id))
+  if (s.tab === 'saved') list = list.filter((t) => t.liked)
   const origin = s.origin
   if (s.tab === 'nearby' && origin) list = [...list].sort((a, b) => angularDistance(origin, [a.lon, a.lat]) - angularDistance(origin, [b.lon, b.lat]))
   return list

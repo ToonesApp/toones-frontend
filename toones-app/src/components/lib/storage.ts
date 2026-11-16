@@ -11,9 +11,7 @@ export const KEYS = {
   layers: 'toones-layers',
   /* Character looks by account email; the backend has no profile endpoint yet */
   looks: 'toones-looks',
-  /* Feed state the backend has no endpoints for yet */
-  liked: 'toones-feed-liked',
-  comments: 'toones-feed-comments',
+  /* Feed preferences that stay on this device */
   feedSettings: 'toones-feed-settings',
   inboxRead: 'toones-feed-read',
 } as const

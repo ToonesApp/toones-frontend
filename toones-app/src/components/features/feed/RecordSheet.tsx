@@ -160,7 +160,7 @@ function SheetBody({ open }: { open: boolean }) {
     if (r.blob) await saveClip(id, r.blob).catch(() => undefined)
     home.addDrop({ id, title: name, cat: category, dur: r.dur, lon, lat, standIn: !r.blob })
     const me = displayName(home.user)
-    feed.prepend({ id, cat: category, name: me, handle: '', when: Date.now(), title: name, place: where, caption: '', dur: r.dur, listens: 0, lon, lat, audioUrl, mine: true })
+    feed.prepend({ id, cat: category, name: me, handle: '', when: Date.now(), title: name, place: where, caption: '', dur: r.dur, listens: 0, likes: 0, liked: false, comments: 0, lon, lat, audioUrl, mine: true })
     if (photo) feed.addPhoto(id, photo)
     feed.setSheet(false)
     feed.flash(uploaded || !r.blob ? 'Dropped. It will appear on the globe.' : 'Saved on this device. Sign in to share it.')
