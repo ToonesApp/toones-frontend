@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "validate:games": "node scripts/games.mjs",
+    "games:options": "node scripts/games.mjs --fill"
   },
   "dependencies": {
     "@tensorflow/tfjs": "^4.22.0",
