@@ -2,14 +2,30 @@ import { useEffect, useState } from 'react'
 import { ClayCharacter } from '../characters/ClayCharacter'
 import '../../styles/preloader.css'
 
-const PRELOADER_DURATION = 3000
+const MIN_DISPLAY_MS = 2000
 
 export function Preloader() {
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setReady(true), PRELOADER_DURATION)
-    return () => window.clearTimeout(timer)
+    let cancelled = false
+    let handleLoad: (() => void) | undefined
+
+    const minDelay = new Promise<void>((resolve) => setTimeout(resolve, MIN_DISPLAY_MS))
+    const contentLoaded = new Promise<void>((resolve) => {
+      if (document.readyState === 'complete') return resolve()
+      handleLoad = () => resolve()
+      window.addEventListener('load', handleLoad, { once: true })
+    })
+
+    Promise.all([minDelay, contentLoaded]).then(() => {
+      if (!cancelled) setReady(true)
+    })
+
+    return () => {
+      cancelled = true
+      if (handleLoad) window.removeEventListener('load', handleLoad)
+    }
   }, [])
 
   if (ready) return null
