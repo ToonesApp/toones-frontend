@@ -12,6 +12,7 @@ import '../home/home.css'
 import './games.css'
 
 const Play = lazy(() => import('./Play'))
+const Credits = lazy(() => import('./Credits'))
 
 function Sky() {
   const ref = useRef<HTMLCanvasElement>(null)
@@ -56,6 +57,7 @@ export default function GamesPage() {
       <Suspense fallback={null}>
         <Routes>
           <Route index element={<Hub />} />
+          <Route path="credits" element={<Credits />} />
           <Route path=":game" element={<Play />} />
         </Routes>
       </Suspense>

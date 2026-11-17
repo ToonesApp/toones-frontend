@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { ClayCharacter } from '../../characters/ClayCharacter'
-import { getToken } from '../../lib/api'
 import { KEYS, readJSON, writeJSON } from '../../lib/storage'
 import { BackIcon, ClayButton, PaperChip, SegmentedTabs, ShareIcon } from '../../ui'
 import { preload } from './audio'
 import { dailySeed, pickRounds, shareText, today, type Answer } from './engine'
 import { findGame, type GameDef } from './games'
+import { Leaderboard } from './Leaderboard'
 import { Rounds } from './Round'
+import { useScores, type SaveState } from './scores'
 import type { GameItem, Mode } from './types'
 
-type Run = { key: number; daily: boolean; mode: Mode; rounds: GameItem[]; answers?: Answer[] }
+type Run = { key: number; daily: boolean; mode: Mode; rounds: GameItem[]; answers?: Answer[]; save?: SaveState }
 type DailyLog = Record<string, { day: string; score: number }>
 
 const MODES: readonly { value: Mode; label: string; hint: string }[] = [
@@ -51,9 +52,17 @@ function Game({ def }: { def: GameDef }) {
     setRun({ key: Date.now(), daily: isDaily, mode, rounds })
   }
 
+  const save = (done: Run, answers: Answer[]) => {
+    setRun({ ...done, answers, save: 'saving' })
+    void useScores
+      .getState()
+      .submit(def.id, { score: total(answers), daily: done.daily, mode: done.mode })
+      .then((state) => setRun((r) => (r?.key === done.key ? { ...r, save: state } : r)))
+  }
+
   const finish = (answers: Answer[]) => {
     if (!run) return
-    setRun({ ...run, answers })
+    save(run, answers)
     if (!run.daily) return
     const next = { ...daily, [def.id]: { day: today(), score: total(answers) } }
     writeJSON(KEYS.gamesDaily, next)
@@ -70,8 +79,9 @@ function Game({ def }: { def: GameDef }) {
       ) : !run.answers ? (
         <Rounds key={run.key} def={def} mode={run.mode} rounds={run.rounds} onDone={finish} />
       ) : (
-        <Results def={def} run={run} answers={run.answers} onAgain={() => start(false, run.mode)} />
+        <Results def={def} run={run} answers={run.answers} onAgain={() => start(false, run.mode)} onRetry={() => save(run, run.answers ?? [])} />
       )}
+      {(!run || run.answers) && <Leaderboard game={def.id} version={run?.save === 'saved' ? run.key : 0} />}
     </main>
   )
 }
@@ -79,6 +89,7 @@ function Game({ def }: { def: GameDef }) {
 type IntroProps = { def: GameDef; ready: boolean; failed: boolean; played: number | null; onStart: (daily: boolean, mode: Mode) => void }
 
 function Intro({ def, ready, failed, played, onStart }: IntroProps) {
+  const best = useScores((s) => s.bests?.[def.id])
   const [mode, setMode] = useState<Mode>('choice')
   const modes = MODES.filter((m) => def.modes.includes(m.value))
 
@@ -97,6 +108,11 @@ function Intro({ def, ready, failed, played, onStart }: IntroProps) {
           Free play
         </ClayButton>
       </div>
+      {best && (
+        <p className="game-intro__bests num">
+          Best today {best.today ?? '–'} · all time {best.allTime ?? '–'}
+        </p>
+      )}
       <p className="game-intro__hint">
         {failed ? 'Couldn’t load this game. Check your connection and reload.' : played !== null ? 'A new daily challenge starts at midnight UTC.' : 'The daily challenge is the same five Classic rounds for everyone.'}
       </p>
@@ -104,7 +120,8 @@ function Intro({ def, ready, failed, played, onStart }: IntroProps) {
   )
 }
 
-function Results({ def, run, answers, onAgain }: { def: GameDef; run: Run; answers: Answer[]; onAgain: () => void }) {
+function Results({ def, run, answers, onAgain, onRetry }: { def: GameDef; run: Run; answers: Answer[]; onAgain: () => void; onRetry: () => void }) {
+  const best = useScores((s) => s.bests?.[def.id])
   const [copied, setCopied] = useState(false)
   const [cheer, setCheer] = useState(0)
   const score = total(answers)
@@ -148,11 +165,24 @@ function Results({ def, run, answers, onAgain }: { def: GameDef; run: Run; answe
           </li>
         ))}
       </ol>
-      {!getToken() && (
-        <p>
-          Guest scores are not saved. <Link to="/auth">Sign in</Link> to keep your best.
-        </p>
-      )}
+      <p className="game-intro__hint" role="status">
+        {run.save === 'guest' ? (
+          <>
+            Guest scores are not saved. <Link to="/auth">Sign in</Link> to keep your best.
+          </>
+        ) : run.save === 'failed' ? (
+          <>
+            Couldn’t save this score.{' '}
+            <button type="button" className="game-intro__retry" onClick={onRetry}>
+              Try again
+            </button>
+          </>
+        ) : run.save === 'saving' ? (
+          'Saving your score'
+        ) : (
+          `${run.save === 'kept' ? 'Your first daily score today stands.' : 'Saved.'} Best today ${best?.today ?? score} · all time ${best?.allTime ?? score}`
+        )}
+      </p>
       <div className="game-intro__actions">
         <ClayButton onClick={share}>
           <ShareIcon /> {copied ? 'Copied' : 'Share'}

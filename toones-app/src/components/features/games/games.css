@@ -43,6 +43,23 @@
 .results__rounds li { display: flex; justify-content: space-between; gap: 10px; padding: 8px 14px; border-left: 6px solid var(--terracotta); border-radius: var(--r-input); background: var(--well); font-size: 14px; text-align: left; }
 .results__rounds li.is-right { border-left-color: var(--success); }
 
+/* Leaderboard and credits */
+.game-intro .game-intro__bests { color: var(--ink); font-size: 14px; font-weight: 500; }
+.game-intro__retry { padding: 0; border: 0; background: none; color: var(--ink); font: inherit; text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+.board, .credits { display: flex; flex-direction: column; gap: 12px; padding: 18px 18px 20px; }
+.board__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.board h2, .credits h2 { margin: 0; font-size: 18px; font-weight: 600; }
+.board__note { min-height: 44px; margin: 0; color: var(--muted); font-size: 14px; }
+.board__list, .credits ul { display: flex; flex-direction: column; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.board__row { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 6px 12px; border-radius: var(--r-input); font-size: 14px; }
+.board__row.is-me { background: var(--field); box-shadow: 0 3px 0 rgb(27 36 48 / 8%); font-weight: 600; }
+.board__row .look-avatar { border-radius: 50%; }
+.board__rank { width: 20px; color: var(--muted); text-align: right; }
+.board__name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.board__score { font-weight: 600; }
+.credits li { padding: 8px 0; border-top: 1px solid var(--hair); }
+.credits__name { font-size: 14px; font-weight: 500; }
+
 /* Round */
 .round { display: flex; flex-direction: column; gap: 14px; min-height: 480px; padding: 14px 18px 20px; }
 .round__head { display: flex; align-items: center; gap: 10px; }

@@ -255,6 +255,19 @@ export async function getGameBests() {
   return body.bests
 }
 
+export type LeaderboardScope = 'daily' | 'all'
+export type LeaderboardEntry = { username: string; displayName: string; look: Look | null; score: number; isMe: boolean }
+
+/** GET /games/:game/leaderboard: top ten for today's daily challenge, or each player's best ever. Open to guests. */
+export function getLeaderboard(game: string, scope: LeaderboardScope) {
+  return request<{ scope: LeaderboardScope; day: string; entries: LeaderboardEntry[] }>(`/games/${game}/leaderboard?scope=${scope}`, { headers: authHeader() })
+}
+
+/** POST /games/:game/scores (signed in). `saved` is false when today's daily challenge was already scored. */
+export function submitGameScore(game: string, run: { score: number; daily: boolean; mode: string }) {
+  return request<{ saved: boolean; best: GameBest }>(`/games/${game}/scores`, { method: 'POST', body: JSON.stringify(run), headers: authHeader() })
+}
+
 export function health(): Promise<{ ok: boolean; service: string }> {
   return request<{ ok: boolean; service: string }>('/health')
 }
