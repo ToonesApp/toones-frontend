@@ -6,13 +6,14 @@ import { Preloader } from './components/microcomponents/Preloader'
 import AuthPage from './components/features/auth/AuthPage'
 import { RequireAuth } from './components/features/auth/RequireAuth'
 import { ForgotPasswordPage, ResetPasswordPage, VerifyEmailPage } from './components/features/auth/RecoverPage'
-import DevPage from './dev/DevPage'
 import LandingPage from './components/layout/LandingPage'
 
 import './App.css'
 
 const HomePage = lazy(() => import('./components/features/home/HomePage'))
 const FeedPage = lazy(() => import('./components/features/feed/FeedPage'))
+// The design-system showcase ships only in dev builds; in production the import is dead code and tree-shaken out.
+const DevPage = import.meta.env.DEV ? lazy(() => import('./dev/DevPage')) : null
 
 function App() {
   return (
@@ -45,7 +46,16 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route path="/dev" element={<DevPage />} />
+          {DevPage && (
+            <Route
+              path="/dev"
+              element={
+                <Suspense fallback={null}>
+                  <DevPage />
+                </Suspense>
+              }
+            />
+          )}
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Router>
