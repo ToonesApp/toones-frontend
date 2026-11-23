@@ -24,6 +24,7 @@ lerna-debug.log*
 .env
 .env.*
 !.env.example
+!.env.production
 
 # Tool caches and temporary files
 .cache/
