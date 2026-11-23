@@ -116,6 +116,11 @@
 .comment { display: flex; align-items: flex-start; gap: 10px; }
 .comment__bubble { min-width: 0; padding: 9px 14px; border-radius: 18px; background: var(--well); font-size: 14px; line-height: 1.45; overflow-wrap: anywhere; }
 .comment__bubble b { font-weight: 600; }
+.comment__meta { display: flex; gap: 10px; margin-top: 2px; font-size: 12px; color: var(--muted); }
+.comment__delete { padding: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; }
+.comment__delete:hover { text-decoration: underline; }
+.comment__note { align-self: center; padding: 4px 0; border: 0; background: none; font: inherit; font-size: 13px; color: var(--muted); }
+button.comment__note { cursor: pointer; }
 .drawer__post { display: flex; gap: 8px; }
 .drawer__post .pill-input { flex: 1; }
 .drawer__post-btn { height: 44px; }

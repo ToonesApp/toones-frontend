@@ -229,7 +229,26 @@ export type ApiSound = {
   author: { id: string; username: string; displayName: string; look: Look | null } | null
   mine: boolean
   listened: boolean
+  likeCount: number
+  commentCount: number
+  /** Whether the signed-in user liked it; always false when signed out. */
+  liked: boolean
 }
+
+/** Mirrors the comment objects returned by /sounds/:id/comments. */
+export type ApiComment = {
+  id: string
+  text: string
+  createdAt: string
+  /** Null only in the brief moment after the author deletes their account. */
+  author: { id: string; username: string; displayName: string; look: Look | null } | null
+  mine: boolean
+  /** True for the comment's author and for the owner of the Toone. */
+  canDelete: boolean
+}
+
+/** Matches the server's limit in POST /sounds/:id/comments. */
+export const MAX_COMMENT_LENGTH = 280
 
 /** GET /sounds: newest first. With a stored token the server also fills `mine` and `listened`. */
 export function getSounds(query: { limit?: number; category?: SoundCategory[] } = {}) {
@@ -276,6 +295,35 @@ export function uploadPhoto(id: string, photo: File) {
 /** POST /sounds/:id/listen (signed in): the first listen per user earns XP. */
 export function recordListen(id: string) {
   return request<{ firstListen: boolean; playCount: number; xp: number; level: number }>(`/sounds/${id}/listen`, { method: 'POST', headers: authHeader() })
+}
+
+/** PUT /sounds/:id/like (signed in). Safe to repeat. */
+export function likeSound(id: string) {
+  return request<{ liked: boolean; likeCount: number }>(`/sounds/${id}/like`, { method: 'PUT', headers: authHeader() })
+}
+
+/** DELETE /sounds/:id/like (signed in). Safe to repeat. */
+export function unlikeSound(id: string) {
+  return request<{ liked: boolean; likeCount: number }>(`/sounds/${id}/like`, { method: 'DELETE', headers: authHeader() })
+}
+
+/** GET /sounds/:id/comments: newest first. Public; a stored token adds `mine` / `canDelete`. */
+export function getComments(id: string, query: { before?: string; limit?: number } = {}) {
+  const params = new URLSearchParams()
+  if (query.before) params.set('before', query.before)
+  if (query.limit) params.set('limit', String(query.limit))
+  const qs = params.toString() ? `?${params}` : ''
+  return request<{ comments: ApiComment[]; commentCount: number; nextBefore: string | null }>(`/sounds/${id}/comments${qs}`, { headers: authHeader() })
+}
+
+/** POST /sounds/:id/comments (signed in): 1-280 characters. */
+export function postComment(id: string, text: string) {
+  return request<{ comment: ApiComment; commentCount: number }>(`/sounds/${id}/comments`, { method: 'POST', body: JSON.stringify({ text }), headers: authHeader() })
+}
+
+/** DELETE /sounds/:id/comments/:commentId (comment author or Toone owner). */
+export function deleteComment(id: string, commentId: string) {
+  return request<{ deleted: boolean; commentCount: number }>(`/sounds/${id}/comments/${commentId}`, { method: 'DELETE', headers: authHeader() })
 }
 
 export function health(): Promise<{ ok: boolean; service: string }> {
